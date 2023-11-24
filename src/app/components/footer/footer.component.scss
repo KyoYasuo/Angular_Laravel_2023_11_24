@@ -1,0 +1,163 @@
+/*
+Bootstrap Breakpoints Mixins
+*/
+@mixin media-breakpoint-up($breakpoint) {
+    @if $breakpoint == "sm" {
+      @media (min-width: 576px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "md" {
+      @media (min-width: 768px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "lg" {
+      @media (min-width: 992px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "xl" {
+      @media (min-width: 1200px) {
+        @content;
+      }
+    }
+  }
+  @mixin media-breakpoint-down($breakpoint) {
+    @if $breakpoint == "xs" {
+      @media (max-width: 575.98px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "sm" {
+      @media (max-width: 767.98px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "md" {
+      @media (max-width: 991.98px) {
+        @content;
+      }
+    }
+    @if $breakpoint == "lg" {
+      @media (max-width: 1199.98px) {
+        @content;
+      }
+    }
+  }
+  
+  /*
+  Bootstrap Variables
+  */
+  $gray-100: #f8f9fa !default;
+  $gray-200: #e9ecef !default;
+  $gray-300: #dee2e6 !default;
+  $gray-400: #ced4da !default;
+  $gray-500: #adb5bd !default;
+  $gray-600: #6c757d !default;
+  $gray-700: #495057 !default;
+  $gray-800: #343a40 !default;
+  $gray-900: #212529 !default;
+  
+  $blue:    #007bff !default;
+  $indigo:  #6610f2 !default;
+  $purple:  #6f42c1 !default;
+  $pink:    #e83e8c !default;
+  $red:     #dc3545 !default;
+  $orange:  #fd7e14 !default;
+  $yellow:  #ffc107 !default;
+  $green:   #28a745 !default;
+  $teal:    #20c997 !default;
+  $cyan:    #17a2b8 !default;
+  
+  $primary:       $blue !default;
+  $secondary:     $gray-600 !default;
+  $success:       $green !default;
+  $info:          $cyan !default;
+  $warning:       $yellow !default;
+  $danger:        $red !default;
+  $light:         $gray-100 !default;
+  $dark:          $gray-800 !default;
+  
+  $font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+  $headings-font-family:        null !default;
+  
+  
+  /*
+  Code
+  */
+  .m-subscribe1 {
+    background: $gray-100;
+    padding-bottom: 40px;
+    padding-top: 44px;
+    width: 100%;
+    &__title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-top: 2px;
+      text-align: center;
+      @include media-breakpoint-up(lg) {
+        font-size: 2rem;
+        text-align: left;
+      }
+    }
+    &__form {
+      font-family: $headings-font-family;
+      input[type=email] {
+        border-radius: 20px;
+        display: block;
+        height: 43px;
+        margin-bottom: 10px;
+        margin-right: 5px;
+        min-width: auto;
+        position: relative;
+        top: -4px;
+        width: 100%;
+        @media screen and (min-width: 480px) {
+          display: inline-block;
+          margin-bottom: 0;
+          width: calc(100% - 160px);
+        }
+        @include media-breakpoint-up(lg) {
+          display: block;
+          margin-right: 16px;
+          width: auto;
+        }
+        @include media-breakpoint-up(lg) {
+          min-width: 290px;
+        }
+        @include media-breakpoint-up(xl) {
+          min-width: 334px;
+        }
+      }
+      button[type=submit] {
+        border-radius: 20px;
+        display: block;
+        float: right;
+        font-size: 0.8rem;
+        font-weight: 700;
+        line-height: 3.2;
+        margin-left: auto;
+        padding: 0 32px;
+        width: 100%;
+        @media screen and (min-width: 480px) {
+          display: inline-block;
+          width: auto;
+        }
+        @include media-breakpoint-up(lg) {
+          display: block;
+          float: none;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  
+  .terms-mobile-memu {
+    display: none;
+  }
+  @media only screen and (max-width: 768px) {
+    .terms-mobile-memu {
+      display: block;
+    }
+  }

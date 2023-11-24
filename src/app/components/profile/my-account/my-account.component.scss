@@ -1,0 +1,20 @@
+@import "../../../../variables.scss";
+.profile-info{
+	width: 550px;
+	max-width: 100%;
+	margin: 30px 0px;
+	.profile-pic-col{
+		flex: 0 0 100px;
+		max-width: 100px;
+	}
+	label{
+		color: $primary-color;
+	}
+	.my-account-pic img{
+		border-radius: 50%;
+		max-width: 100%;
+	}
+	.btn-edit-profile{
+		margin-top: 30px;
+	}
+}

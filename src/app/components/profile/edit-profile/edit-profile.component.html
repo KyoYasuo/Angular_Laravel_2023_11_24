@@ -1,0 +1,87 @@
+<div class="modal-header">
+	<h4 class="modal-title pull-left">Edit Profile</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form class="form-outer-wrap"
+		[formGroup]="editProfileForm"
+		(ngSubmit)="onSubmit()">
+
+		<!-- Name -->
+		<div class="form-group">
+			<input
+				id="name"
+				type="text"
+				class="form-control custom-form-control"
+				formControlName="name"
+				placeholder="Full Name"
+				autocomplete="off"
+				[ngClass]="{'error-field': submitted && f.name.errors}"
+				required>
+			<div *ngIf="submitted && f.name.errors" class="form-error">
+				Name is required
+			</div>
+		</div>
+
+		<!-- Email -->
+		<div class="form-group">
+			<input
+				type="email"
+				formControlName="email"
+				class="form-control custom-form-control"
+				placeholder="Email"
+				autocomplete="off"
+				[attr.disabled]="true"
+				required>
+			<div *ngIf="submitted && f.email.errors" class="form-error">
+                <div *ngIf="f.email.errors.required">
+					Email is required
+				</div>
+                <div *ngIf="f.email.errors.email && !f.email.errors.required">Email must be a valid email address</div>
+            </div>
+		</div>
+
+		<!-- Country -->
+		<div class="form-group">
+			<input
+				type="text"
+				formControlName="country"
+				class="form-control custom-form-control"
+				placeholder="Country"
+				autocomplete="off">
+		</div>
+
+		<!-- State -->
+		<div class="form-group">
+			<input
+				type="text"
+				formControlName="state"
+				class="form-control custom-form-control"
+				placeholder="State"
+				autocomplete="off">
+		</div>
+
+		<!-- City -->
+		<div class="form-group">
+			<input
+				type="text"
+				formControlName="city"
+				class="form-control custom-form-control"
+				placeholder="City"
+				autocomplete="off">
+		</div>
+
+		<!-- Submit -->
+		<div class="">
+			<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-model-box"
+				[ngClass]="{'disabled': editAPIRunnning}"
+				[disabled]="editAPIRunnning" >
+				Update
+			</button>
+		</div>
+	</form>
+</div>

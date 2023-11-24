@@ -1,0 +1,104 @@
+
+<app-header></app-header>
+<!-- <ngx-loading-bar></ngx-loading-bar> -->
+
+  <div class="settings-page" style="margin-top: 62px;">
+	  
+	<div class="container-fluid">
+		<!-- <div class="row">
+			<div class="col-sm-4">
+				<ul>
+					<li (click)="selectProfileMenu(0)">My Profile</li>
+					<li (click)="selectProfileMenu(1)">Change Password</li>
+					<li (click)="selectProfileMenu(2)">User Permission</li>
+					<li (click)="selectProfileMenu(3)">Post Approval</li>
+				</ul>
+			</div>
+			<div class="col-sm-8">
+				<tabset #profileInnerMenus>
+				    <tab>My profile page</tab>
+				    <tab>Change Password Page</tab>
+				    <tab>User Permission Page</tab>
+				    <tab>Post Approval Page</tab>
+				</tabset>
+			</div>
+		</div> -->
+		<div class="d-flex">
+			<div class="col-sm-3 settings-sidebar">
+				<ul class="navbar-nav navbar-settings mr-auto">
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}">
+						<a class="nav-link" routerLink="/my-account">My Profile</a>
+					</li>
+					<li class="nav-item"
+						*ngIf="(user | json) != '{}' && !user['provider']"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}">
+						<a class="nav-link" routerLink="/my-account/change-password">Change Password</a>
+					</li>
+				</ul>
+
+				<h5 *ngIf="validateAction('super_admin')">Admin</h5>
+				<ul class="navbar-nav navbar-settings mr-auto">
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('users')">
+						<a class="nav-link" routerLink="/my-account/users">Users</a>
+					</li>
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('authors')">
+						<a class="nav-link" routerLink="/my-account/authors">Authors</a>
+					</li>
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('resources')">
+						<a class="nav-link" routerLink="/my-account/resourcesnav">Media</a>
+					</li>
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('resources')">
+						<a class="nav-link" routerLink="/my-account/podcastnav">Podcast</a>
+					</li>
+
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('resources')">
+						<a class="nav-link" routerLink="/my-account/mediadurationupload">Media duration</a>
+					</li>
+					<!-- <li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('resources')">
+						<a class="nav-link" routerLink="/my-account/addpodcast">AddPodcast</a>
+					</li> -->
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('permission')">
+						<a class="nav-link" routerLink="/my-account/user-permission">User Role Permissions</a>
+					</li>
+					<li class="nav-item"
+						routerLinkActive="active"
+						[routerLinkActiveOptions]="{exact: true}"
+						*ngIf="validateAction('approve_post')">
+						<a class="nav-link" routerLink="/my-account/posts">Content Approval</a>
+					</li>
+				</ul>
+			</div>
+			<div class="flex-grow-1 settings-contents">
+						
+				<router-outlet></router-outlet>
+				
+			</div>
+
+
+		</div>
+	</div>
+</div>

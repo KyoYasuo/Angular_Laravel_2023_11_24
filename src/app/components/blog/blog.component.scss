@@ -1,0 +1,21 @@
+.content_box
+{
+    width: 100%;
+}
+
+#search_val
+{
+    display: flex;justify-content: flex-end;
+}
+@media(max-width:567px)
+{
+    #search_val
+    {
+        width: 100%;
+    }
+    .alfa_container {
+        padding: 0px 5px!important;
+        padding-top: 35px!important;
+        margin-bottom: 15px;
+    }
+}

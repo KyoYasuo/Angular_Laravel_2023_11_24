@@ -1,0 +1,284 @@
+<!-- <div class="padding" style="overflow-x: hidden" >
+    <div class="row">
+        <div class="col-1" (click)="back()" style="padding-top:50px;cursor: pointer;"><i class="fas fa-arrow-left fa-2x"></i></div>
+        <div class="col-10">
+            <h1 class="page-title center">
+                {{title}}
+            </h1>
+        </div>
+    </div>
+
+
+    <div class="row" style="padding-top:4%;padding-left: 8%">
+        <owl-carousel style="width: 100%" [options]="Options" [items]="mediaList"
+                                        [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+                <div class="item" (click)="restrat(x)"  *ngFor="let list of mediaList, let x = index">
+                     
+                    <div class="box">
+                        <div class="img" style="background-color:#dadada;height:100%;width:100%"></div>
+                    </div>
+                    <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{list.title}}</h4>
+                     
+                </div>
+      </owl-carousel>
+    </div>
+
+</div> -->
+
+<div id="loader" *ngIf="loader"
+  style="min-height: calc(100vh - 92px);display: flex;justify-content: center;align-items: center">
+  <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+</div>
+
+
+<div class="breadcrumb_banner" *ngIf="!loader && available"
+  style="background-image: url('assets/image/breadcrumb/nitnem.jpg');">
+  <div class="container">
+    <div class="breadcrumb_box">
+      <h3>{{title}}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="padding" *ngIf="!available">
+  <div class=" alert alert-info">{{msgerr}}</div>
+</div>
+
+
+<div class="container mobile-view-gurbanilist" *ngIf="!loader && available" style="overflow-x:hidden">
+
+  <!-- <div class="row" (click)="back()" style="cursor: pointer;margin-bottom: 2em"><i class="fas fa-arrow-left fa-2x"></i></div>
+        -->
+  <div class="row d-flex mobileViewOnly" style="margin: 1em 0;
+    ">
+
+
+    <div class="row" style="width:100%">
+      <ol class="breadcrumb breadcrumb-title" style="margin-left:0px !important;">
+        <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);"
+            (click)="change(item.path)">{{item.name}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+      </ol>
+    </div>
+
+
+    <!-- <div class="col">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" 
+            *ngFor="let item of breadcrumbList; let i = index"
+            [class.active]="i===breadcrumbList.length-1">
+            <a [routerLink]="item.path" *ngIf="i!==breadcrumbList.length-1">
+              {{ item.name }}
+            </a>
+            <span *ngIf="i===breadcrumbList.length-1">{{ item.name }}</span>
+          </li>
+        </ol>
+    </div> -->
+
+
+    <div *ngIf="!cid" class="alfa_container" [ngClass]="{'active': x==0}" style="border:none; padding: 10px 35px 35px;">
+          <div class="row">
+             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" (click)="featuredArtistsClicked(artist,1)" *ngFor="let media of mediaList;let x=index" style="margin-bottom: 20px">
+                    <div class="item">
+                      <a href="javascript:void(0);" class="media_content" (click)="restrat2(x)">
+                          <div class="inner_item">
+                              <img src="{{media.author_image}}" *ngIf="media.author_image" class="mobile-width" style="width:100%;">
+                              <img src="assets/image/1picture.png" *ngIf="!media.author_image" style="width:100%">
+                          </div>
+                          <div class="row h-100 mt-1 mx-0 align-items-start">
+                              <div class="col-10 text-left my-auto pl-0"> 
+                                <p *ngIf="media.author_name" class="time_duration_color">{{media.author_name}}</p> </div>
+                              <div class="col-2 my-auto time_duration_color px-0 text-right" *ngIf="media.duration"> {{media.duration==null?"N/A":media.duration}} </div>
+                            </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+    </div>
+    
+    <div *ngIf="cid" class="gurbanilist_table table-responsive">
+      <table style="display: none" *ngIf="mediaList.length>=1 && !loader" class="table">
+        <thead>
+          <tr>
+            <th class="center">#</th>                    
+            <th></th>
+            <th>Duration</th>
+            <th *ngIf="validateAction('download')"></th>
+            <th class="center aligned collapsing">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of mediaList;let x=index">
+            <td class="centered" [ngClass]="(x == previndex) ? 'selected':'select'"
+              style="font-size:1.1em;padding-top: 1em;">
+              {{x+1}}
+            </td>                      
+            <td class="centered" [ngClass]="(x == previndex) ? 'selected':'select'"
+              style="font-size:1.1em;padding-top: 1em;">
+              {{list.title}}
+            </td>
+            <td class="centered" [ngClass]="(x == previndex) ? 'selected':'select'"
+              style="font-size:1.1em;padding-top: 1em;">
+              {{list.duration==null?"N/A":list.duration}}
+            </td>
+            <td *ngIf="validateAction('download')">
+              <!-- (click)="download(list.attachment_name)" -->
+              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}"
+                class="ui circular icon action_btn"><i class="fa fa-cloud-download"></i></a>
+              <!-- <button class="ui circular icon button">
+                          <i class="cloud download icon" (click)="download(list.attachment_name)"></i>
+                      </button> -->
+            </td>
+            <td>
+              <button (click)="restrat2(x)" [ngClass]="(x == previndex) ? 'selectedicon':'select'"
+                class="ui circular icon button" style="color: #0b79be">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+<!-- <div class="container">
+    <div class="card card-default">
+        <div class="panel-collapse collapse show" aria-expanded="true" style="">
+            <ul class="list-group pull-down" id="contact-list">
+                <li class="list-group-item" *ngFor="let list of mediaList;let x=index">
+                    <div class="row w-100">
+                        <div class="col-2 text-sm-right"> {{x+1}}  </div>
+                        <div class="col-10 col-sm-6 col-md-9 text-sm-left">
+                            <span class="name lead">{{list.title}}</span>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="col-2 col-sm-6 col-md-9 text-sm-left">
+                            <span class="text-muted"></span>
+                        </div>
+                        <div class="col-10 text-sm-right">
+                            <span class="text-muted">{{list.duration==null?"N/A":list.duration}}</span>
+                            
+                            <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}"
+                   *ngIf="validateAction('download')" class="ui circular icon action_btn" style="font-size: 15px;margin-right: 5px;"><i class="fa fa-cloud-download"></i></a>
+                        </div> 
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div> -->
+
+
+
+      <div class="tableWrap  gurbani-table TableHide" >
+      
+          <div class="tableHead">
+            <div class="tableCell" style="width:5%;">#</div>
+            <div class="tableCell" style="width:30%;">Title</div>
+            <div class="tableCell" style="width:15%;">Duration</div>
+            <div class="tableCell" style="width:20%;">Action</div>
+          </div>
+    
+          <div class="tableBody " *ngFor="let list of mediaList;let x=index">
+            
+            <div class="tableCell" style="width:5%;">
+              <div class="-heading"></div>
+              <div class="tableCell-content">{{x+1}}</div>
+            </div> 
+            <div class="tableCell" style="width:30%;">
+              <div class="tableCell-heading">Title</div>
+              <div class="tableCell-content"><div class="con-title" (click)="restrat2(x)">{{list.title}}</div></div>
+            </div>
+            <div class="tableCell" style="width:15%;">
+              <div class="tableCell-heading">Duration</div>
+              <div class="tableCell-content">{{list.duration==null?"N/A":list.duration}}</div>
+            </div>
+            <div class="tableCell" style="width:20%;">
+              <div class="tableCell-heading">Action</div>
+              <div class="tableCell-content">
+               
+                   <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}"
+                   *ngIf="validateAction('download')"
+                    class="ui circular icon action_btn" style="font-size: 15px;margin-right: 5px;"><i class="fa fa-cloud-download"></i></a>
+                
+                  <a (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" 
+                    class="ui circular icon button " style="color: #0b79be;">
+                    <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+                  </a>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+
+     <!--  <div class="cardDiv" *ngFor="let list of mediaList;let x=index">
+        <div class="row">
+          <div class="col-md-12"><span class="mr-3">{{x+1}}</span><span>{{list.title}}</span></div>
+
+          <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <span class="opac7">Duration: {{list.duration==null?"N/A":list.duration}}</span>
+            <span>
+              <a (click)="restrat2(x)" [ngClass]="(x == previndex) ? 'selectedicon':'select'"
+                class="ui circular icon button " style="color: #0b79be;">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="cardDiv" *ngFor="let list of mediaList;let x=index">
+        <div class="row">
+          <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <span>
+              <span class="mr-3">{{x+1}}</span>
+              <span style="font-size: 15px;" (click)="restrat2(x)">{{list.title | truncate1 }} <!-- <i class="fa fa-circle ml-1 mr-1 dotIcon " aria-hidden="true"></i> --></span> <span class="opac7 ml-1" style="font-size: 13px;" >{{list.duration==null?"N/A":list.duration}}</span>
+             </span> 
+            <span>
+              <a (click)="restrat2(x)" [ngClass]="(x == previndex) ? 'selectedicon':'select'"
+                class="ui circular icon button " style="color: #0b79be;">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div *ngIf="mediaList.length==0 && !loader" class="alert alert-info" style="margin-top:2%">
+      <h5>No data found</h5>
+    </div>
+
+    <div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+    <div class="alert alert-danger" *ngIf="err">Something went wrong</div>
+    <div style="margin-top:1vh;margin-bottom: 1em;width: 100%" *ngIf="isadmin && mediaList.length!=0 && !loader">
+      <tag-input [(ngModel)]="mediaObjects" [theme]="'dark'" [dragZone]="'zone1'" [editable]="true">
+        <tag-input-dropdown style="overflow: scroll" [showDropdownIfEmpty]="true" [dynamicUpdate]="false"
+          [displayBy]="'value'" [autocompleteItems]="mediaList2" [appendToBody]="false">
+          <ng-template let-item="item" let-index="index">
+            {{ item.value }}
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+      <div class="row" style="margin-top:1vh;padding-left:0.5vw">
+        <button (click)="save(content)" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <ng-template #content let-modal>
+
+    <div class="modal-body">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+<button id="playerPauseEvent" (click)="playerPauseEvent()" style="display:none"></button>
+<button id="playerPlayEvent" (click)="playerPlayEvent()" style="display:none"></button>

@@ -1,0 +1,556 @@
+
+<div class="advance_search_wrap" style="min-height: 65vh;background: white;padding-top:0">
+        <div class="breadcrumb_banner" style="background-image: url('assets/images/full.jpg');margin-bottom:20px">
+                <div class="container">
+                        <div class="breadcrumb_box">
+                                <h3>Advanced Search</h3>
+                        </div>
+                </div>
+        </div>
+
+        <div class="container">
+            <!-- New code  11-06-2020-->
+           <div class="row" *ngIf="comeFormViewSearch != true">
+                <div class="col-md-8">
+                    <div class="form-group flex-fill search-main-input">
+                        <label class="control-label">Gurbani Search</label>
+                        <input style="height: 45px;" id="inputSearch" type="text" (keydown)=onKeydownEvent($event) [(ngModel)]="searchKeword" class="form-control" placeholder="Gurbani Search..."
+                                (focus)="onFocusOfSearchInput()"> <!-- (keyup.enter)="searchData()"-->
+                        <div class="search-kb-container">
+                            <i class="fa fa-times search-clear" style="font-size:14pxpx"
+                                    *ngIf="searchKeword.length > 0" (click)="clearSearchInput()"></i>
+                            <a class="search-kb-icon" [ngClass]="{'active': isEngKeyboardShow}"
+                                    (click)="showHideKeyboard('eng')"><img
+                                            src="assets/images/english.png"></a>
+                            <a class="search-kb-icon" [ngClass]="{'active': isPunKeyboardShow}"
+                                    (click)="showHideKeyboard('pun')"><img
+                                            src="assets/images/punjabi.png"></a>
+                            <div class="kb-container shadow rounded" *ngIf="isEngKeyboardShow"
+                                    (keydown.enter)="f('eng')"
+                                    (keydown.backspace)="showHideKeyboard('eng')">
+                                    <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)">
+                                    </eng-keyboard>
+                            </div>
+                            <div class="kb-container shadow rounded" *ngIf="isPunKeyboardShow"
+                                    (keydown.enter)="f('pun')"
+                                    (keydown.backspace)="showHideKeyboard('pun')">
+                                    <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)">
+                                    </pun-keyboard>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <div class="d-flex justify-content-between">
+                        <label class="control-label">Search Options</label>
+
+                        <ng-template #tipContent class="toolTipText">
+                            <p *ngIf="selectedSearchOption ==1">
+                            You can search in both English and Punjabi language. Use this field for searches when you intend to find those sabad lines that contain an exact combination of words/letters. Example: Typing "ਹਰਿ ਜਨ " will find 132 results that contain this exact combination of words</p>
+
+                            <p *ngIf="selectedSearchOption ==2">
+                            You can search in both English and Punjabi language. Use this field for searches when beginning letters of a sabad line are known. Example:Typing "jo" or “ਜੋ” will find 801 results that starts with these letters</p>
+
+                            <p *ngIf="selectedSearchOption ==3">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words should be from the start of the Sabad line. For example search “jmtat’ for ‘Jo Mangay Thakur Apnay Te” or “ਜਮਠ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+
+                            <p *ngIf="selectedSearchOption ==4">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words can be anywhere in the Shabad line. For example search “tat’ for ‘Jo Mangay Thakur Apnay Te” or “ਮਠਅ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+
+                            <p *ngIf="selectedSearchOption ==5">
+                            You can search in both English and Punjabi language. Use this field for searches with combination of any number of whole words and they don’t need to be in exact order. Example: Typing "har jan" or “jan har” will both find 656 results</p>
+
+                            <p *ngIf="selectedSearchOption ==6">
+                            You can search in both English and Punjabi language. Use this filed for searches when you intend to find those sabad lines that contain any one of the typed words. Example: Typing "har jan" will find all lines that contain either of these words or both of these words</p>
+
+                            <p *ngIf="selectedSearchOption ==7">
+                            You can search in both English and Punjabi language. Use this field for searches with combination of any number of partial words and they don’t need to be in exact order</p>
+
+                            <p *ngIf="selectedSearchOption ==8">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words should be from the start of the Sabad line. For example search “jmtat’ for ‘Jo Mangay Thakur Apnay Te” or “ਜਮਠ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+                        </ng-template>
+
+                        <span class="showOnDeskTooltip"><i class="fas fa-info-circle" [ngbTooltip]="tipContent" style="color: #0b79be;font-size: 22px;"></i>
+                        </span>
+
+                        <span class="hideOnDeskTooltip"><i class="fas fa-info-circle" triggers="click" [autoClose]="'outside'" [ngbTooltip]="tipContent" style="color: #0b79be;font-size: 22px;"></i>
+                        </span>
+                    </div>
+                        <select style="height: 45px;" class="form-control" [(ngModel)]="selectedSearchOption">
+                                <ng-container *ngFor="let option of searchOtions">
+                                        <option *ngIf="option['is_show']" value="{{option['code']}}">
+                                                {{option['name']}}
+                                        </option>
+                                </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Gurbani Authors</label>
+                        <select class="form-control form-control-small"
+                                [(ngModel)]="advanceSearchOptions['selectedTblAuthor']"
+                                [disabled]="advanceSearchOptions['selectedContent'] == 'audio'">
+                                <option value="0">All</option>
+                                <ng-container *ngFor="let author of tblAuthors">
+                                        <option value="{{author['id']}}">
+                                                {{author['attributes']['author']}}
+                                        </option>
+                                </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Melody (Raag)</label>
+                        <select class="form-control form-control-small"
+                                [(ngModel)]="advanceSearchOptions['selectedTblMelody']"
+                                [disabled]="advanceSearchOptions['selectedContent'] == 'english-translation'">
+                                <option value="0">All</option>
+                                <ng-container *ngFor="let melody of tblMelodies">
+                                        <option value="{{melody['id']}}">
+                                                {{melody['attributes']['melody']}}
+                                        </option>
+                                </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="advanceSearchOptions['selectedContent'] == 'teeka'
+                    || advanceSearchOptions['selectedContent'] == 'english-translation'">
+                     <div class="form-group" >
+                            <label>Translation Authors</label>
+                            <select class="form-control form-control-small"
+                                    [(ngModel)]="advanceSearchOptions['selectedAuthor']"
+                                    (change)="onChangeTranslationAuthor()">
+                                    <!--<option value="0">All</option>-->
+                                    <ng-container *ngFor="let author of translationAuthors">
+                                            <option *ngIf="advanceSearchOptions['selectedContent'] == 'teeka' && author['Language'] == 'Punjabi'"
+                                                    value="{{author['id']}}">
+                                                    {{author['Author']}}
+                                            </option>
+                                            <option *ngIf="advanceSearchOptions['selectedContent'] == 'english-translation' && author['Language'] == 'English'"
+                                                    value="{{author['id']}}">
+                                                    {{author['Author']}}
+                                            </option>
+                                    </ng-container>
+                            </select>
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="advanceSearchOptions['selectedContent'] == 'audio'">
+                    <div class="form-group" >
+                            <label>Singer (Ragi)</label>
+                            <select class="form-control form-control-small"
+                                    [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']">
+                                    <option value="0">All</option>
+                                    <ng-container *ngFor="let singer of singers">
+                                            <option value="{{singer['id']}}">
+                                                    {{singer['attributes']['name']}}
+                                            </option>
+                                    </ng-container>
+                            </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Language</label>
+                        <div class="btn-group btn-group-sm w-100 optionBtn" role="group" aria-label="Basic example">
+                            
+                            <button class="btn btnn_list {{advanceSearchOptions['selectedLanguage'] == language['code'] ? 'btn-primary' : 'btn-secondary'}} " *ngFor="let language of advanceSearchOptions['languages']"
+
+                                [ngClass]="{'active': advanceSearchOptions['selectedLanguage'] == language['code']}"
+                                (click)="onChangeLanguage(language['code'])">
+                                {{language['name']}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Content</label>
+                        <div class="btn-group btn-group-sm w-100 optionBtn" role="group" aria-label="Basic example">
+                            <ng-container *ngFor="let content of advanceSearchOptions['contents']">
+
+                                <button class="btn btnn_list {{advanceSearchOptions['selectedContent'] == content['code'] ? 'btn-primary' : 'btn-secondary'}}" *ngIf="content['is_show']"
+                                    [ngClass]="{'active': advanceSearchOptions['selectedContent'] == content['code']}"
+                                    (click)="onChangeContent(content['code'])">
+                                    {{content['name']}}
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group  ">
+                        <label>Pages</label>
+                        <div class="form-inline d-flex inline767">
+                            <select class="form-control form-control-small" [(ngModel)]="advanceSearchOptions['pageFrom']">
+                                <option *ngFor='let in of counter(totalPages) ;let i = index' value="{{i + 1}}">{{i + 1}}</option>
+                            </select>
+                            <span class="label-to px-2">to</span>
+                            <select class="form-control form-control-small" [(ngModel)]="advanceSearchOptions['pageTo']">
+                                <option *ngFor='let in of counter(totalPages) ;let i = index' value="{{i + 1}}">{{i + 1}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="form-group ">
+                     <button class="btn btn-primary search_btn mr-3" (click)="searchData()">Search</button>        
+                    <button class="btn  btn-primary-outline" style="padding: 8px 8px; color: #007bff;" (click)="resetSearchAndOptions()">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!-- New code  -->
+
+
+
+        <div id="tableResult" [style.border]="searchedResult['data'].length == 0 && !isLoadingMore?'none':'none'"
+        class="mt-4" *ngIf="!loading">
+        <div class="mb-4 d-flex align-items-center row desk"
+                style="background:#1b4154;padding:18px 0px;color:#fff;margin-left:0%;width:100%"
+                *ngIf="searchedResult['data'].length > 0">
+                <div class="desk" style="width:35%;display: inline-block;"></div>
+                
+                <div class="desk desk-page" style="width:30%;display: inline-block;">
+                <h4 id="resstr" class="ml-3 mb-0 flex-fill text-center">
+                        {{searchedResult['pagination']['total']}} search results</h4>
+                <h4 id="resstrmobile" class="ml-3 mb-0 flex-fill text-center">
+                        {{searchedResult['pagination']['total']}} search results</h4>
+                        
+                        <!--<pagination id="p1" style="float: right;"
+                                *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1"
+                                [boundaryLinks]="true" [(ngModel)]="searchedResult.pagination.page"
+                                [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+                                (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"
+                                [rotate]="false" [maxSize]="5">
+                        </pagination>-->
+                </div>
+                <div class="desk desk-pagination" style="width:35%;display: inline-block;">
+                        <app-my-pagination style="background: transparent;float:right" [currentPage]="searchedResult.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+                </div>
+
+                <div class="mobile">
+                        <h4 id="resstr" class="mb-0 flex-fill text-center" style="width:100% !important">
+                                {{searchedResult['pagination']['total']}} search results</h4>
+                        <h4 id="resstrmobile" class="mb-0 flex-fill text-center" style="width:100% !important">
+                                {{searchedResult['pagination']['total']}} search results</h4>
+                        <div style="display: block;">
+                        <app-my-pagination style="background: transparent;display: table;margin:auto;margin-top:10px;" [currentPage]="searchedResult.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+                        </div>
+                </div>
+        </div>
+
+        <div style="padding-left:8px">
+
+                <ol class="search-listing" [start]="startfrom">
+                        <li *ngFor="let data of searchedResult['data'] ">
+                                <!-- gurmuki -->
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'
+                                && advanceSearchOptions['selectedContent'] == 'gurbani'">
+                                        <h4 class="gurbani-fonts">
+                                                <a class="" style="color: #0b79be;font-weight: 700;font-size:24px"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                selected_content: advanceSearchOptions['selectedContent']}"
+                                                        [innerHtml]="data['attributes']['scripture']">
+                                                </a>
+                                        </h4>
+                                        <a class="author"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent']}"
+                                                [innerHtml]="data['attributes']['scripture_roman_english']">
+                                        </a>
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                        </div>
+                                </div>
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'roman'
+                                && advanceSearchOptions['selectedContent'] == 'gurbani'">
+                                        <h4>
+                                                <a class="author"
+                                                        style="color: #0b79be;font-weight: 700;font-size:24px"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                selected_content: advanceSearchOptions['selectedContent']}"
+                                                        [innerHtml]="data['attributes']['scripture_roman']">
+                                                </a>
+                                        </h4>
+                                        <a class="gurbani-fonts"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent']}"
+                                                [innerHtml]="data['attributes']['scripture']">
+                                        </a>
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                        </div>
+                                </div>
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'
+                                && advanceSearchOptions['selectedContent'] == 'gurbani'">
+                                        <h4>
+                                                <a class="author"
+                                                        style="color: #0b79be;font-weight: 700;font-size:24px"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent']}"
+                                                        [innerHtml]="data['attributes']['scripture_roman_english']">
+                                                </a>
+                                        </h4>
+                                        <a class="gurbani-fonts"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent']}"
+                                                [innerHtml]="data['attributes']['scripture']">
+                                        </a>
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                                <span> - </span>
+                                                <span
+                                                        *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                        </div>
+                                </div>
+
+
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'
+                                && advanceSearchOptions['selectedContent'] == 'commentary'">
+                                        <div *ngIf="data['attributes']['commentary']">
+                                                <h4>
+                                                        <a class="author"
+                                                                style="color: #0b79be;font-weight: 700;font-size:24px"
+                                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                                [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                                selected_content: advanceSearchOptions['selectedContent']}"
+                                                                [innerHtml]="get(data['attributes']['commentary'])">
+                                                        </a>
+                                                </h4>
+                                                <a class="gurbani-fonts"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                                selected_content: advanceSearchOptions['selectedContent']}"
+                                                        [innerHtml]="data['attributes']['scripture']">
+                                                </a>
+                                                <div class="search-item-meta">
+                                                        <span>Page {{data['attributes']['page']}} Shabad
+                                                                {{data['attributes']['shabad_id']}}</span>
+                                                        <span> - </span>
+                                                        <span
+                                                                *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                                        <span> - </span>
+                                                        <span
+                                                                *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                                </div>
+                                        </div>
+                                </div>
+
+
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'
+                                && advanceSearchOptions['selectedContent'] == 'commentary'">
+                                        <div *ngIf="data['attributes']['commentary']">
+
+                                                <h4 class="gurbani-fonts">
+                                                        <a class=""
+                                                                style="color: #0b79be;font-weight: 700;font-size:24px"
+                                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                                [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                selected_content: advanceSearchOptions['selectedContent']}"
+                                                                [innerHtml]="get(data['attributes']['commentary'])">
+                                                        </a>
+                                                </h4>
+                                                <a class="author"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent']}"
+                                                        [innerHtml]="data['attributes']['scripture_roman_english']">
+                                                </a>
+                                                <div class="search-item-meta">
+                                                        <span>Page {{data['attributes']['page']}} Shabad
+                                                                {{data['attributes']['shabad_id']}}</span>
+                                                        <span> - </span>
+                                                        <span
+                                                                *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                                        <span> - </span>
+                                                        <span
+                                                                *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                                </div>
+                                        </div>
+                                </div>
+
+
+
+                                <div class=""
+                                        *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'
+                                        && advanceSearchOptions['selectedContent'] == 'english-translation'">
+                                        <!-- <h4>
+                                        <a class="author"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                                highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                                selected_content: advanceSearchOptions['selectedContent'],
+                                                selected_translation_author: advanceSearchOptions['selectedAuthor']}"
+                                                target="_blank"
+                                                [innerHtml]="data['attributes'][advanceSearchOptions.selectedAuthorCode]">
+                                        </a>
+                                </h4> -->
+                                        <a class="author"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent'],
+                                        selected_translation_author: advanceSearchOptions['selectedAuthor']}">
+                                                <h4 *ngIf="advanceSearchOptions.selectedAuthorCode"
+                                                        [innerHtml]="data['attributes'][advanceSearchOptions.selectedAuthorCode]">
+                                                </h4>
+                                                <div
+                                                        *ngIf="!advanceSearchOptions.selectedAuthorCode || advanceSearchOptions.selectedAuthorCode == ''">
+                                                        <ng-container
+                                                                *ngFor="let author of translationAuthors">
+                                                                <h4
+                                                                        *ngIf="author['Language'] == 'English'
+                                                        && data['attributes'][author.authorCode]
+                                                        && data['attributes'][author.authorCode] != ''">
+                                                                        {{data['attributes'][author.authorCode]}}
+                                                                </h4>
+                                                        </ng-container>
+                                                </div>
+                                        </a>
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                        </div>
+                                </div>
+                                <div class="" *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'
+                                        && advanceSearchOptions['selectedContent'] == 'teeka'">
+                                        <!-- <h4>
+                                <a class="author"
+                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                        [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                        [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent'],
+                                        selected_translation_author: advanceSearchOptions['selectedAuthor']}"
+                                        target="_blank"
+                                        [innerHtml]="data['attributes'][advanceSearchOptions.selectedAuthorCode]">
+                                </a>
+                        </h4> -->
+                                        <a class="author"
+                                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                [queryParams]="{highlighted_scripture_id: data['id'],
+                                        highlighted_scripture_lang: advanceSearchOptions['selectedLanguage'],
+                                        selected_content: advanceSearchOptions['selectedContent'],
+                                        selected_translation_author: advanceSearchOptions['selectedAuthor']}"
+                                                target="_blank">
+                                                <h4 *ngIf="advanceSearchOptions.selectedAuthorCode"
+                                                        [innerHtml]="data['attributes'][advanceSearchOptions.selectedAuthorCode]">
+                                                </h4>
+                                                <div
+                                                        *ngIf="!advanceSearchOptions.selectedAuthorCode || advanceSearchOptions.selectedAuthorCode == ''">
+                                                        <ng-container
+                                                                *ngFor="let author of translationAuthors">
+                                                                <h4
+                                                                        *ngIf="author['Language'] == 'Punjabi'
+                                                        && data['attributes'][author.authorCode]
+                                                        && data['attributes'][author.authorCode] != ''">
+                                                                        {{data['attributes'][author.authorCode]}}
+                                                                </h4>
+                                                        </ng-container>
+                                                </div>
+                                        </a>
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                        </div>
+                                </div>
+                                <div class="audio" *ngIf="(advanceSearchOptions['selectedLanguage'] == 'english'
+                                || advanceSearchOptions['selectedLanguage'] == 'gurmukhi')
+                                && advanceSearchOptions['selectedContent'] == 'audio'">
+                                        <h4>
+                                                <a class="author"
+                                                        *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                                        [routerLink]="'/shabad/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                                        [innerHtml]="data['attributes']['shabadtitle']">
+                                                </a>
+                                        </h4>
+                                        <!-- <div [innerHtml]="data['attributes']['shabadtitle']"></div> -->
+                                        <div class="search-item-meta">
+                                                <span>Page {{data['attributes']['page']}} Shabad
+                                                        {{data['attributes']['shabad_id']}}</span>
+                                        </div>
+                                </div>
+                        </li>
+                        <!-- <li class="loadmore-item"
+                        *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+                        <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                        <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button>
+                </li> -->
+                </ol>
+
+                <div *ngIf="searchedResult['data'].length == 0 && !isLoadingMore"
+                        style="font-size:16pt">
+                        No Result Found
+                </div>
+        </div>
+        </div>
+
+        <div class="loadmore-item mt-4" style="width: 100%; margin-bottom: 10px;"
+        *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+        <!-- <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button>
+        <pagination id="p2" style="float: right;"
+                *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1"
+                [boundaryLinks]="true" [(ngModel)]="searchedResult.pagination.page"
+                [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+                (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"
+                [rotate]="false" [maxSize]="5">
+        </pagination> -->
+        <app-my-pagination class="desk" style="background: transparent;float: right; margin-bottom: 16px;" [currentPage]="searchedResult.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+        <app-my-pagination class="mobile2" style="display:none;width:auto !important;background: transparent;margin: auto;" [currentPage]="searchedResult.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+        </div>
+
+
+        </div>
+</div>

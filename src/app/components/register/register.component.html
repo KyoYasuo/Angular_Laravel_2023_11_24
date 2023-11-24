@@ -1,0 +1,166 @@
+<section class="section_wrap login_bag_image">
+	<div class="container">
+		<div class="outer_form">
+			<h1 class="page-title center">Register</h1>
+			<div class="form-signin">
+				<form class="form-outer-wrap"
+					[formGroup]="registerForm"
+					(ngSubmit)="onSubmit()">
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+									type="text"
+									class="form-control custom-form-control"
+									formControlName="name"
+									placeholder="Full Name*"
+									autocomplete="off"
+									[ngClass]="{'error-field': submitted && f.name.errors}"
+									required>
+								<div *ngIf="submitted && f.name.errors" class="form-error">
+									Name is required
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+									type="email"
+									formControlName="email"
+									class="form-control custom-form-control"
+									placeholder="Email*"
+									autocomplete="off"
+									required>
+								<div *ngIf="submitted && f.email.errors" class="form-error">
+									<div *ngIf="f.email.errors.required">
+										Email is required
+									</div>
+									<div *ngIf="f.email.errors.email && !f.email.errors.required">Email must be a valid email address</div>
+								</div>
+							</div>
+						</div>
+					</div>							
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+									type="password"
+									formControlName="password"
+									class="form-control custom-form-control"
+									placeholder="Password*"
+									autocomplete="off"
+									[ngClass]="{'error-field': submitted && f.password.errors}"
+									required>
+								<div *ngIf="submitted && f.password.errors" class="form-error password-validation">
+									<div *ngIf="f.password.errors.required">
+										Password is required
+									</div>
+									<div *ngIf="f.password.errors.minlength && !f.password.errors.required">Password must be at least 6 characters</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+									type="password"
+									formControlName="confirm_password"
+									class="form-control custom-form-control"
+									placeholder="Confirm Password*"
+									autocomplete="off"
+									[ngClass]="{'error-field': submitted && (registerForm.hasError('passwordsNotEqual') || f.confirm_password.errors)}"
+									required>
+								<div *ngIf="submitted && registerForm.hasError('passwordsNotEqual')" class="form-error password-validation">
+									Passwords are different. They should be equal!
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+								type="text"
+								formControlName="city"
+								class="form-control custom-form-control"
+								placeholder="City"
+								autocomplete="off">
+			
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+								type="text"
+								formControlName="state"
+								class="form-control custom-form-control"
+								placeholder="State"
+								autocomplete="off">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<input
+									type="text"
+									formControlName="country"
+									class="form-control custom-form-control"
+									placeholder="Country"
+									autocomplete="off">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+								<ngx-recaptcha2 #captchaElem
+									[siteKey]="sitekey"
+									(reset)="handleReset()"
+									(expire)="handleExpire()"
+									(load)="handleLoad()"
+									(success)="handleSuccess($event)"
+									[useGlobalDomain]="false"
+									[size]="size"
+									[hl]="lang"
+									[theme]="theme"
+									[type]="type"
+									formControlName="recaptcha">
+								  </ngx-recaptcha2>
+								  <div *ngIf="submitted && f.recaptcha.errors" class="form-error">
+									Please verify Captcha
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="btn_opt">
+								<button type="submit"
+									name="submit"
+									class="btn btn-primary btn-block auth_btn"
+									[ngClass]="{'disabled': registerAPIRunnning}"
+									[disabled]="registerAPIRunnning" >
+									Sign up
+								</button>
+							</div>
+						</div>
+					</div>	
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="per_link mt-3">
+								<a href="javascript:void(0);" [routerLink]="['/login']"><span class="signin_accout">Already a member?</span> <span class="signin_title"> Log in</span></a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>		
+	</div>
+</section>

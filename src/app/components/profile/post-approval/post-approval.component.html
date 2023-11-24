@@ -1,0 +1,281 @@
+<h2 class="page-title" style="display: inline-block;">Content Approvals</h2>
+<button class="btn btn-primary pull-right"
+	style="margin-top: 20px;"
+	(click)="openAddPostPopup(addPostTemplate)">
+	Add Post
+</button>
+
+<table class="table table-kg">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<!-- <th>Description</th> -->
+			<th>Type</th>
+			<th>Linked Shabad</th>
+			<th>Detail</th>
+			<th class="text-right">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		<!-- posts -->
+		<ng-container *ngFor="let post of posts">
+			<tr>
+					<td>{{post['news_title']}}</td>
+					<td>Post</td>
+					<td>{{(post['news_shabad']) ? post['news_shabad'] : 'N/A'}}</td>
+					<td>
+						{{post['news_author']}}
+						<br>
+						{{post['news_date_formated']}}
+					</td>
+					<!-- <td class="">
+						<span
+							*ngIf="post['is_approved']">
+							<span class="status-dot status-green"></span> Approved
+						</span>
+						<span
+							*ngIf="!post['is_approved']">
+							<span class="status-dot status-red"></span> Not Approved
+						</span>
+					</td> -->
+					<td class="text-right">
+						<a [routerLink]="'/blog/' + post['news_id']"
+							target="_blank">Open
+						</a>
+						<span style="cursor: pointer;"
+							(click)="openEditPostPopup(editPostTemplate, post)">
+							<fa name="pencil" fixed='true'></fa>
+						</span>
+					</td>
+			</tr>
+		</ng-container>
+
+		<!-- Videos -->
+		<ng-container *ngFor="let video of videos">
+			<tr>
+					<td>
+						<a href="{{video['attributes']['external_url']}}" target="_blank">Video Link</a>
+					</td>
+					<td>Video</td>
+					<td>{{(video['attributes']['shabad_id']) ? video['attributes']['shabad_id'] : 'N/A'}}</td>
+					<td>
+						{{(video['user']) ? video['user']['name'] : '--'}}
+						<br>
+						<!-- {{video['changetime']}} -->
+					</td>
+					<td class="text-right">
+						<a href="{{video['attributes']['external_url']}}"
+							target="_blank">Open
+						</a>
+						<span *ngIf="video['attributes']['shabad_page'] && video['attributes']['shabad_id']"> | </span>
+						<a class="author"
+							*ngIf="video['attributes']['shabad_page'] && video['attributes']['shabad_id']"
+							[routerLink]="'/shabad/' + video['attributes']['shabad_page'] +'/'+ video['attributes']['shabad_id']"
+							target="_blank">Go to Shabad</a>
+						<!-- <span style="cursor: pointer;"
+							(click)="openEditPostPopup(editPostTemplate, post)">
+							<fa name="pencil" fixed='true'></fa>
+						</span> -->
+					</td>
+			</tr>
+		</ng-container>
+
+		<!-- Audio -->
+		<!-- <ng-container *ngFor="let audio of audios">
+			<tr>
+					<td>
+						<span>{{audio['attributes']['title']}}</span>
+					</td>
+					<td *ngIf="audio['type']!='YOUTUBE'">Audio</td>
+					<td *ngIf="audio['type']=='YOUTUBE'">Video</td>
+					<td>{{(audio['attributes']['shabad_id']) ? audio['attributes']['shabad_id'] : 'N/A'}}</td>
+					<td>
+						{{(audio['attributes']['user']) ? audio['attributes']['user']['name'] : '--'}}
+						<br>
+					</td>
+					<td class="text-right">
+						<a href="{{(audio['attributes']['attachment_url']) ? audio['attributes']['attachment_url'] : audio['attributes']['external_url']}}"
+							target="_blank">Open
+						</a>
+						<span *ngIf="audio['attributes']['shabad_page'] && audio['attributes']['shabad_id']"> | </span>
+						<a class="author"
+							*ngIf="audio['attributes']['shabad_page'] && audio['attributes']['shabad_id']"
+							[routerLink]="'/shabad/' + audio['attributes']['shabad_page'] +'/'+ audio['attributes']['shabad_id']"
+							target="_blank">Go to Shabad</a>
+					</td>
+			</tr>
+		</ng-container>
+ -->
+
+
+
+		<ng-container *ngFor="let audio of commentList">
+			<tr>
+					<td>
+						<!-- <span *ngIf="audio['attributes']['albumtitle']">{{audio['albumtitle']}} - </span> -->
+						<span>{{audio['comment']}}</span>
+					</td>
+					<td>Comment</td>
+					<td>{{(audio['shabad_id']) ? audio['shabad_id'] : 'N/A'}}</td>
+					<td>
+						{{(audio['name']) ? audio['name'] : '--'}}
+						<br>
+						{{ audio['updated_at'] | Datefilter : "MMM DD, YYYY" }}
+						<!-- {{audio['changetime']}} -->
+					</td>
+					<td class="text-right">
+						<!-- <a href="{{(audio['attributes']['attachment_url']) ? audio['attributes']['attachment_url'] : audio['attributes']['external_url']}}"
+							target="_blank">Open
+						</a>
+						<span *ngIf="audio['attributes']['shabad_page'] && audio['attributes']['shabad_id']"> | </span> -->
+						<a class="author"
+							*ngIf="audio['shabad_id']"
+							[routerLink]="'/commentary/' + audio['page_id'] +'/'+ audio['shabad_id']"
+							target="_blank">Go to Comment</a>
+						<!-- <span style="cursor: pointer;"
+							(click)="openEditPostPopup(editPostTemplate, post)">
+							<fa name="pencil" fixed='true'></fa>
+						</span> -->
+					</td>
+			</tr>
+		</ng-container>
+
+
+
+		<ng-container *ngFor="let audio of audioslist">
+			<tr>
+					<td>
+						<!-- <span *ngIf="audio['attributes']['albumtitle']">{{audio['albumtitle']}} - </span> -->
+						<span>{{audio['title']}}</span>
+					</td>
+					<td *ngIf="audio['type']!='YOUTUBE'">Audio</td>
+					<td *ngIf="audio['type']=='YOUTUBE'">Video</td>
+					
+					<td>{{(audio['shabad_id']) ? audio['shabad_id'] : 'N/A'}}</td>
+					<td>
+						{{(audio['name']) ? audio['name'] : '--'}}
+						<br>
+						{{ audio['updated_at'] | Datefilter : "MMM DD, YYYY" }}
+						<!-- {{audio['changetime']}} -->
+					</td>
+					<td class="text-right" *ngIf="audio['type']!='YOUTUBE'">
+						<!-- <a href="{{(audio['attributes']['attachment_url']) ? audio['attributes']['attachment_url'] : audio['attributes']['external_url']}}"
+							target="_blank">Open
+						</a>
+						<span *ngIf="audio['attributes']['shabad_page'] && audio['attributes']['shabad_id']"> | </span> -->
+						<a class="author"
+						 style="cursor: pointer;"
+							*ngIf="audio['shabad_id']"
+							[routerLink]="'/shabad/' + audio['page_id'] +'/'+ audio['shabad_id']"
+							target="_blank">Go to Shabad</a>
+							
+							
+							<div class="btn_option mb-2" *ngIf="!audio['shabad_id']">
+                                <a href="javascript:void(0)" (click)="approve(audio.media_id,1,loader)"
+                                    class="btn btn-primary btn-sm btn_design btn_green mr-2">
+                                    Approve &nbsp; <i class="fa fa-check"></i>
+                                </a>
+                                <!-- <span *ngIf="comment['comment_approve']==1"> Approved | </span> -->
+                                <!--<span *ngIf="comment['comment_approve']">  </span>-->
+                                <a href="javascript:void(0)"
+                                    (click)="deleteItem(audio.media_id,loader)"
+                                    class="btn btn-primary btn-sm btn_design btn_orange">
+                                    Reject &nbsp; <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+							
+						<!-- <span style="cursor: pointer;"
+							(click)="openEditPostPopup(editPostTemplate, post)">
+							<fa name="pencil" fixed='true'></fa>
+						</span> -->
+					</td>
+
+					<td class="text-right" *ngIf="audio['type']=='YOUTUBE'">
+							<!-- <a href="{{(audio['attributes']['attachment_url']) ? audio['attributes']['attachment_url'] : audio['attributes']['external_url']}}"
+								target="_blank">Open
+							</a>
+							<span *ngIf="audio['attributes']['shabad_page'] && audio['attributes']['shabad_id']"> | </span> -->
+							<a class="author"
+							 style="cursor: pointer;"
+								*ngIf="audio['shabad_id']"
+								[routerLink]="['/shabad',audio['page_id'], audio['shabad_id'], audio['media_id'],audio['tag_id']]"
+								>Go to Shabad</a>
+							<!-- <span style="cursor: pointer;"
+								(click)="openEditPostPopup(editPostTemplate, post)">
+								<fa name="pencil" fixed='true'></fa>
+							</span> -->
+						</td>
+			</tr>
+		</ng-container>
+
+		<!-- Comments -->
+		<ng-container *ngFor="let comment of comments">
+			<tr>
+					<td>{{comment['comment_text']}}</td>
+					<td>Comment</td>
+					<td>N/A</td>
+					<td>
+						{{(comment['user']) ? comment['user']['name'] : '--'}}
+						<br>
+						{{comment['comment_formated_date']}}
+					</td>
+					<td class="text-right">
+						<a [routerLink]="'/blog/' + comment['comment_post_id']"
+							target="_blank">Open Glossary
+						</a>
+						<!-- <span style="cursor: pointer;"
+							(click)="openEditPostPopup(editPostTemplate, post)">
+							<fa name="pencil" fixed='true'></fa>
+						</span> -->
+					</td>
+			</tr>
+		</ng-container>
+
+		<tr>
+			<td colspan="6"
+				class="text-center"
+				*ngIf="posts.length == 0">No post found</td>
+		</tr>
+	</tbody>
+</table>
+<!-- <div class="pull-right">
+	<pagination
+		*ngIf="postsPagination['total_items'] && postsPagination['total_items'] > 0"
+		[boundaryLinks]="true"
+		[totalItems]="postsPagination['total_items']"
+		[itemsPerPage]="postsPagination['limit']"
+		[(ngModel)]="currentPage"
+		(pageChanged)="pageChanged($event)"
+    	previousText="&lsaquo;"
+    	nextText="&rsaquo;"
+    	firstText="&laquo;"
+    	lastText="&raquo;"
+    	[rotate]="false"
+    	[maxSize]="5">
+	</pagination>
+</div> -->
+<ng-template #addPostTemplate>
+	<app-add-blog
+		[modalRef]="modalRef"
+		(onAddBlog)="addPost($event)">
+	</app-add-blog>
+</ng-template>
+
+<ng-template #editPostTemplate>
+	<app-edit-blog
+		[modalRef]="modalRef"
+		[postData]="selectedPostForEdit"
+		(onUpdatePost)="onPostUpdate($event)">
+	</app-edit-blog>
+</ng-template>
+
+<ng-template #loader let-modal>
+    <div class="modal-body">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</ng-template>

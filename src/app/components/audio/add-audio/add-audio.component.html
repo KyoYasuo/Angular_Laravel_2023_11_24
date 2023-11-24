@@ -1,0 +1,103 @@
+<div class="modal-header">
+	<h4 class="modal-title pull-left">Add Audio</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form class="form-outer-wrap"
+		[formGroup]="addAudioForm"
+		(ngSubmit)="onSubmit()">
+
+		<!-- Audio Type -->
+		<div class="form-group">
+			<label class="radio-inline">
+				<input type="radio" formControlName="audio_type" value="santhya">
+				Santhya
+			</label>
+			<label class="radio-inline">
+				<input type="radio" formControlName="audio_type" value="kirtan">
+				Kirtan
+			</label>
+			<label class="radio-inline">
+				<input type="radio" formControlName="audio_type" value="katha">
+				Katha
+			</label>
+		</div>
+
+		<!-- Title -->
+		<div class="form-group">
+			<input
+				type="text"
+				class="form-control custom-form-control"
+				formControlName="title"
+				placeholder="Title"
+				autocomplete="off"
+				[ngClass]="{'error-field': submitted && f.title.errors}"
+				required>
+			<div *ngIf="submitted && f.title.errors" class="form-error">
+				Title is required
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<label class="radio-inline"><input type="radio" name="uploadOrLink" (change)="setUploadOrLink('upload')" value="upload" checked>Upload File</label>
+			<label class="radio-inline"><input type="radio" name="uploadOrLink" (change)="setUploadOrLink('link')" value="link">External Link</label>
+		</div>
+
+		<div class="form-group" *ngIf="uploadOrLink == 'upload'">
+            <input type="file"
+            	name="image"
+            	(change)="uploadAudio($event)"
+            	accept=".mp3,audio/*"/>
+
+            <div *ngIf="submitted && f.audio.errors" class="form-error">
+				Audio is required
+			</div>
+        </div>
+
+        <div class="form-group" *ngIf="uploadOrLink == 'link'">
+        	<input
+        		type="text"
+        		class="form-control custom-form-control"
+        		formControlName="externalLink"
+        		placeholder="External Link"
+        		autocomplete="off">
+
+        	<div *ngIf="submitted && f.externalLink.errors" class="form-error">
+				Link is required
+			</div>
+        </div>
+
+        <div class="form-group">
+        	<input
+        		type="text"
+        		class="form-control custom-form-control"
+        		formControlName="author_id"
+        		[typeahead]="singers"
+		        [typeaheadOptionsLimit]="7"
+		        [typeaheadMinLength]="0"
+        		placeholder="Singer Name"
+        		autocomplete="off">
+
+        	<div *ngIf="submitted && f.singer_name.errors" class="form-error">
+				Singer name is required
+			</div>
+        </div>
+
+		<!-- Submit -->
+		<div class="">
+			<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-model-box"
+				[ngClass]="{'disabled': addAudioAPIRunnning}"
+				[disabled]="addAudioAPIRunnning" >
+				Upload Audio
+			</button>
+			<div *ngIf="uploadProgress > 0" class="model-progress">
+				<progressbar [animate]="false" [value]="uploadProgress" type="success"><b>{{uploadProgress}}%</b></progressbar>
+			</div>
+		</div>
+	</form>
+</div>

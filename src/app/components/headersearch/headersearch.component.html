@@ -1,0 +1,101 @@
+<script>
+    $("button.nav-button").click(function() {
+    $("nav#mobile-nav").slideToggle("fast");
+});
+
+$("ul.primary-nav li a").click(function() {
+    $("nav#mobile-nav").slideUp("fast");
+});
+</script>
+
+    <div class="main-search d-flex" *ngIf="lgshow">
+        <div class="search-main-input" style="width:450px;margin-left: 2%;">
+            <input type="text"
+                [(ngModel)]="searchKeword"
+                class="form-control form-control-lg"
+                placeholder="Gurbani Search..."
+                (focus)="onFocusOfSearchInput()"
+                (keyup.enter)="searchData()">
+
+
+
+            <div class="search-kb-container">
+                <i class="fa fa-times search-clear"
+                    *ngIf="searchKeword.length > 0"
+                    (click)="clearSearchInput()"></i>
+                <a class="search-kb-icon"
+                    [ngClass]="{'active': isEngKeyboardShow}"
+                    (click)="showHideKeyboard('eng')"><img src="assets/images/english.png"></a>
+                <a class="search-kb-icon"
+                    [ngClass]="{'active': isPunKeyboardShow}"
+                    (click)="showHideKeyboard('pun')"><img src="assets/images/punjabi.png"></a>
+
+                <div class="kb-container shadow rounded" *ngIf="isEngKeyboardShow">
+                    <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                </div>
+
+                <div class="kb-container shadow rounded" *ngIf="isPunKeyboardShow">
+                    <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                </div>
+            </div>
+        </div>
+        <div class="form-inline">
+            <select class="form-control form-control-lg"
+                [(ngModel)]="selectedSearchOption" style="width:56%">
+                <ng-container *ngFor="let option of searchOtions">
+                    <option *ngIf="option['is_show']"
+                        value="{{option['code']}}">
+                        {{option['name']}}
+                    </option>
+                </ng-container>
+            </select>
+            <button class="btn btn-primary" (click)="searchData(false)" style="margin-left:0.5vw;margin-right:1vw">search</button>
+        </div>
+    </div>
+
+    <div class="main-search d-flex" *ngIf="!lgshow">
+            <div class="flex-fill search-main-input" >
+                <input type="text"
+                    [(ngModel)]="searchKeword"
+                    class="form-control form-control-lg"
+                    placeholder="Gurbani Search..."
+                    (focus)="onFocusOfSearchInput()"
+                    (keyup.enter)="searchData()">
+    
+    
+    
+                <div class="search-kb-container">
+                    <i class="fa fa-times search-clear"
+                        *ngIf="searchKeword.length > 0"
+                        (click)="clearSearchInput()"></i>
+                    <a class="search-kb-icon"
+                        [ngClass]="{'active': isEngKeyboardShow}"
+                        (click)="showHideKeyboard('eng')"><img src="assets/images/english.png"></a>
+                    <a class="search-kb-icon"
+                        [ngClass]="{'active': isPunKeyboardShow}"
+                        (click)="showHideKeyboard('pun')"><img src="assets/images/punjabi.png"></a>
+    
+                    <div class="kb-container shadow rounded" *ngIf="isEngKeyboardShow">
+                        <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                    </div>
+    
+                    <div class="kb-container shadow rounded" *ngIf="isPunKeyboardShow">
+                        <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                    </div>
+                </div>
+            </div>
+            <div class="form-inline">
+                <select class="form-control form-control-lg"
+                    [(ngModel)]="selectedSearchOption" style="width:56%">
+                    <ng-container *ngFor="let option of searchOtions">
+                        <option *ngIf="option['is_show']"
+                            value="{{option['code']}}">
+                            {{option['name']}}
+                        </option>
+                    </ng-container>
+                </select>
+                <button class="btn btn-primary" (click)="searchData(false)" style="margin-left:0.5vw;margin-right:1vw">search</button>
+            </div>
+    </div>
+    
+    

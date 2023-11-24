@@ -1,0 +1,68 @@
+<div id="loader" *ngIf="loader"
+    style="min-height: calc(100vh - 92px);display: flex;justify-content: center;align-items: center">
+    <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+</div>
+
+<div class="breadcrumb_banner" *ngIf="!loader" style="background-image: url('assets/image/breadcrumb/nitnem.jpg');">
+    <div class="container">
+        <div class="breadcrumb_box">
+            <h3>{{title}}</h3>
+        </div>
+    </div>
+</div>
+
+<section class="artist_list_wrap section_wrap" *ngIf="!loader">
+    <div class="container">
+        <div class="row">
+            <ol class="breadcrumb mobile-view-artistlist" style="background:white !important">
+                <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);" (click)="change(item.path)">{{item.name}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 " (click)="artistClick(x)"  *ngFor="let list of featuredSubCategoriesList, let x = index">
+                <div class="artist_box">
+                    <div class="img_box">
+                        <img src="{{list.attachment_name}}" >
+                        <p>{{list.name}}</p>
+                    </div>
+                    <div class="txt_box d-flex justify-content-between align-items-center">                       
+                        <a href="javascript:void(0);" class="title">{{list.name}}</a>
+                        <a href="javascript:void(0);" class="arrow"><i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid padding2" *ngIf="!loader" style="display:none;">
+    
+    <div class="row">
+        <div class="col-1" [routerLink]="[ '/resources']" style="padding-top:50px;cursor: pointer;"><i
+                class="fas fa-arrow-left fa-2x"></i></div>
+        <div class="col-10">
+            <h1 class="page-title center">
+                {{title}}
+            </h1>
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:3em;padding-left:8%" *ngIf="featuredSubCategoriesList.length>=1">
+        <owl-carousel style="width: 100%" [options]="Options" [items]="featuredSubCategoriesList"
+            [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+            <div class="item" (click)="artistClick(x)" *ngFor="let list of featuredSubCategoriesList, let x = index">
+
+                <div class="box"><img src="{{list.attachment_name}}" style="height:100%"></div>
+                <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{list.name}}</h4>
+                <!-- <p style="font-size: 0.7em">Bhai Avatar Singh ji</p>
+                                              -->
+            </div>
+        </owl-carousel>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:2%" *ngIf="featuredSubCategoriesList.length==0">
+        <h5>No data found</h5>
+    </div>
+
+</div>

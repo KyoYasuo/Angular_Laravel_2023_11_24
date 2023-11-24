@@ -1,0 +1,86 @@
+<div class="modal-header">
+	<h4 *ngIf="!blogData.edit" class="modal-title pull-left">Add Glossary</h4>
+	<h4 *ngIf="blogData.edit" class="modal-title pull-left">Edit Glossary</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form class="form-outer-wrap"
+		[formGroup]="addBlogForm"
+		(ngSubmit)="onSubmit()">
+		<!-- Title -->
+		<div class="form-group">
+			<input
+				type="text"
+				class="form-control custom-form-control"
+				formControlName="title"
+				placeholder="Title"
+				autocomplete="off"
+				[ngClass]="{'error-field': submitted && f.title.errors}"
+				required
+				[ngModel]="blogData?.news_title">
+			<div *ngIf="submitted && f.title.errors" class="form-error">
+				Title is required
+			</div>
+		</div>
+
+		<div class="form-group">
+			<quill-editor
+				formControlName="content"
+				placeholder="Enter content here..."
+				[styles]="{height: '250px'}"
+				[required]="true"
+				[ngModel]="blogData?.news_text">
+			</quill-editor>
+			<div *ngIf="submitted && f.content.errors" class="form-error">
+				Content is required
+			</div>
+		</div>
+
+		<div class="form-group">
+			<select class="form-control"
+				formControlName="news_shabad">
+				<option value="" selected="shabadId == 0">Select Shabad</option>
+				<option *ngFor='let in of counter(totalShabad) ;let i = index'
+					value="{{i + 1}}"
+					[selected]="shabadId > 0 && (i + 1) == shabadId">{{i + 1}}</option>
+			</select>
+		</div>
+
+		<span>{{blogData.image_url}}</span>
+		<button *ngIf="blogData.image_url && blogData.image_url != ''" style="margin-left:10px" type="button" (click)="blogData.image_url = ''" >
+				Change
+		</button>
+		<div *ngIf="!blogData.image_url || blogData.image_url == ''" class="form-group">
+            <input type="file"
+            	name="image"
+            	(change)="uploadImage($event)"
+            	accept="image/*"/>
+		</div>
+		<div style="height:10px"></div>
+
+		<!-- Submit -->
+		<div class="">
+			<button *ngIf="!blogData.edit"
+				type="submit"
+				name="submit"
+				class="btn btn-primary btn-model-box"
+				[ngClass]="{'disabled': addBlogAPIRunnning}"
+				[disabled]="addBlogAPIRunnning" >
+				Add Glossary Post
+			</button>
+			<button  *ngIf="blogData.edit"
+				type="submit"
+				name="submit"
+				class="btn btn-primary btn-model-box"
+				[ngClass]="{'disabled': addBlogAPIRunnning}"
+				[disabled]="addBlogAPIRunnning" >
+				Submit
+			</button>
+			<div *ngIf="uploadProgress > 0" class="model-progress">
+				<progressbar [animate]="false" [value]="uploadProgress" type="success"><b>{{uploadProgress}}%</b></progressbar>		
+			</div>
+		</div>
+	</form>
+</div>

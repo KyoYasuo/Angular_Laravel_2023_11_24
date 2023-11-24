@@ -1,0 +1,111 @@
+<!-- <div style="margin-top:2vh;margin-bottom:4vh">
+        <button class="positive ui button" (click)="
+        add(content)">Add media category</button>
+</div>
+ -->
+
+<div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+
+<div class="alert alert-danger" *ngIf="err">{{successmsg}}</div>
+
+
+<div id="dt">
+
+
+<table datatable [dtOptions]="dtOptions" class="table table-bordered row-border hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <!-- <th>Attachment</th> -->
+            <th>ShabadId</th>
+            <th>start date</th>
+            
+            <th>start time</th>
+            <th>last date</th>
+            <th>last time</th>
+            <th>count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list;let i=index">
+            <td>{{item.id}}</td>
+            <td>{{item.title}}</td>
+            <td><p *ngIf="!item.shabad_id">N/a</p><a *ngIf="item.shabad_id" style="color:#007bff" [routerLink]="['/shabad/',item.page_id,item.shabad_id]">{{item.shabad_id}}</a></td>
+        
+            <!-- <td>
+                <audio controls>
+                        <source src="{{item.media_url}}" type="audio/ogg">
+                        <source src="{{item.media_url}}" type="audio/mpeg">
+                </audio>
+            </td> -->
+            <td><p *ngIf="item.play_start_date != null">{{item.play_start_date}}</p>
+                <p *ngIf="item.play_start_date==null">N/A</p>
+        </td>
+            <td>
+                        <p *ngIf="item.play_start_time != null">{{item.play_start_time}}</p>
+                        <p *ngIf="item.play_start_time==null">N/A</p>    
+                </td>
+            <td>
+                        <p *ngIf="item.play_last_date != null">{{item.play_last_date}}</p>
+                        <p *ngIf="item.play_last_date==null">N/A</p>    
+                  </td>
+            <td>
+                        <p *ngIf="item.play_last_time != null">{{item.play_last_time}}</p>
+                        <p *ngIf="item.play_last_time==null">N/A</p>    
+                  </td>
+
+            <td>
+                    {{item.media_distinct_count}}</td>
+           
+           
+          </tr>
+          
+        </tbody>
+</table>
+
+</div>
+
+<ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">{{msg}}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <div id="fileupload" *ngIf="!fileupload">
+                        <div class="input-group">
+                                <input type="text" class="form-control" [ngClass]="{'is-invalid': nameinvalid}" id="inputtxt" [(ngModel)]="mytxt" placeholder="Media Category name"><br/>
+                                <div class="invalid-feedback">
+                                        Enter Media category name
+                                </div>
+                      </div><br/>
+                        <div class="custom-file">
+                            <input type="file" (change)="handleFileInput($event.target.files)" class="custom-file-input" id="validatedCustomFile" required>
+                            <label class="custom-file-label" for="validatedCustomFile" id="lbl">Choose file...</label>
+                            <div class="invalid-feedback">Example invalid custom file feedback</div>
+                        </div><br/>
+                        <div class="row" style="margin-top:2vh;margin-left:0.5vw">
+                           <button class="btn btn-primary" (click)="upload(loader)">{{btntxt}}</button>
+                        </div>
+                </div>
+        </div>
+</ng-template>
+
+
+
+
+
+<ng-template #loader let-modal>
+        
+        <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                </div>
+        </div>
+    
+</ng-template>
+

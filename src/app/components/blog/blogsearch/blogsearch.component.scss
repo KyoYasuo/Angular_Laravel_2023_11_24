@@ -1,0 +1,23 @@
+.content_box
+{
+    width: 100%;
+}
+
+@media (max-width:578px){
+    .hidelg{
+           display: block;
+           width: 100%;
+    }
+    .showlg{
+        display: none !important;
+    }
+  }
+  @media (min-width:579px){
+    .hidelg{
+           display: none !important;
+    }
+    .showlg{
+    display: block;
+    }
+  }
+  

@@ -1,0 +1,82 @@
+<h2 class="page-title2">My Profile</h2>
+
+<div class="profile-info">
+	<div class="row">
+		<div class="col profile-pic-col">
+			<div class="my-account-pic" *ngIf="user['photo_url']">
+				<img src="{{user['photo_url']}}">
+			</div>
+			<div class="my-account-pic" *ngIf="!user['photo_url']">
+				<img src="assets/images/default.png">
+			</div>
+		</div>
+
+		<div class="col">
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="name">Name: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['name']}}</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="email">Email: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['email']}}</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="user['city']">
+				<div class="col-sm-4">
+					<label for="city">City: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['city']}}</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="user['state']">
+				<div class="col-sm-4">
+					<label for="state">State: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['state']}}</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="user['country']">
+				<div class="col-sm-4">
+					<label for="state">Country: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['country']}}</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="user['provider']">
+				<div class="col-sm-4">
+					<label for="state">Account Linked: </label>
+				</div>
+				<div class="col-sm-8">
+					<span>{{user['provider']}}</span>
+				</div>
+			</div>
+
+			<div class="row" *ngIf="user['provider'] == null">
+				<div class="col">
+					<button class="btn btn-primary btn-edit-profile"
+						(click)="openEditProfilePopup(editProfileTemplate)">
+						Edit Profile
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #editProfileTemplate>
+	<app-edit-profile
+		[modalRef]="modalRef"
+		[user]="user"
+		(onEditUser)="updateUser($event)">
+	</app-edit-profile>
+</ng-template>

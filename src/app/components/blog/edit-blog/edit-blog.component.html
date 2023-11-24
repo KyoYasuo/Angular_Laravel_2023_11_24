@@ -1,0 +1,71 @@
+<div class="modal-header">
+	<h4 class="modal-title pull-left">Edit Post</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form class="form-outer-wrap"
+		[formGroup]="editPostForm"
+		(ngSubmit)="onSubmit()">
+
+		<!-- Title -->
+		<div class="form-group">
+			<input
+				type="text"
+				class="form-control custom-form-control"
+				formControlName="title"
+				placeholder="Title"
+				autocomplete="off"
+				[ngClass]="{'error-field': submitted && f.title.errors}"
+				required>
+			<div *ngIf="submitted && f.title.errors" class="form-error">
+				Title is required
+			</div>
+		</div>
+
+		<div class="form-group">
+			<quill-editor
+				formControlName="content"
+				placeholder="Enter content here..."
+				[styles]="{height: '250px'}"
+				[required]="true">
+			</quill-editor>
+			<div *ngIf="submitted && f.content.errors" class="form-error">
+				Content is required
+			</div>
+		</div>
+
+		<div class="form-group">
+			<select class="form-control"
+				formControlName="shabad_id">
+				<option value="" selected="postData['news_shabad'] == 0">Select Shabad</option>
+				<option *ngFor='let in of counter(totalShabad) ;let i = index'
+					value="{{i + 1}}"
+					[selected]="postData['news_shabad'] > 0 && (i + 1) == postData['news_shabad']">{{i + 1}}</option>
+			</select>
+		</div>
+
+		<!-- Is Active -->
+		<div class="form-group">
+			<input
+				type="checkbox"
+				formControlName="is_approved"
+				class="form-control"
+				autocomplete="off">
+			<span>Approve</span>
+		</div>
+
+
+		<!-- Submit -->
+		<div class="">
+			<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-block btn-lg"
+				[ngClass]="{'disabled': editPostAPIRunnning}"
+				[disabled]="editPostAPIRunnning" >
+				Update
+			</button>
+		</div>
+	</form>
+</div>

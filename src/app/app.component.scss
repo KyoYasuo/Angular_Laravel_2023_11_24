@@ -1,0 +1,30 @@
+.customize-alert {
+	position: absolute;
+    top: 105px;
+    right: 10px;
+    margin-left: 15px;
+    z-index: 9;
+}
+.stepsec_close
+{
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    //border: 1px solid #ccc;
+    //background: #fff;
+    border: 1px solid #f0eaea;
+    background: #5f7c8a;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+@media (max-width:578px){
+    .row, .shadow-lg{
+        border-top: 3px solid #3c677d!important;
+    }
+}

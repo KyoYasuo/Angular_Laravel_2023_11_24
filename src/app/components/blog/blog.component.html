@@ -1,0 +1,271 @@
+<div class="breadcrumb_banner" style="background-image: url('assets/image/breadcrumb/for blog page.jpg');">
+	<div class="container">
+		<div class="breadcrumb_box">
+			<h3>Glossary</h3>
+		</div>
+	</div>
+</div>
+
+<section class="media_list_wrap section_wrap">
+    <div class="container">
+         
+        <div class="artist_alfabats">
+            <ul>
+                <li [ngClass]="{'active': firsttitle==item}" *ngFor="let item of valarr;let x=index" (click)="clicked(item,x)"><a href="javascript:void(0);">{{item}}</a></li>
+                <!-- <li><a href="javascript:void(0);">B</a></li>
+                <li><a href="javascript:void(0);">C</a></li>
+                <li><a href="javascript:void(0);">D</a></li>
+                <li><a href="javascript:void(0);">E</a></li>
+                <li><a href="javascript:void(0);">F</a></li>
+                <li><a href="javascript:void(0);">G</a></li>
+                <li><a href="javascript:void(0);">H</a></li>
+                <li><a href="javascript:void(0);">I</a></li>
+                <li><a href="javascript:void(0);">J</a></li> -->
+            </ul>
+        </div>
+<!-- 
+        <div class="alfa_container active">
+            <p class="alfa_tag"><span class="label arrowed">{{firsttitle}}</span></p>    
+            <div class="row">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6" (click)="featuredArtistsClicked(x,0)" *ngFor="let artist of firstarr;let x=index" >
+                    <a href="javascript:void(0);" class="content">
+                        <div class="inner_item">
+                            <img src="assets/image/artist/2.png" *ngIf="!artist.attachment_name">
+                            <img *ngIf="artist.attachment_name" src="{{artist.attachment_name}}">
+                            <div class="title">
+                                <h5>{{artist.name}}</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+<!-- 
+        <div class="alfa_container" >
+            <p class="alfa_tag"><span class="label arrowed">{{secondtitle}}</span></p>
+            <div class="row">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6" (click)="featuredArtistsClicked(x,1)" *ngFor="let artist of secondarr;let x=index" >
+                            <a href="javascript:void(0);" class="content">
+                                <div class="inner_item">
+                                    <img src="assets/image/artist/2.png" *ngIf="!artist.attachment_name">
+                                    <img *ngIf="artist.attachment_name" src="{{artist.attachment_name}}">
+                                    <div class="title">
+                                        <h5>{{artist.name}}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                
+            </div>
+        </div> -->
+ 
+
+        <div class="alfa_container"  *ngFor="let item of valarr;let x=index" [id]="item" [ngClass]="{'active': x== indexItem}">
+            <!-- <a href="{{x}}"> -->
+                    <p class="alfa_tag"><span class="label arrowed">{{item}}</span></p>
+                    <div class="row">
+                            <div class="col-sm-2 col-md-6"  *ngFor="let artist of artistlist[item] ;let i=index">
+                                    <a href="javascript:void(0);" class="content"  [routerLink]="['/blog', artist.news_title]"> 
+                                        <div class="inner_item">
+                                            <img class="img-thumbnail2"  class="sm" src="assets/images/blog-bg.jpg" *ngIf="!artist.image_url" style="max-width: 400px;max-height: 250px;display:table;margin:auto">
+                                            <img class="img-thumbnail2" class="sm" *ngIf="artist.image_url" src="{{artist.image_url}}" style="max-width: 400px;max-height: 250px;display:table;margin:auto">
+                                            <div class="title" style="width: 100%; text-align: center;">
+                                                <h5 class="mb-3">{{artist.news_title}}</h5>
+                                            </div>
+                                        </div>
+								</a>
+								<a href="javascript:void(0);" *ngIf="isadmin" (click)="delete(loader,artist.news_id)" class="btn btn-danger btn-sm btn_design btn_red mb-1">Delete &nbsp; <i class="fa fa-trash" aria-hidden="true"></i></a>
+								<a href="javascript:void(0);" *ngIf="isadmin" (click)="edit(loader,artist, addBlogTemplate)" class="btn btn-primary btn-sm btn_design mb-1" style="margin-left:5px">Edit &nbsp; <i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</div>
+							
+							
+                        
+                    </div>
+            <!-- </a> -->
+        </div>
+
+	</div>
+	
+	<div class="row mt-4">
+		<div class="col-sm-12">
+			<div class="btn_option text-center">
+				<a href="javascript:void(0);" *ngIf="validateAction('add_post')" (click)="openAddBlogPopup(addBlogTemplate)" class="btn btn-primary btn-sm btn_design">Add Blog &nbsp; <i class="fa fa-plus"></i></a>
+			</div>
+		</div>				
+	</div>
+</section>
+
+<div class="padding" *ngIf="!loader && available" style="overflow-x:hidden;display: none;">
+    <div *ngFor="let item of valarr;let x=index">
+        
+        <h4 class="ui horizontal divider header" style="margin-top:2em;margin-bottom:2em">
+            <i class="tag icon"></i>
+            {{item}}
+        </h4>
+
+        <div class="row">
+            
+            <div class="col-2" style="cursor: pointer" (click)="featuredArtistsClicked(x,i)"
+                *ngFor="let artist of artistlist[x];let i=index">
+                <div style="height:15vh;width:15vh" *ngIf="artist.attachment_name.length!=0">
+                    <div class="img" style="height:100%;width:100%"><img class="img-thumbnail" *ngIf="artist.attachment_name"
+                            src="{{artist.attachment_name}}" style="height:100%;width:100%"></div>
+                </div>
+                <div class="box" style="height:15vh;width:15vh" *ngIf="artist.attachment_name.length==0">
+                </div>
+                <h4 style="font-size: 0.9em;margin-top:1vh;color:#000;width:15vh;word-break: break-all;">{{artist.name}}
+                </h4>
+            </div>
+            <!-- <div class="card col-2" *ngFor="let artist of artistlist[x]">
+                        <img *ngIf="artist.attachment_name" src="{{artist.attachment_name}}" class="card-img-top">
+                        <div class="card-img-top"  *ngIf="artist.attachment_name.length==0">
+                        </div> 
+                        <div class="card-body">
+                          <p class="card-text">{{artist.name}}</p>
+                        </div>
+                </div> -->
+        </div>
+        <!-- <div class="ui six doubling cards">
+                    <div class="card"  *ngFor="let artist of artistlist[x]">
+                        <div class="image">
+                            <img *ngIf="artist.attachment_name" src="{{artist.attachment_name}}">
+                        </div>
+                        <div>{{artist.name}}</div>
+                    </div>
+             </div> -->
+    </div>
+</div>
+
+<section *ngIf="false" class="blog_list section_wrap">
+
+	<div class="container">
+			<div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+
+			<div class="alert alert-danger" *ngIf="err">{{successmsg}}</div>
+			
+			
+		<!-- <h3 class="heading">Recently Post</h3> -->
+
+		<!--<div class="d-flex justify-content-center align-items-center mb-4 row">
+				<h3 class="heading mb-0 col-12 col-lg-6 col-md-6"></h3>
+				<div class="ml-auto col-12 col-lg-6 col-md-6">
+				  <form class="side_search" style="display: flex;justify-content: flex-end">
+					<input type="text" id="search_val" (keydown)=onKeydownEvent($event) placeholder="Search Blog">
+					<span><i class="fa fa-search"></i></span>
+				  </form>
+				</div>
+		</div>-->
+		<div class="row">
+			<div class="col-lg-6 col-md-12" *ngFor="let blog of blogs, let x = index">
+				<div class="blog_listnew d-sm-flex d-block align-items-stretch" style="height:calc(100% - 30px)">
+					<div class="img_box" *ngIf="blog['image_url']">
+						<img src="{{blog['image_url']}}" style="min-height: 30vh;">
+					</div>
+					<div class="img_box" *ngIf="!blog['image_url']">
+							<img class="img-responsive" src="assets/images/blog-bg.jpg" alt="Blog image" style="min-height: 30vh;">
+							<!--<div class="blog-image-text d-flex justify-content-center">
+								<div class="align-self-center">{{blog.news_title}}</div>
+							</div>-->
+						</div>
+					<div class="content_box" style="min-width: 50%;">
+						<h3>{{blog.news_title}}</h3>
+						<div class="date-time d-flex justify-content-between">
+							<p><img src="assets/image/icon/calander.png"> {{blog.news_date_formated}}</p>
+							<p><img src="assets/image/icon/clock.png"> 2:02</p>
+						</div>
+						<p class="txt" [innerHtml]="fixShortDesc(blog['news_short_text'])">
+						</p>
+						<div class="btn_option">
+							<a href="javascript:void(0);" [routerLink]="['/blog', blog.news_title]" class="btn btn-primary btn-sm btn_design mr-2 mb-1">Read More &nbsp; <i class="fa fa-long-arrow-right"></i></a>
+							<a href="javascript:void(0);" *ngIf="isadmin" (click)="delete(loader,blog.news_id)" class="btn btn-danger btn-sm btn_design btn_red mb-1">Delete &nbsp; <i class="fa fa-trash" aria-hidden="true"></i></a>
+							<a href="javascript:void(0);" *ngIf="isadmin" (click)="edit(loader,blog, addBlogTemplate)" class="btn btn-primary btn-sm btn_design mb-1">Edit &nbsp; <i class="fa fa-pencil" aria-hidden="true"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--<div class="row mt-4">
+			<div class="col-sm-12">
+				<div class="btn_option text-center">
+					<a href="javascript:void(0);" (click)="pageChanged2(0)" class="btn btn-primary btn-sm btn_design">Load More &nbsp; <i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>
+		</div>-->
+
+		<div class="row mt-4">
+			<div class="col-sm-12">
+				<div class="btn_option text-center">
+					<a href="javascript:void(0);" *ngIf="validateAction('add_post')" (click)="openAddBlogPopup(addBlogTemplate)" class="btn btn-primary btn-sm btn_design">Add Blog &nbsp; <i class="fa fa-plus"></i></a>
+				</div>
+			</div>				
+		</div>
+
+		<!-- <div class="row d-flex justify-content-center" style="display:none;">
+			<button class="btn btn-primary btn-sm" *ngIf="validateAction('add_post')" style="margin-bottom:2%;margin-top:2%"
+				(click)="openAddBlogPopup(addBlogTemplate)"><i class="fa fa-plus"></i> Add Blog</button>
+		</div> -->
+
+		<div class="row" style="display:none;">
+			<app-loader [isRunning]="isGetBlogsApiRunning"></app-loader>
+			<div class="col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let blog of blogs">
+				<div class="blog-item">
+					<div class="blog-img" *ngIf="blog['image_url']">
+						<img class="img-responsive" src="{{blog['image_url']}}" alt="Blog image">
+						<!-- <img class="img-responsive" src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823__340.jpg" alt="Blog image"> -->
+					</div>
+					<div class="blog-img-ult" *ngIf="!blog['image_url']">
+						<img class="img-responsive" src="assets/images/blog-bg.jpg" alt="Blog image">
+						<!--<div class="blog-image-text d-flex justify-content-center">
+							<div class="align-self-center">{{blog.news_title}}</div>
+						</div>-->
+					</div>
+					<div class="blog-cont-block">
+						<div class="blog_date">
+							<span class="date">{{blog.news_date_formated}}</span>
+							<!-- <span class="author">Author: {{blog.news_author}}</span> -->
+							<!-- <span class="comment"><a [routerLink]="['/blog', blog.news_id]">Leave Comment</a></span> -->
+						</div>
+						<h2 class="blog_title">
+							{{blog.news_title}}
+						</h2>
+						<p [innerHtml]="fixShortDesc(blog['news_short_text'])"></p>
+						<a class="btn btn-primary btn-sm btn_design" [routerLink]="['/blog', blog.news_id]"
+							role="button">Read more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="pull-right" style="display:none;">
+			<pagination *ngIf="blogPagination['total_items'] > 0" [boundaryLinks]="true"
+				[totalItems]="blogPagination['total_items']" [itemsPerPage]="blogPagination['limit']"
+				[(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+				nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [rotate]="false" [maxSize]="5">
+			</pagination>
+		</div> -->
+
+	</div>
+</section>
+
+<ng-template #addBlogTemplate>
+	<app-add-blog [blogData]="blogData" [modalRef]="modalRef" (onAddBlog)="addBlog($event)">
+	</app-add-blog>
+</ng-template>
+
+
+<ng-template #loader let-modal>
+    
+		<div class="modal-body">
+				<div class="d-flex justify-content-center">
+						<div class="spinner-border" role="status">
+						  <span class="sr-only">Loading...</span>
+						</div>
+				</div>
+	
+				
+		</div>
+	
+	</ng-template>
+	
+	

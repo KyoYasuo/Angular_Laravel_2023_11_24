@@ -1,0 +1,318 @@
+
+
+ <div class="breadcrumb_banner" style="background-image: url('assets/for dictionary page.jpg');">
+    <div class="container">
+      <div class="breadcrumb_box">
+        <h3>Encyclopedia & Dictionaries</h3>
+      </div>
+    </div>
+  </div>
+<div class="container">
+
+	<!-- <h1 class="page-title center">Dictionary</h1>
+ -->
+    
+
+ <!-- <p class="txt mt-4 mb-4 text-center poppins-medium" style="font-size: font-size">Mohan Kosh Encyclopedia, Gurbani Dictionaries and Punjabi/English Dictionaries</p> -->
+
+	<form class="foot_sub_form2 mt-5">
+		<input [(ngModel)]="searchedWord"
+		name="searchedWord"
+		(keyup)="getWords()"
+		placeholder="ਅਕਾਲ..."
+		(focusout)="clearWordsList()" style="height: 50px" class="form-control" >
+		<button  class="btn btn-primary mb-2 btn_sub btn_sub2"  
+		(click)="selectDictionaryLang('english')"
+		style="background: #0c79be;border: none" [class.disable]="selectedLang == 'english'">English</button>
+		<button style="background: #0c79be;border: none" [class.disable]="selectedLang == 'gurmukhi'" 
+		(click)="selectDictionaryLang('gurmukhi')" class="btn btn-primary mb-2 btn_sub">Gurmukhi</button>
+		
+	<div class="df as-section d-flex justify-content-center mb-4" style="background: #fff">
+		<div class="df-area-form" style="width: 100%">
+				<div class="df-sugg-list" *ngIf="words.length > 0">
+						<ul>
+							<li *ngFor="let word of words;"
+								(click)="getWordDetail(word)">
+								<!-- <span class="gurbani-fonts">{{word}}</span> -->
+								<span [innerHtml]="word"></span>
+							</li>
+						</ul>
+				</div>
+		</div>
+	</div>
+
+
+	</form>
+
+
+	<div class="df-area-kb d-flex justify-content-center mt-4" style="margin-top:1em">
+			<div class="form-group">
+				<label class="radio-inline">
+					<input type="radio"
+						name="optradio"
+						(change)="selectDictionaryLang('gurmukhi')"
+						[checked]="selectedLang == 'gurmukhi'">
+					Gurmukhi
+				</label>
+				<label class="radio-inline">
+					<input type="radio"
+						name="optradio"
+						(change)="selectDictionaryLang('english')"
+						[checked]="selectedLang == 'english'">
+					English Pronunciation
+				</label>
+			</div>
+			
+		</div>
+	<div class="foot_sub_form2 ng-valid ng-dirty ng-touched mb-4" style="background: #fff">
+		<div class="df-area-form" style="display: flex;
+		
+		flex-wrap: wrap;padding-left: 0px !important;">
+			<!-- <div class="form-group df-input">
+				<input [(ngModel)]="searchedWord"
+					(keyup)="getWords()"
+					placeholder="ਅਕਾਲ..."
+					(focusout)="clearWordsList()"
+					class="form-control">
+				<i class="fa fa-times search-clear"
+					*ngIf="searchedWord.length > 0"
+					(click)="searchedWord = ''"></i>
+			</div> -->
+
+
+
+			<div style="overflow-x: auto;" class="vkeyboard englishPronunciation-keyboard dict-english-keyboard PaddingTop-10 PaddingBottom-10"
+				*ngIf="selectedLang == 'english'">
+				<table class="border-4" cellpadding="2" cellspacing="0">
+					<tbody>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('1')">1</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('2')">2</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('3')">3</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('4')">4</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('4')">5</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('6')">6</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('7')">7</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('8')">8</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('9')">9</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('0')">0</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#45;')">&#45;</a></td>
+						<td ></td>
+						<td ></td>
+						<td ></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('q')">q</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('w')">w</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('e')">e</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('r')">r</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('t')">t</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('y')">y</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('u')">u</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('i')">i</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('o')">o</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('p')">p</a></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('a')">a</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('s')">s</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('d')">d</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('f')">f</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('g')">g</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('h')">h</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('j')">j</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('k')">k</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('l')">l</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#59;')">&#59;</a></td>
+						<td></td>
+						<td></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('z')">z</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('x')">x</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('c')">c</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('v')">v</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('b')">b</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('n')">n</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('m')">m</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#44;')">&#44;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#46;')">&#46;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#33;')">&#33;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#63;')">&#63;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#38;')">&#38;</a></td>
+						<td></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#32;')">space</a></td>
+					  </tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- gurmukhi keyboard -->
+			<div style="overflow-x: auto;" class="vkeyboard vkeyboard-cust gurmukhi-keyboard dict-gurmukhi-keyboard PaddingTop-10 PaddingBottom-10"
+				*ngIf="selectedLang == 'gurmukhi'">
+				<table class="border-4" cellpadding="2" cellspacing="0" style="max-width:100%">
+					<tbody>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2581;')">&#2581;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2582;')">&#2582;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2583;')">&#2583;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2584;')">&#2584;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2585;')">&#2585;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2586;')">&#2586;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2587;')">&#2587;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2588;')">&#2588;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2589;')">&#2589;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2590;')">&#2590;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2591;')">&#2591;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2592;')">&#2592;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2593;')">&#2593;</a></td>
+						<td ><a href="javascript:void(0)" (click)="enterKeyword('&#2594;')">&#2594;</a></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2595;')">&#2595;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2596;')">&#2596;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2597;')">&#2597;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2598;')">&#2598;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2599;')">&#2599;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2600;')">&#2600;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2602;')">&#2602;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2603;')">&#2603;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2604;')">&#2604;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2605;')">&#2605;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2606;')">&#2606;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2607;')">&#2607;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2608;')">&#2608;</a></td>
+						<td></td>
+					  </tr>
+					  <tr align="center">
+						<td></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2610;')">&#2610;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2611;')">&#2611;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2613;')">&#2613;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2614;')">&#2614;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2616;')">&#2616;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2617;')">&#2617;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2649;')">&#2649;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2650;')">&#2650;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2651;')">&#2651;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2652;')">&#2652;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2654;')">&#2654;</a></td>
+						<td></td>
+						<td></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2565;')">&#2565;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2566;')">&#2566;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2567;')">&#2567;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2568;')">&#2568;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2569;')">&#2569;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2570;')">&#2570;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2575;')">&#2575;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2576;')">&#2576;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2579;')">&#2579;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2580;')">&#2580;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2674;')">&#2674;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2675;')">&#2675;</a></td>
+						<td colspan="2"><a class="smalldarkergrey" href="javascript:void(0)" (click)="enterKeyword('&#32;')">space</a></td>
+					  </tr>
+					  <tr align="center">
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2562;')">&#2562;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2620;')">&#2620;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2622;')">&#2622;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2623;')">&#2623;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2624;')">&#2624;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2625;')">&#2625;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2626;')">&#2626;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2631;')">&#2631;</a></td>
+
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2632;')">&#2632;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2635;')">&#2635;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2636;')">&#2636;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2637;')">&#2637;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2672;')">&#2672;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2673;')">&#2673;</a></td>
+					  </tr>
+					  <tr align="center">
+						<td></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2676;')">&#2676;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2662;')">&#2662;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2663;')">&#2663;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2664;')">&#2664;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2665;')">&#2665;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2666;')">&#2666;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2667;')">&#2667;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2668;')">&#2668;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2669;')">&#2669;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2670;')">&#2670;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#2671;')">&#2671;</a></td>
+						<td><a href="javascript:void(0)" (click)="enterKeyword('&#9772;')">&#9772;</a></td>
+						<td></td>
+					  </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- <div class="df-area-kb">
+			<div class="form-group">
+				<label class="radio-inline">
+					<input type="radio"
+						name="optradio"
+						(change)="selectDictionaryLang('gurmukhi')"
+						[checked]="selectedLang == 'gurmukhi'">
+					Gurmukhi
+				</label>
+				<label class="radio-inline">
+					<input type="radio"
+						name="optradio"
+						(change)="selectDictionaryLang('english')"
+						[checked]="selectedLang == 'english'">
+					English Pronunciation
+				</label>
+			</div>
+			
+		</div> -->
+
+		
+
+	</div>
+
+	<div class="dr-result" id="dr-result" *ngIf="wordDetail && (wordDetail | json) != '{}'">
+
+		<app-loader [isRunning]="isWordDetailApiRunning"></app-loader>
+
+		<div class="dr-section" *ngIf="wordDetail['pun_mahankosh']">
+			<h4 class="color-primary">
+				Mahan Kosh Encyclopedia
+			</h4>
+			<span class="" [innerHtml]="wordDetail['pun_mahankosh']"></span>
+		</div>
+
+		<div class="dr-section" *ngIf="wordDetail['pun_kosh']">
+			<h4 class="color-primary">
+				SGGS Gurmukhi-Gurmukhi Dictionary
+			</h4>
+
+			<span class="" [innerHtml]="wordDetail['pun_kosh']"></span>
+		</div>
+
+		<div class="dr-section" >
+			<h4 class="color-primary">
+				SGGS Gurmukhi-English Dictionary
+			</h4>
+
+			<div class="eng">
+				<p class="" *ngIf="selectedLang == 'gurmukhi'">
+					English Pronunciation: <span [innerHtml]="wordDetail['engl_proun']"></span>
+				</p>
+				<p class="" *ngIf="selectedLang == 'english'">
+					Gurmukhi Pronunciation: <span [innerHtml]="wordDetail['word']"></span>
+				</p>
+				<p [innerHtml]="wordDetail['eng_dic_sri']"></p>
+			</div>
+		</div>
+	</div>
+</div>

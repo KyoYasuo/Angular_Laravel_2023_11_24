@@ -1,0 +1,521 @@
+<div id="loader" *ngIf="loader"
+  style="min-height: calc(100vh - 92px);display: flex;justify-content: center;align-items: center">
+  <div>
+    <i class="fas fa-spinner fa-spin fa-2x"></i>
+  </div>
+</div>
+
+<div *ngIf="!loader">
+
+  <!-- <div style=" box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+  <div style="display: flex;align-items: flex-end;justify-content: flex-end;min-height:35vh;background: url('assets/logo_podcast.jpg');background-repeat: no-repeat;background-size: cover;background-position: center">
+    <div class="row" style="padding:0;margin:0;min-height:8vh;width:100%;background: rgba(0,0,0,0.5)">
+      <div class="col-2"></div>
+      <div class="col-10">
+        <div>
+          <div style="font-weight: 400;color: #fff;font-family: open sans,sans-serif;line-height: 2em;font-size:2em;cursor: pointer;padding-left:1vw" id="anchor"></div>
+        </div>                          
+      </div>
+    </div>     
+  </div>
+ 
+  <div class="row" style="padding-left:4vw;padding-right:4vw">
+    <div class="col-lg-2 col-sm-12 topmargin" >
+            <div class="row">
+                        <img src="assets/logo2.webp"
+                        style="margin-bottom:4%;width: 90%;border: 4px solid #ddd;border-radius: 4px;">
+                    
+            </div>
+            <div class="row">
+                    <div class="col-6">
+                            <div style="margin: 0vw" style="border-right: 2px solid #eee">
+                               <div style="color: #08c;font-weight:500;font-size:2em">866</div>
+                               <div style="font-size:0.7em">Downlods</div>
+                            </div>
+                    </div>
+                    <div class="col-6">
+                                <div style="margin: 0vw">
+                                                <div style="color: #08c;font-weight:500;font-size:2em">33</div>
+                                                <div style="font-size:0.7em">Episodes</div>
+                                </div>
+                    </div>
+
+            <div class="row d-flex justify-content-center" style="margin-top:1vh;margin-bottom:1vh;margin-left:0.5vw">
+                        <button class="btn btn-primary" (click)="openModal()"><i class="fa fa-share" aria-hidden="true"></i>Share</button>
+                </div>
+               <div class="row">
+                       <p style="text-align: justify !important;padding-bottom: 10px;
+                       font-size: 12px;
+                       color: #666;padding:0.5vw;padding-right:1.5vw">KhojGurbani is an online platform with a mission to make the Guru Granth Sahib accessible to and exciting for the common Sikh—who wants to read Gurbani but does not have the tools and a support network to do so. While KhojGurbani will engage Sikhs globally in discussion on specific sections of Guru Granth Sahib every week, it will also spearhead the development of a crowdsourced commentary and a new idiomatic English translation.</p>
+               </div>
+
+            </div>
+
+    </div>
+    <div class="col-lg-8 col-sm-12">
+        
+        <div *ngIf="searchloader" style="min-height: 70vh;display: flex;justify-content: center;align-items: center">
+          <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+        </div>
+            
+            <div class="row" *ngIf="is_search">
+              <h4 *ngIf="podcastlistsearch.length==0" class="h4 d-flex justify-content-center" style="margin-top:3vh;width:100%">No result found</h4>
+              <div class="col-12" *ngFor="let podcast of podcastlistsearch, let x = index">
+      
+                <div class="card">
+                  <div class="card-body">
+                    <div class="card-title row d-flex">
+                      <div class="row">
+      
+                        <div class="col-lg-2 col-sm-12">
+                          <img src="assets/logo2.webp"
+                            style="margin-left:1vw;margin-bottom:4%;width: 96%;border: 4px solid #ddd;border-radius: 4px;">
+                        </div>
+                        <div class="col-lg-10 col-sm-12">
+                          <h2 style="line-height: 1em; font-size:1.5em;text-transform: capitalize;" class="text-break">{{podcast.title}}</h2>
+                          <div style="font-size:12px;line-height:1.4em;margin-top:0.5%;margin-bottom:2%">September 7, 2019
+                          </div>
+                          <p class="card-text" style="text-justify: auto;margin-bottom:2%;text-align: justify !important">{{podcast.description1}}</p>
+                          <p class="card-text" style="text-justify: auto;margin-bottom:2%;text-align: justify !important">
+                            {{podcast.description2}}</p>
+                          <p class="card-text" style="text-justify: auto;margin-bottom:2%;text-align: justify !important">
+                            Visit <a href="http://www.khojgurbani.org/">http://www.khojgurbani.org/</a> for more information
+                          </p>
+      
+                          <div class="row d-flex" style="width:100%;padding-left:3%;">
+                              <button (click)="restrat2search(x)" class="ui circular icon button">
+                                  <i [ngClass]="(index2 == x) ? 'pause icon':'play icon'" ></i>
+                              </button>
+                              <button class="ui blue active button" >
+                                  <i class="download icon"></i>
+                                  Download
+                              </button>
+                          </div>
+                        </div>
+                      </div>
+      
+                    </div>
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+      <div class="row" *ngIf="!is_search">
+        <div class="col-12" *ngFor="let podcast of podcastlist, let x = index">
+
+          <div class="card" *ngIf="podcast.status==1">
+            <div class="card-body"> 
+              <div class="card-title row d-flex">
+                <div class="row">
+
+                  <div class="col-lg-2 col-sm-12">
+                    <img src="assets/logo2.webp"
+                      style="margin-left:1vw;margin-bottom:4%;width: 96%;border: 4px solid #ddd;border-radius: 4px;">
+                  </div>
+                  <div class="col-lg-10 col-sm-12">
+                    <h2 style="line-height: 1em; font-size:1.5em;text-transform: capitalize;" class="text-break">{{podcast.title}}</h2>
+                    <div style="font-size:12px;line-height:1.4em;margin-top:0.5%;margin-bottom:2%">September 7, 2019
+                    </div>
+                    <p class="card-text" style="text-justify: auto;margin-bottom:2%;text-align: justify !important">{{podcast.description}}</p>
+                    <p class="card-text" style="text-justify: auto;margin-bottom:2%;text-align: justify !important">
+                      Visit <a href="http://www.khojgurbani.org/">http://www.khojgurbani.org/</a> for more information
+                    </p>
+
+                    <div class="row d-flex" style="width:100%;padding-left:3%;">
+                        <button (click)="restrat(x)" class="ui circular icon button">
+                            <i [ngClass]="(index == x) ? 'pause icon':'play icon'" ></i>
+                        </button>
+                        <button class="ui blue active button">
+                            <i class="download icon"></i>
+                            Download
+                        </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div> -->
+
+  <!--<div class="slider_part">
+    <div class="slider_image">
+      <div class="container">
+        <div class="outer_slider">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+              <div class="slider_content">
+                <h2>Babiha Amrit Wele</h2>
+                <span>April 9,2008</span>
+                <div class="col-12 col-lg-12 col-md-12 p-0 pt-3">
+                  <button type="button" class="btn btn-primary btn_slider">Listen Now</button>
+                  <button type="button" class="btn btn-primary btn_slider_1">ਹੁਣ ਸੁਣੋ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+  <div class="breadcrumb_banner" style="background-image: url('assets/image/breadcrumb/nitnem.jpg');">
+    <div class="container">
+      <div class="breadcrumb_box">
+        <h3 *ngIf="!searchtxt">{{title_val}}</h3>
+        <h3 *ngIf="searchtxt">{{searchtxt}}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Category -->
+<!--   <div class="about_cat d-none d-xl-block d-lg-block">
+    <div class="container">
+      <div class="ac_box">
+        <p>KhojGurbani is an online platform with a mission to make the Guru Granth Sahib accessible to and exciting for the common Sikh—who wants to read Gurbani but does not have the tools and a support network to do so. While KhojGurbani will engage Sikhs globally in discussion on specific sections of Guru Granth Sahib every week, it will also spearhead the development of a crowdsourced commentary and a new idiomatic English translation
+        </p>
+        <div class="ac_btn text-center d-lg-flex d-block justify-content-center">
+          <div class="acbtn_bx">
+            <a href="javascript:void(0);" class="btn btn-primary txt_lnk">Download</a>
+            <span>19272</span>
+          </div>
+          <div class="acbtn_bx">
+            <a href="javascript:void(0);" class="btn btn-primary txt_lnk">Episodes</a>
+            <span>{{res.podbean_count}}</span>
+          </div>
+          <div class="acbtn_bx" (click)="openModal2(share)">
+            <a href="javascript:void(0);"  class="btn btn-primary txt_lnk txt_lnk_share">Share</a>
+            <span class="share"><a href="javascript:void(0);"><i class="fa fa-share"></i></a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  -->
+
+  <!-- Category List -->
+  <section class="section_wrap">
+    <div class="container">
+
+      <div class="d-flex justify-content-center align-items-center mb-2 row">
+        <!-- <h3 class="heading mb-0">Khoj Gurbani</h3> -->
+        
+            <ol class="breadcrumb col-12 col-lg-6 col-md-6" style="background:white !important">
+                    <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);" (click)="change(item.path)">{{item.name}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" *ngIf="!searchtxt">{{title_val}}</li>
+                    <li class="breadcrumb-item active" aria-current="page" *ngIf="searchtxt">search</li>
+            </ol>   
+        
+        <div class="ml-auto col-12 col-lg-6 col-md-6">
+          <form class="side_search" style="display: flex;
+          justify-content: flex-end;">
+            <input type="text" id="search_val" [(ngModel)]="searchtxt" (change)="somethingChanged()" (keydown)=onKeydownEvent($event) placeholder="Search Podcast">
+            <span><i class="fa fa-search"></i></span>
+          </form>
+        </div>
+      </div>
+
+      <div class="related_cat_wrap" *ngIf="!is_search">
+
+
+		<!-- <div class="row" *ngFor="let podcast of podcastlist2, let x = index">
+			<div class="col-sm-4">
+				<div class="img_box" (click)="restrat(x)">
+	              <img src="assets/image/2picture.png" *ngIf="!podcast.thumbnail">
+	              <img src="{{ httpservice.getAPI() }}uploads/thumbnail/{{podcast.thumbnail}}" *ngIf="podcast.thumbnail">
+	            </div>
+			</div>
+			<div class="col-sm-8">col-sm-4</div>
+		</div> -->
+
+      	<!-- <div class="row" *ngFor="let podcast of podcastlist2, let x = index">
+      		<div class="col-4">
+  			   <div class="img_box" (click)="restrat(x)">
+	              <img src="assets/image/2picture.png" *ngIf="!podcast.thumbnail">
+	              <img src="{{ httpservice.getAPI() }}uploads/thumbnail/{{podcast.thumbnail}}" *ngIf="podcast.thumbnail">
+	          </div>
+      		</div>
+      		<div class="col-8"> Ram Ram </div>
+      	</div>	 -->
+
+
+        <div class="rc_con d-block d-md-flex align-self-stretch" *ngFor="let podcast of podcastlist2, let x = index">
+          <div class="img_box" (click)="restrat2(x)">
+              <img src="assets/image/2picture.png" width="50%" height="50%" *ngIf="!podcast.thumbnail">
+              <img [src]="podcast.thumbnail" *ngIf="podcast.thumbnail">
+          </div>
+
+          <div class="content_box">
+            <h3 class="title" (click)="restrat2(x)">{{podcast.title}}</h3>
+            <p class="des">{{podcast.description}}
+            </p>
+            <!-- <p class="visit_lnk">Visit <a href="javascript:void(0);">http://www.khojgurbani.org/</a> for more information
+            </p> -->
+           <!--  <div class="opt_btn">
+              <a href="javascript:void(0);" (click)="restrat(x)"><img src="assets/image/icon/play.png"></a>
+              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{podcast.id}}" *ngIf="validateAction('download')"><img src="assets/image/icon/download.png"></a>
+            </div> -->
+
+            <!-- <div class="opt_btn" (click)="openModal2(share)">
+              	<a href="javascript:void(0);"  class="btn btn-primary txt_lnk txt_lnk_share">Share &nbsp;<i class="fa fa-share"></i></a>
+            </div> -->
+          </div>
+        </div> 
+<!-- 
+        <div class="row mt-4">
+          <div class="col-sm-12">
+            <div class="btn_option text-center">
+              <a class="btn btn-info btn_design" href="javascript:void(0);">View More</a>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+
+
+
+      <div class="related_cat_wrap" *ngIf="is_search">        
+          <div class="rc_con d-block d-md-flex align-self-stretch"
+          *ngFor="let podcast of podcastlistsearch, let x = index">
+          <div class="img_box" (click)="restratsearch2(x)">
+              <img src="assets/image/2picture.png" *ngIf="!podcast.thumbnail">
+              <img src="{{ httpservice.getAPI() }}uploads/thumbnail/{{podcast.thumbnail}}" *ngIf="podcast.thumbnail">
+          </div>
+            <div class="content_box">
+              <h3 class="title" (click)="restratsearch2(x)">{{podcast.title}}</h3>
+              <p class="des">{{podcast.description}}
+              </p>
+              <!-- <p class="visit_lnk">Visit <a href="javascript:void(0);">http://www.khojgurbani.org/</a> for more information
+              </p> -->
+            <!--   <div class="opt_btn">
+                <a href="javascript:void(0);" (click)="restrat(x)"><img src="assets/image/icon/play.png"></a>
+                <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{podcast.id}}" *ngIf="validateAction('download')"><img src="assets/image/icon/download.png"></a>
+              </div> -->
+            </div>
+          </div>
+  
+          <div class="d-flex justify-content-center mt-3" *ngIf="podcastlistsearch.length==0">No Result found</div>
+          <!-- <div class="row mt-4">
+            <div class="col-sm-12">
+              <div class="btn_option text-center">
+                <a class="btn btn-info btn_design" href="javascript:void(0);">View More</a>
+              </div>
+            </div>
+          </div> -->
+  
+        </div>
+
+
+
+    </div>
+  </section>
+
+  <!--<section class="about">
+    <div class="container">
+      <div class="about_section_2">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="about_contnet_2">
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                It has survived not only five centuries,
+                printer
+                It has survived not only five centuries,
+                printer It has survived not only five centuries,
+                printer It has survived not only five centuries,
+                printer </p>
+            </div>
+            <div class="container">
+              <div class="outer_three">
+                <div class="three_part row">
+                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group new_input" style="background-color: #e9ecef !important;">
+                      <input type="text" class="form-control input_2 " disabled id="usr" value="Downloads">
+                      <button type="button" class="btn btn_down btn-primary ">866</button>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group new_input" style="background-color: #e9ecef !important;">
+                      <input type="text" class="form-control input_2 " disabled id="usr" value="Episodes">
+                      <button type="button" class="btn btn_down btn-primary ">33</button>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group new_input" style="background-color: #e9ecef !important;">
+                      <input type="text" class="form-control input_2 " disabled id="usr" value="Share">
+                      <button type="button" class="btn btn_down btn-primary share "><i class="fa fa-share"
+                          aria-hidden="true"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>-->
+
+  <!---search part-->
+  <section class="download" style="display: none;">
+    <div class="container">
+      <div class="outer_slider">
+        <div class="upper_heading">
+          <div class="text_left_right">
+            <h2>Khoj Gurubani</h2>
+            <div class="form-group new_input_page">
+              <input type="text" [(ngModel)]="searchtxt" (change)="somethingChanged()" (keydown)=onKeydownEvent($event)
+                class="form-control input_2 " placeholder="Search" id="usr">
+              <button type="button" (click)="search()" class="btn btn_down btn-primary search "><i class="fa fa-search"
+                  aria-hidden="true"></i></button>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="col-lg-12 col-md-12">
+            <div class="row" *ngIf="is_search">
+              <h4 *ngIf="podcastlistsearch.length==0" class="h4 d-flex justify-content-center"
+                style="margin-top:3vh;width:100%">No result found</h4>
+              <div class="row" *ngFor="let podcast of podcastlistsearch, let x = index">
+                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 outer_main">
+                  <div class="side_image">
+                    <img src="assets/image/banner_3.jpg">
+                  </div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 outer_main">
+                  <div class="content_side">
+                    <h5>{{podcast.title}}</h5>
+                    <p>{{podcast.description1}}</p>
+                    <span>Visit: <a href=""> www.gurbani.com</a> For more information</span>
+                    <ul class="icons">
+                      <li class="first_youtube">
+                        <button (click)="restrat(x)" class="ui circular icon button">
+                          <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+                        </button>
+                      </li>
+                      <li class="download"><a href=""><i class="fa fa-download" aria-hidden="true"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="!is_search">
+              <div class="row" *ngFor="let podcast of podcastlist, let x = index">
+                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 outer_main">
+                  <div class="side_image">
+                    <img src="assets/image/banner_3.jpg">
+                  </div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 outer_main">
+                  <div class="content_side">
+                    <h5>{{podcast.title}}</h5>
+                    <p>{{podcast.description1}}</p>
+                    <span>Visit: <a href=""> www.gurbani.com</a> For more information</span>
+                    <ul class="icons">
+                      <li class="first_youtube">
+                        <i (click)="restrat(x)" style="color: #1f516a"
+                          [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+                      </li>
+                      <li class="download"><a href=""><i class="fa fa-download" aria-hidden="true"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="alert alert-info container" *ngIf="success">{{successmsg}}</div>
+<div class="alert alert-danger container" *ngIf="err">Something went wrong</div>
+<div style="margin-top:1vh;" class="container mb-2" *ngIf="isadmin && !is_search">
+  <tag-input [(ngModel)]="mediaObjects" [theme]="'dark'" [dragZone]="'zone1'" [editable]="true">
+    <tag-input-dropdown style="overflow: scroll" [showDropdownIfEmpty]="true" [dynamicUpdate]="false"
+      [displayBy]="'value'" [autocompleteItems]="mediaList2" [appendToBody]="false">
+      <ng-template let-item="item" let-index="index">
+        {{ item.value }}
+      </ng-template>
+    </tag-input-dropdown>
+  </tag-input>
+  <div class="row" style="margin-top:1vh;padding-left:0.5vw">
+    <button (click)="save(content)" class="btn btn-primary">Save</button>
+  </div>
+</div>
+
+
+
+
+<ng-template #content let-modal>
+
+  <div class="modal-body">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #share let-modal>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="display: flex;justify-content:center">
+        <share-buttons [include]="['facebook','twitter','print']" [show]="5" [autoSetMeta]="false"
+        (opened)="open($event)"></share-buttons>
+    </div>
+</ng-template>
+<!-- </div>
+    </div>
+    <div class="col-lg-2 col-sm-12" style="padding:2vw">
+                <div class="row" style="font-weight:500;margin-bottom:1vh;justify-content: center">
+                  <div class="ui row search" style="margin-top: 2vh;margin-bottom: 2vh">
+                    <div class="ui icon input"style='width:70%;'>
+                      <input class="prompt" id="search" [(ngModel)]="searchtxt" (change)="somethingChanged()" (keydown)=onKeydownEvent($event) type="text" placeholder="Search Podcast">
+                    </div>
+                    <div class="ui circular animated button" (click)="search()" tabindex="0">
+                      <div class="hidden content">Search</div>
+                      <div class="visible content" >
+                        <i class="search icon"></i>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            <div class="row" style="border-top:1px solid #eee;border-bottom:1px solid #eee;padding-top:1vh;padding-bottom:1vh"   *ngFor="let follow of follows">
+                    <div class="col-4" >
+                                <rb-letter-avatar [avatar-data]='follow' avatar-shape='round' ></rb-letter-avatar>
+                    </div>
+                    <div class="col-8">
+                                <div style="font-size:1em;font-weight:500;color:#838383;cursor: pointer;" class="follow">{{follow}}</div>
+                                <div style="font-size:0.7em;;color:#838383;cursor: pointer;" class="follow"><i class="fa fa-plus" aria-hidden="true"></i>Follow </div>
+                    </div>
+            </div>
+    </div>
+  </div>
+
+
+
+</div>
+</div> -->

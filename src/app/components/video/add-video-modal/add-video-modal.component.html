@@ -1,0 +1,70 @@
+<div class="modal-header">
+	<h4 class="modal-title pull-left">Add Video</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form class="form-outer-wrap"
+		[formGroup]="addVideoForm"
+		(ngSubmit)="onSubmit()">
+
+		<!-- URL -->
+		<div class="form-group">
+			<input
+				type="url"
+				class="form-control custom-form-control"
+				formControlName="url"
+				placeholder="Enter Youtube Url"
+				autocomplete="off"
+				[ngClass]="{'error-field': submitted && f.url.errors}"
+				required>
+
+			<div *ngIf="submitted && f.url.errors" class="form-error">
+	            <div *ngIf="f.url.errors.required">
+					URL field is required.
+				</div>
+				<div *ngIf="f.url.errors.pattern && !f.url.errors.required" class="form-error">
+					URL must be a valid Youtube url.
+				</div>
+	        </div>
+		</div>
+
+		<div class="form-group">
+			<label class="radio-inline">
+				<input type="radio" value="{{videoType['feature']}}" formControlName="video_type">
+				Feature
+			</label>
+			<label class="radio-inline">
+				<input type="radio" value="{{videoType['discussion']}}" formControlName="video_type">
+				Discussion
+			</label>
+		</div>
+
+		<div class="form-group">
+			<select class="form-control"
+				formControlName="shabad_id"
+				required
+				[attr.disabled]="true">
+				<option value="" selected="true">Select Shabad</option>
+				<option *ngFor='let in of counter(totalShabad) ;let i = index'
+					value="{{i + 1}}"
+					[selected]="(i + 1) == shabadId">{{i + 1}}</option>
+			</select>
+			<div *ngIf="submitted && f.shabad_id.errors" class="form-error">
+				Shabad ID is required.
+			</div>
+		</div>
+
+		<!-- Submit -->
+		<div class="">
+			<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-model-box"
+				[ngClass]="{'disabled': addVideoAPIRunnning}"
+				[disabled]="addVideoAPIRunnning" >
+				Add Video
+			</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'GurbaniAkharHeavy';
+    src: url('GurbaniAkharHeavy.eot');
+    src: url('GurbaniAkharHeavy.eot?#iefix') format('embedded-opentype'),
+        url('GurbaniAkharHeavy.woff2') format('woff2'),
+        url('GurbaniAkharHeavy.woff') format('woff'),
+        url('GurbaniAkharHeavy.ttf') format('truetype'),
+        url('GurbaniAkharHeavy.svg#GurbaniAkharHeavy') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+

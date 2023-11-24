@@ -1,0 +1,87 @@
+@media (max-width:500px) {
+    .mobile-width {
+        width: 321px !important;
+        height: 321px !important;
+    }
+}
+@media (min-width:577px) {
+    .gurbanilist_table.table-responsive {
+        padding: 0px !important;
+    }
+}
+
+.box{
+    height:15vh;width:15vh;
+}
+.item{
+    cursor: pointer;
+}
+
+.upper_contentc {
+    position: absolute;
+    z-index: 999;
+    top: 18px;
+    color: #fff;
+    left: 25px;
+}
+#all-slide .owl-nav div.owl-prev, 
+    #all-slide .owl-nav div.owl-next {
+        color: #fff;
+        font-size: 18px;
+        margin-top: -20px;
+        position: absolute;
+        top: 50%;
+        text-align: center;
+        line-height: 39px;
+        opacity: 0;
+        border:1px solid #fff;
+        width: 40px;
+        height: 40px;
+    }
+    #all-slide .owl-nav div.owl-prev{
+        left: 10%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+    }
+    #all-slide .owl-nav div.owl-next {
+        right: 10%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+    }
+    #all-slide:hover .owl-nav div.owl-next{
+        right: 2%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+        opacity: 1;
+    }
+    #all-slide:hover .owl-nav div.owl-prev{
+        left: 2%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+        opacity: 1;
+    }
+    #all-slide:hover .owl-nav div.owl-next:hover,
+    #all-slide:hover .owl-nav div.owl-prev:hover{
+        color:#fff;
+        background: #0C94B8;
+        border: 1px solid #0C94B8;
+    }
+    .con-title {
+        cursor: pointer;
+    }
+    .align-items-center {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .selectedicon{
+        background: #0b79be !important;
+        color:white !important;
+    }

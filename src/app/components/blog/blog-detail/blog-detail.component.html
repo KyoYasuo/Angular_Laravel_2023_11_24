@@ -1,0 +1,190 @@
+<div class="breadcrumb_banner" style="background-image: url('assets/image/breadcrumb/for blog page.jpg');">
+    <div class="container">
+        <div class="breadcrumb_box">
+            <h3>{{blog['news_title']}}</h3>
+        </div>
+    </div>
+</div>
+
+<section style="padding: 30px 0!important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <app-loader [isRunning]="isGetBlogDetailApiRunning"></app-loader>
+
+                <div class="row" style="width:100%">
+                    <ol class="breadcrumb" style="background:white !important">
+                        <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);"
+                                (click)="change(item.path)">{{item.name}}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{blog['news_title']}}</li>
+                    </ol>
+                </div>
+                <div *ngIf="blog['is_approved']==0">
+                    <a href="javascript:void(0)" (click)="approve(blog['news_id'],1,loader)">
+                        Approve |
+                    </a>
+
+                    <a href="javascript:void(0)" (click)="delete(loader,blog['news_id'])">
+                        Reject
+                    </a>
+
+                </div>
+                <div class="blog-detail">
+                   <!-- <h1 class="blog-title">
+                        {{blog['news_title']}}
+                    </h1>-->
+                    <div class="blog-img" *ngIf="blog['image_url']" style="margin-bottom:0;">
+                        <img class="img-fluid" src="{{blog['image_url']}}" alt="Blog image">
+                        <!-- <img class="img-fluid" src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823__340.jpg" height="500" alt="Blog image"> -->
+                    </div>
+                    <div class="blog-date">
+                        <ul style="font-size:11px">
+                            <li style="margin-right:10px">Published: {{blog['news_date_formated']}}</li>
+                            <li>Author: {{blog['news_author']}}</li>
+                            <li>
+                                <a class="author" *ngIf="blog['shabad_page'] && blog['news_shabad']"
+                                    [routerLink]="'/shabad/' + blog['shabad_page'] +'/'+ blog['news_shabad']">Go to
+                                    Shabad
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--<div class="blog-img-ult mb-3" *ngIf="!blog['image_url']">
+                        <div class="blog-image-text d-flex justify-content-center">
+                            <div class="align-self-center">{{blog.news_title}}</div>
+                        </div>
+                    </div>-->
+                    <div class="blog-des mb-3">
+                        <div id="textBlog" [innerHtml]="fixShortDesc(blog['news_text'])"></div>
+                    </div>
+                    <!-- <p [innerHtml]="fixShortDesc(blog['news_text'])"></p> -->
+                </div>
+                <div class="comments-container">
+                   <!-- <hr>
+                    <h6>Comments</h6>
+                    <hr>-->
+                    <div class="comments-section" *ngIf="blog['comments'] && blog['comments'].length > 0">
+                        <div class="comment" *ngFor="let comment of blog['comments']">
+                            <div class="comment_avatar name_avatar">
+                                {{name_avatar(comment['user']['name'])}}
+                            </div>
+                            <div class="comment_detail">
+                                <span class="name" *ngIf="comment['user']">
+                                    {{comment['user']['name']}}
+                                </span>
+                                <span class="date">{{comment['comment_formated_date']}} &nbsp;&nbsp; {{gettime(comment['comment_date'])}}</span>
+                                <div *ngIf="!comment.editing" class="comment_desc" [innerHTML]="comment['comment_text']"></div>
+                                <div *ngIf="!comment['comment_approve'] && !comment.editing && (!comment['user'] || (comment['user']['role_id'] != 3 && comment['user']['role_id'] != 4)) && validateAction('approve_comment')" style="margin-right: 20px;display: inline-block;">
+                                    <a href="javascript:void(0)" *ngIf="comment['comment_approve']==0"
+                                        (click)="approveRejectComment('approve', comment['comment_id'])">
+                                        Approve |
+                                    </a>
+                                    <span *ngIf="comment['comment_approve']==1"> Approved | </span>
+                                    <!--<span *ngIf="comment['comment_approve']">  </span>-->
+
+                                    <a href="javascript:void(0)" *ngIf="comment['comment_approve']==1"
+                                        (click)="approveRejectComment('reject', comment['comment_id'])">
+                                        Reject
+                                    </a>
+
+                                    <a href="javascript:void(0)" *ngIf="comment['comment_approve']==0"
+                                        (click)="approveRejectComment('reject', comment['comment_id'])">
+                                        Reject
+                                    </a>
+                                </div>
+                                <div *ngIf="(!comment.editing && validateAction('approve_comment')) || comment['user']['id'] == user.id" style="display: inline-block;">
+                                    <a href="javascript:void(0)"
+                                        (click)="editComm(comment)">
+                                        Edit
+                                    </a>
+                                </div>
+                                <form *ngIf="comment.editing" class="form-outer-wrap">
+                                    <div class="form-group">
+                                        <quill-editor name="123" [(ngModel)]="comment['comment_text']" placeholder="Type your comment here..."
+                                             [required]="true">
+                                        </quill-editor>
+    
+                                        <div *ngIf="comment.error" class="form-error">
+                                            Comment is required
+                                        </div>
+                                    </div>
+                                    <button (click)="onPostEditComment(comment)" class="btn btn-primary"
+                                        [ngClass]="{'disabled': addCommentAPIRunnning}"
+                                        [disabled]="addCommentAPIRunnning">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                   <!-- <div class="comments-section" *ngIf="!blog['comments'] || blog['comments'].length == 0">
+                        <p style="color: red;">No Comments</p>
+                    </div>-->
+                    <div class="comment comment-box" *ngIf="!hasOneOpened && validateAction('add_comment')">
+                        <div class="comment_detail">
+                            <form class="form-outer-wrap" [formGroup]="addCommentForm" (ngSubmit)="onPostComment()">
+                                <div class="form-group">
+                                    <!-- <textarea class="form-control"
+                                rows="5"
+                                placeholder="Type your comment here..."
+                                id="comment"
+                                formControlName="comment"
+                                required>
+                        </textarea> -->
+                                    <quill-editor formControlName="comment" placeholder="Type your comment here..."
+                                         [required]="true">
+                                    </quill-editor>
+
+                                    <div *ngIf="commentSubmitted && f.comment.errors" class="form-error">
+                                        Comment is required
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary"
+                                    [ngClass]="{'disabled': addCommentAPIRunnning}"
+                                    [disabled]="addCommentAPIRunnning">Post
+                                    Comment</button>
+                            </form>
+                        </div>
+                    </div>
+					
+                    <div *ngIf="(user | json) == '{}'">
+                        <p style="margin-top: 20px; font-size: 18px;font-style: italic;">
+                            Please
+                            <a routerLink="/login" [queryParams]="{ page: 'blog/' + blog['news_id'] }" style="font-weight: bold; color: #0b79be; font-size: 18px;">Log in</a>
+                            to add comments..
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="blog-sidebar">
+                    <h4 style="font-size: 21.3333px;">Latest Glossary Posts</h4>
+                    <app-loader [isRunning]="isGetLatestBlogsApiRunning"></app-loader>
+                    <ul class="recent-blog-list">
+                        <li *ngFor="let lBlog of latestBlogs">
+                            <a (click)="onClickLatestPost()" style="font-size: 17.333px; color: #438c9b; font-weight: bold;" [routerLink]="['/blog', lBlog.news_title]">{{lBlog.news_title}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<ng-template #loader let-modal>
+
+    <div class="modal-body">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-center" style="margin-top:1vh">
+            <span>{{uploaddata}}</span>
+        </div>
+    </div>
+
+</ng-template>

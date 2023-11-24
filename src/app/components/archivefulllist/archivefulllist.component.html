@@ -1,0 +1,189 @@
+<div id="loader" *ngIf="loader"
+  style="min-height: calc(100vh - 92px);display: flex;justify-content: center;align-items: center">
+  <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+</div>
+
+<div *ngIf="!loader">
+
+  <div class="breadcrumb_banner" style="background-image: url('assets/image/breadcrumb/nitnem.jpg');">
+    <div class="container">
+      <div class="breadcrumb_box">
+        <h3>Archive</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Category -->
+  <!-- <div class="about_cat d-none d-xl-block d-lg-block">
+    <div class="container">
+      <div class="ac_box">
+        <p>KhojGurbani is an online platform with a mission to make the Guru Granth Sahib accessible to and exciting for the common Sikh—who wants to read Gurbani but does not have the tools and a support network to do so. While KhojGurbani will engage Sikhs globally in discussion on specific sections of Guru Granth Sahib every week, it will also spearhead the development of a crowdsourced commentary and a new idiomatic English translation
+        </p>
+        <div class="ac_btn text-center d-lg-flex d-block justify-content-center">
+          <div class="acbtn_bx">
+            <a href="javascript:void(0);" class="btn btn-primary txt_lnk">Download</a>
+            <span>{{res.play_count}}  19272</span>
+          </div>
+          <div class="acbtn_bx">
+            <a href="javascript:void(0);" class="btn btn-primary txt_lnk">Episodes</a>
+            <span>{{res.podbean_count}}</span>
+          </div>
+          <div class="acbtn_bx" (click)="openModal2(share)">
+            <a href="javascript:void(0);"  class="btn btn-primary txt_lnk txt_lnk_share">Share</a>
+            <span class="share"><a href="javascript:void(0);"><i class="fa fa-share"></i></a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Category List -->
+  <section class="section_wrap">
+    <div class="container">
+
+      <!-- <div class="row" style="width:100%">
+        <ol class="breadcrumb" style="background:white !important">
+          <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);"
+              (click)="change(item.path)">{{item.name}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Archive</li>
+        </ol>
+      </div>
+      <div class="d-flex justify-content-center align-items-center mb-4">
+
+        <div class="ml-auto">
+          <form class="side_search">
+            <input type="text" id="search_val" [(ngModel)]="searchtxt" (change)="somethingChanged()"
+              (keydown)=onKeydownEvent($event) placeholder="To Search Type">
+            <span><i class="fa fa-search"></i></span>
+          </form>
+        </div>
+      </div> -->
+
+      <div class="d-flex justify-content-center align-items-center mb-4 row">
+        <ol class="breadcrumb col-12 col-lg-6 col-md-6" style="background:white !important">
+			<li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);" (click)="change(item.path)">{{item.name}}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Archive</li>
+			<!-- <li class="breadcrumb-item active" aria-current="page" *ngIf="!searchtxt">Archive</li> -->
+			<!-- <li class="breadcrumb-item active" aria-current="page" *ngIf="searchtxt">search</li> -->
+        </ol>
+
+        <div class="ml-auto col-12 col-lg-6 col-md-6">
+          <form class="side_search" style="display: flex;
+          justify-content: flex-end;">
+            <input type="text" id="search_val" [(ngModel)]="searchtxt" (change)="somethingChanged()" (keydown)=onKeydownEvent($event) placeholder="Search Podcast">
+            <span><i class="fa fa-search"></i></span>
+          </form>
+        </div>
+      </div>
+	  
+      <div class="related_cat_wrap " *ngIf="!is_search">
+		<div class="row mb-3 archive_header ">
+			<div class="col-12 d-flex justify-content-center">
+				<app-my-pagination style="background: transparent;" [currentPage]="podcastlist.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+			</div>
+		</div>
+		
+		
+		<!-- <div class="mb-4 d-flex align-items-center row desk" style="background:#1b4154;padding:18px 0px;color:#fff;margin-left:0%;width:100%"
+                *ngIf="podcastlist['data'].length > 0">
+                <div class="desk" style="width:35%;display: inline-block;"></div>
+                
+                <div class="desk" style="width:30%;display: inline-block;">
+                <h4 id="resstr" class="ml-3 mb-0 flex-fill text-center">
+                    {{podcastlist['pagination']['total']}} search results</h4>
+                </div>
+                <div class="desk" style="width:35%;display: inline-block;">
+                     <app-my-pagination style="background: transparent;float:center" [currentPage]="podcastlist.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+                </div>
+
+                <div class="mobile" style="display:none">
+                    <h4 id="resstr" class="mb-0 flex-fill text-center" style="width:100% !important">
+                        {{podcastlist['pagination']['total']}} search results</h4>
+                    <div style="display: block;">
+                       <app-my-pagination style="background: transparent;float:center" [currentPage]="podcastlist.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+                    </div>
+                </div>
+        </div>	 -->
+		
+		
+        <div class="rc_con d-block d-md-flex align-self-stretch" *ngFor="let podcast of podcastlist['data'] , let x = index">
+          <div class="img_box" (click)="restrat2(x)">
+            <img src="assets/image/2picture.png" *ngIf="!podcast.thumbnail">
+            <img src="{{ httpservice.getAPI() }}uploads/thumbnail/{{podcast.thumbnail}}" *ngIf="podcast.thumbnail">
+          </div>
+          <div class="content_box">
+
+            <h3 class="title" (click)="restrat2(x)">{{podcast.title}} <span style="font-size: 11px;">{{podcast.created_at | Datefilter }}</span></h3>
+            <p class="des">{{podcast.description}}
+            </p>
+
+            <!--<p class="visit_lnk">Visit <a href="javascript:void(0);">http://www.khojgurbani.org/</a> for more information
+            </p>-->
+           <!--  <div class="opt_btn">
+              <a href="javascript:void(0);" (click)="restrat(x)"><img src="assets/image/icon/play.png"></a>
+              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{podcast.id}}"
+                *ngIf="validateAction('download')"><img src="assets/image/icon/download.png"></a>
+            </div> -->
+          </div>
+        </div>
+		<div class="row mb-2"  >
+			<div class="col-12 d-flex justify-content-center">
+				<app-my-pagination style="background: transparent;" [currentPage]="podcastlist.pagination.page" [numPages]="numPages" (onChangePage)="pageChanged($event)"></app-my-pagination>
+			</div>
+		</div>
+        <!-- 
+        <div class="row mt-4">
+          <div class="col-sm-12">
+            <div class="btn_option text-center">
+              <a class="btn btn-info btn_design" href="javascript:void(0);">View More</a>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+
+
+    <div class="related_cat_wrap container" *ngIf="is_search">
+      <div class="rc_con d-block d-md-flex align-self-stretch" *ngFor="let podcast of podcastlistsearch, let x = index">
+        <div class="img_box" (click)="restrat(x)">
+          <img src="assets/image/2picture.png" *ngIf="!podcast.thumbnail">
+          <img src="{{ httpservice.getAPI() }}uploads/thumbnail/{{podcast.thumbnail}}" *ngIf="podcast.thumbnail">
+        </div>
+        <div class="content_box">
+          <h3 class="title" innerHTML="{{ podcast.title | highlight : searchtxt}}" (click)="restrat(x)"></h3>
+          <p class="des" innerHTML="{{ podcast.description | highlight : searchtxt}}">
+          </p>
+          <!--<p class="visit_lnk">Visit <a href="javascript:void(0);">http://www.khojgurbani.org/</a> for more information
+          </p>-->
+          <!-- <div class="opt_btn">
+            <a href="javascript:void(0);" (click)="restrat(x)"><img src="assets/image/icon/play.png"></a>
+            <a href="javascript:void(0);"><img src="assets/image/icon/download.png"></a>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- <div class="row mt-4">
+        <div class="col-sm-12">
+          <div class="btn_option text-center">
+            <a class="btn btn-info btn_design" href="javascript:void(0);">View More</a>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+  </section>
+
+
+
+<ng-template #share let-modal>
+  <div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body" style="display: flex;justify-content:center">
+      <share-buttons [include]="['facebook','twitter','print']" [show]="5" [autoSetMeta]="false"
+      (opened)="open($event)"></share-buttons>
+  </div>
+</ng-template>

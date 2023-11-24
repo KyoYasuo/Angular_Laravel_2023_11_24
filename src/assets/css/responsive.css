@@ -1,0 +1,276 @@
+@media screen and (max-width:992px){
+	.name{
+		font-size:15px;
+	}
+	.active1 a::before {
+		top: 30px;
+		transform: none;
+	}
+	.btn_xyz{
+		padding-top:10px;
+	}
+	.main_nav ul li{
+		padding: 0px 0px;
+	}
+	.link_app {
+    margin: -78px auto;
+    position: absolute;
+    left: 97px;
+    }
+	.container{width: 100% !important;max-width: 100% !important;}
+ 
+}
+@media screen and (max-width:767px){
+	.about_contnet {
+    padding-top: 25px;
+    }	
+}
+@media screen and (max-width:768px){
+	.about_contnet {
+    padding-top: 25px;
+    }	
+	.link_app {
+    margin: -78px auto;
+    position: absolute;
+    left: 23px;
+    }
+    #collapseBasic{
+    	position: relative !important;
+    }
+
+    input, select, textarea {
+   	 font-size: 16px;
+ 	}
+}
+
+@media screen and (min-width:576px){
+  .cardDiv{display: none; }
+  .hideOnDeskTooltip{ display: none; }
+}
+
+@media screen and (max-width:576px){
+
+   .showOnDeskTooltip { display: none; }
+
+	.btn_subscribe{
+		position:static;
+		margin-top:10px;
+	}
+	.new_input_page{
+		float:none;
+	}
+	.input_1{
+		padding-left:0px;
+		text-align:center;
+	}
+	.name{
+		font-size:13px;
+	}
+	.name::before{
+		bottom: 21px;
+	}
+	.about_contnet {
+    padding-top: 0px;padding: 0;
+    }
+	.items_nav_footer {
+	padding: 0px;
+	margin-bottom: 0px;
+    }
+	.items_nav_footer li {
+		display:block;
+		padding: 5px 0px;
+    }
+	
+   .artist_alfabats{ margin-bottom: 20px; } 
+   .breadcrumb_box{ padding: 27px 0px; }
+   .breadcrumb_box h3 { text-align: left; font-size: 25px; !important; margin-left: 0px; } 
+   
+   .media_filter .form-group .form-control { margin-right:20px; } 
+   .mobileTableMarginAuto { padding: 0; }
+   section { padding: 20px; }
+   .divHeight23 { height:0px; }
+   .media_list_wrap .media_box { margin-bottom:	20px;}
+   .blog_listnew .content_box{height: 21.6em;}
+   .m-n-p{ padding-top: 0px !important; }
+
+   .singerName-cust { font-size: 12px;
+	    color: #575555;
+	    margin-left: 10px;
+	    margin-right: 10px;
+	    text-align: left;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: block; 
+	}
+
+   .slider_profuct { background-image: none; padding:0px; }
+   .section_wrap .heading { color: #252636 !important; margin-top: 0px;   }
+   .section_wrap .nav_design .owl-stage-outer { margin-bottom: 0px; }
+   .archive_sec .nav_design .owl-nav { top: 39% !important; } 
+   .play_stroe{display: none;}
+   .play_stroe.mobile-store{display: flex;padding-bottom: 0px;padding: 0 10px 0px 10px;}
+   .home-slider .slider_content h2{font-size: 25px;}
+   .slider_image {
+    background-image: url(/assets/Home_Banner.png);}
+    .about_section{margin-top: 0;}
+    .forFeaturedMob .owl-nav{top: 43% !important;}
+    .featured .card_1 p{height: 55px;overflow: hidden;}
+    .featured .card_1 {box-shadow: none;margin-bottom: 0px;}
+    .alfa_container .content .inner_item .title h5{margin: 17px 0;margin-bottom: 0; }
+
+    .about { padding-top: 0px; margin-bottom: 10px; }
+    .featured { padding-top: 0px; padding-bottom: 0px; }
+    .featured .card_1 .featured_content { padding: 0px; }
+    .archive_sec { padding-top: 0px; padding-bottom: 0px; } 
+    .onMobileShowText{ overflow-y: auto; }
+    .about_contnet h3 { margin-bottom: 0px; font-size: 18px; }
+    
+    /*.about_contnet p { word-break: break-word; font-family: nyt-imperial, georgia, "times new roman", times, serif !important;
+    font-size: 15px; text-align: justify; line-height: 23px; }*/
+
+   .about_contnet p { /*word-break: break-word; 
+     font-family: nyt-imperial, georgia, "times new roman", times, serif !important; */
+    font-size: 14px;
+    /* text-align: justify; */
+    line-height: 20px; }
+
+    ol.breadcrumb.breadcrumb-title {margin-left: 12px !important; margin-bottom: 16px !important; padding: 0px; }
+    .slider_profuct .introduce img, .featured_image img, .archive_sec .outer_archive img { height: 218px !important;  }
+    .mobileViewOnly{ justify-content: center !important; }
+    .mobile-view-gurbanilist { padding: 0px !important; }
+    .mobile-view-artistlist {padding: 0em 0em 0em 1.2em !important; }
+    .table-responsive { padding: 0px 10px 0px 10px !important; }
+    .alfa_container .alfa_tag { left: 45%; }
+    .featured .card_1 a { margin: 10px 0px 0px 0px; }
+    .media_list_wrap .media_content .inner_item { padding: 0px; }
+    .margin_left { 0px; }
+    .col-10.text-left.my-auto.padding_left { padding-left: 0px !important;  }
+    .listTitleSize { margin-left: 0px;}
+    .showlg button:nth-child(2) span fa-icon, .hidelg button:nth-child(2) span fa-icon { margin-left: 2px !important; }
+    .cardDiv {
+        width: 100%;
+        padding: 5px 10px;
+        /*box-shadow: 0 1px 10px #00000017;*/
+        margin: 5px 0;
+        display: block;
+    }
+    .opac7{opacity: 0.7;}
+    .TableHide{display: none;}
+    .dotIcon{
+      font-size: 5px !important;
+      position: relative !important;
+      top: -3px !important;
+      color: #747171 !important;
+    }
+
+}
+@media screen and (max-width:475px){
+	.play_audio {
+     padding: 4px 8px;
+    }	
+	.upper_content p{
+		font-size:13px;
+	}
+	/* .slider_content {
+   	margin-top: 71px;
+    margin-bottom: 140px;
+    } */
+	.slider_content h2 {
+    font-size: 25px;
+	}
+	.link_app {
+    position: static;
+    }
+	
+	.slider_content .homeSliderTitle{
+		 font-size: 20px;
+	}
+
+	.gf_btn_text { font-size:10pt;  }
+
+	.form-matrix-table,.form-dropdown,.form-textbox,.form-all,.form-textarea,.form-radio,.form-checkbox{
+		font-size: 16px !important; 
+	}
+
+  .onMobileShowText{ height: 24vh;overflow-y: auto; }
+
+}
+@media screen and (max-width:375px){
+	.slider_content h2 {
+    font-size: 31px; 
+	}
+	
+	.slider_content .homeSliderTitle{
+		 font-size: 16px;
+	}
+   .onMobileShowText{ height: 23vh;overflow-y: auto; }
+	
+}
+
+@media screen and (max-width: 360px){
+  .onMobileShowText {  height: 27vh; }
+}
+
+
+@media screen and (max-width: 350px){
+  .onMobileShowText {  height: 27vh; }
+}
+
+
+@media screen and (max-width: 320px){
+  .onMobileShowText {  height: 30vh; }
+}
+
+
+/* 
+@media screen and (device-aspect-ratio: 2/3) {
+    select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+    select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+
+@media screen and (device-aspect-ratio: 375/667) {
+    select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+}
+
+@media screen and (device-aspect-ratio: 9/16) {
+    select, textarea, input[type="text"], input[type="password"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="date"], input[type="month"], input[type="time"],
+    input[type="week"], input[type="number"], input[type="email"],
+    input[type="url"]{ font-size: 16px !important; }
+} 
+*/
+
+@media screen and ( -webkit-min-device-pixel-ratio:0 ) {
+    select, textarea, input {
+        font-size: 16px !important;
+    }
+}
+
+ol.breadcrumb.breadcrumb-title { background: white; margin: 0px 0px 0px 37px; }
+.table-responsive { padding: 0px 30px 0px 30px; }
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #0b79be !important; }
+
+.header-term-text { padding: 10px; background-color: #f1ecec; }
+.privacy-term-text{  }  
+
+
+ 

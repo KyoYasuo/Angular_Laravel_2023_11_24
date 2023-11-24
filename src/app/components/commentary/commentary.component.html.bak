@@ -1,0 +1,1420 @@
+<div class="breadcrumb_banner" style="background-image: url('assets/for commentry page.jpg');">
+    <div class="container">
+        <div class="breadcrumb_box">
+            <h3>Translation Project</h3>
+        </div>
+    </div>
+</div>
+
+
+
+<section class="section_wrap pb-0">
+    <div class="container">
+
+        <div class="row mb-2">
+
+
+            <div class="page-nav col-lg-6 col-md-6 col-12 d-flex" id="flexbox"  style="padding:10 0%">
+                <!--<button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                (click)="goToNextPrevPage('prev', 2)">
+                <fa name="angle-double-left" fixed='true'></fa>
+                </button>-->
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                (click)="goToNextPrevPage('prev', pageId)">
+                <fa name="angle-left" fixed='true'></fa>
+                </button>
+                <div class="page-nav-arrows" style="background: #fff !important;">
+                    <div class="page-select" style="padding:0 20%;"> 
+                        <!-- <select class="form-control"
+                            (change)="goToPage($event.target.value)">
+                            <option *ngFor='let in of counter(totalPages) ;let i = index'
+                                value="{{i + 1}}"
+                                [selected]="(i + 1) == pageId">{{i + 1}}</option>
+                            </select> -->
+                        <b style="text-align: center;margin-right:5px;color:black">Ang</b>
+                        <!--<ng-select id="select" class="custom" (open)="selectopen()" (change)="change()" [(ngModel)]="pageId" style="width:112px">
+                            <ng-option *ngFor='let in of counter(totalPages) ;let i = index' [value]="i + 1">{{i + 1}}
+                            </ng-option>
+                        </ng-select>-->
+                        
+                        <ng-select2 
+                            id="select2"
+                            [(ngModel)]="pageId" 
+                            [data]="pageList"
+                            [placeholder]="'Page'"
+                            style="width:80px;height:50px;padding-top:10px">		
+                        </ng-select2>
+                    </div>
+                </div>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                (click)="goToNextPrevPage('next', pageId)">
+                <fa name="angle-right" fixed='true'></fa>
+                </button>
+                <!--<button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                (click)="goToNextPrevPage('next', 1429)">
+                <fa name="angle-double-right" fixed='true'></fa>
+                </button>-->
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 d-flex justify-content-center align-items-center sidenew_search">
+                <div class="form_bx">
+                    <form class="side_search">
+                        <input type="text" id="search_val" [(ngModel)]="searchKeword" name="searchKeword"
+                        (keydown)=onKeydownEvent2($event) placeholder="Search Commentary">
+                        <span><i class="fa fa-search"></i></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div style="border:1px solid #b7b7b7" class="mt-4 mb-4" *ngIf="search">
+            <div class="mb-4"
+                style="background: #1b4154;min-height: 71px;flex-wrap: wrap;display: flex;align-items: center;color:white"
+                *ngIf="searchedResult['data'].length > 0">
+                <h4 style="flex:1" class="ml-3 mb-4">{{searchedResult['pagination']['total']}} search results</h4>
+                <pagination id="p1" style="float: right;" *ngIf="metadata['total'] > 0" [boundaryLinks]="true"
+                [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']" [(ngModel)]="currentPage"
+                (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+                [maxSize]="5">
+                </pagination>
+            </div>
+            <div style="padding-left:8px">
+                <ol class="search-listing">
+                    <li *ngFor="let data of searchedResult['data'] ">
+                        <!-- gurmuki -->
+                        <div class="">
+                            <div *ngIf="data['attributes']['commentary']">
+                                <h4>
+                                    <a class="author" style="color: #2d8dac;font-weight: 700"
+                                    *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                    [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                    [innerHtml]="data['attributes']['commentary2']">
+                                    </a>
+                                </h4>
+                                <a class="gurbani-fonts"
+                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                [innerHtml]="data['attributes']['scripture']">
+                                </a>
+                                <div class="search-item-meta">
+                                    <span>Page {{data['attributes']['page']}} Shabad
+                                    {{data['attributes']['shabad_id']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="loadmore-item"
+                        *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+                        <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                        <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button>
+                        </li> -->
+                </ol>
+                <div class="loadmore-item mt-4" style="width: 100%; float:right"
+                    *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+                    <!-- <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                        <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button> -->
+                    <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0" [boundaryLinks]="true"
+                    [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']" [(ngModel)]="currentPage"
+                    (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+                    [maxSize]="5">
+                    <!-- firstText="&laquo;" lastText="&raquo;" -->
+                    </pagination>
+                </div>
+                <div *ngIf="searchedResult['data'].length == 0 && !isLoadingMore">
+                    No Result Found
+                </div>
+            </div>
+        </div>
+       
+
+
+<!-- 
+        <div class="row justify-content-center align-items-center" style="display: flex;flex-wrap: wrap;width: 101.5%">
+            <div class="page-nav" style="display: flex;flex:1">
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                    (click)="goToNextPrevPage('prev', 2)">
+                    <fa name="angle-double-left" fixed='true'></fa>
+                </button>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                    (click)="goToNextPrevPage('prev', pageId)">
+                    <fa name="angle-left" fixed='true'></fa>
+                </button>
+                <div class="page-nav-arrows" style="background: #fff !important">
+                    <div class="page-select">
+                        <b style="text-align: center;margin-right:0.5vw;color:black">Ang</b>
+                        <ng-select class="custom" (change)="change()" [(ngModel)]="pageId" style="width:112px">
+                            <ng-option *ngFor='let in of counter(totalPages) ;let i = index' [value]="i + 1">{{i + 1}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                    (click)="goToNextPrevPage('next', pageId)">
+                    <fa name="angle-right" fixed='true'></fa>
+                </button>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                    (click)="goToNextPrevPage('next', 1429)">
+                    <fa name="angle-double-right" fixed='true'></fa>
+                </button>
+            </div>
+            <div class="btn_option">
+                <a href="javascript:void();" class="btn btn-primary btn-sm btn_design" (click)="exportdialog(modal)">
+                    <fa name="share" fixed='true'></fa>
+                    Export
+                </a>
+            </div>
+        </div> -->
+
+        <div class="split-container-shabad" style="border: solid 1px #b7b7b7;">
+            <div class="column-left">
+                <nav class="shabad-pagination" style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: #1b4154;
+                    min-height: 71px;
+                    border-radius: 0px;
+                    width: 100%;">
+                    <div style="background:#1b4154;flex:1;display: flex;
+                        align-items: center;border-radius: 4px;min-height:71px;flex-wrap: wrap;">
+                        <div style="color:white;padding-left:0.5em">SABAD</div>
+                        <div style="flex: 1;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: center">
+                            <div class="circle" (click)="change2()" style="background: #1b4154;cursor: pointer;width: 10px"
+                                [class.disabled]="checkdisabled()"> <a style="color:white;font-size: 11px"><i
+                                        class="fas fa-sort-down" style="transform: rotate(450deg);"></i>
+                                </a>
+                            </div>
+                            <a class="circle" [routerLink]="['/commentary', pageId, page]"
+                                style="cursor: pointer;color:white"
+                                *ngFor="let page of shabadPages | slice:startindex:endindex"
+                                [ngClass]="{'active2': page === currentShabadPage}">
+                                <a style="color:white;font-size: 11px"> {{page}}</a></a>
+                            <div class="circle" [class.disabled]="checkdisablednext()" (click)="change3()"
+                                style="background: #1b4154;cursor: pointer;width: 10px;margin-right: 5px;"> <a style="color:white;font-size: 11px"> <i
+                                        class="fas fa-sort-down fa-rotate-270"></i></a>
+                            </div>
+                        </div>
+
+                        <div style="flex:1;display: flex;justify-content: center">
+                            <!-- <div style="width: 30px;height:30px;cursor: pointer;"  (click)="play2()">
+                                <img src="assets/Play.svg" style="width: 32px;
+                                    height: 32px;">
+                                </div> -->
+                            <i class="fa fa-play" aria-hidden="true" id="icon_cir" (click)="play2()"></i>
+                            <!-- <div style="width: 30px;height:30px;cursor: pointer;" (click)="openModal(share)">
+                                <img src="assets/Share.svg" style="width: 32px;
+                                height: 32px;">
+                                </div> -->
+                            <i class="fa fa-share-alt" aria-hidden="true" id="icon_cir" (click)="openModal(share)"></i>
+                            <!-- <div style="width: 30px;height:30px;cursor: pointer;" (click)="paperClip()">
+                                <img src="assets/Attach.svg" style="width: 32px;
+                                height: 32px;">
+                                </div> -->
+                            <i class="fa fa-paperclip" aria-hidden="true" id="icon_cir" (click)="paperClip()"></i>
+                        </div>
+                        
+                    </div>
+                    <div class="scripture-options">
+                        <div class="scripture-options-item btn-group" dropdown>
+                            <button id="scripture-more-options" dropdownToggle type="button" class="option-menu-btn"
+                                aria-controls="dropdown-basic" id="colw" >
+                                <!-- <i class="fa fa-ellipsis-v"></i> -->
+                                <fa name="ellipsis-v" style="color: white" fixed='true'></fa>
+                            </button>
+                            <div id="scripture-more-options-menu" *dropdownMenu
+                                class="dropdown-menu dropdown-with-check" role="menu"
+                                aria-labelledby="scripture-more-options">
+                                <a href="javascript:void(0)" class="dropdown-item"
+                                    [ngClass]="{'selected': isLareevaarShow}"
+                                    (click)="onSelectLareevaarScriptureOption()">
+                                    <i class="fa fa-fw fa-check"></i>
+                                    Gurmukhi - Lareevaar
+                                </a>
+                                <a href="javascript:void(0)" class="dropdown-item" [ngClass]="{'selected': isRomanShow}"
+                                    (click)="onSelectRomanScriptureOption()">
+                                    <i class="fa fa-fw fa-check"></i>
+                                    Roman Script
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <ul class="pagination">
+            <li class="page-label">Shabad</li>
+            <li class="page-item" *ngFor="let page of shabadPages"
+                [ngClass]="{'active': page === currentShabadPage}">
+                <a class="page-link" [routerLink]="['/shabad', pageId, page]">{{page}}</a>
+            </li>
+            </ul> -->
+                </nav>
+            </div>
+            <div class="column-right d-flex justify-content-end align-items-center" style="padding-right: 10px; font-size: 21px!important;" >
+                    Translation
+                <!-- <div class="btn-group author-dropdown" dropdown>
+                    <button id="choose-translation" dropdownToggle type="button" class="dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                        {{selectedAuthorName}} <span class="caret"></span>
+                    </button>
+                    <div id="translation-authors" *dropdownMenu class="dropdown-menu dropdown-with-check" role="menu"
+                        aria-labelledby="choose-translation">
+                        <h6 class="dropdown-header">ENGLISH TRANSLATION</h6>
+                        <a class="dropdown-item" href="javascript:void(0)" *ngFor="let author of engAuthors"
+                            [ngClass]="{'selected': author['isSelected']}"
+                            (click)="changeTranslationAuthor('english', author)">
+                            <i class="fa fa-fw fa-check"></i>
+                            {{author.name}}
+                        </a>
+                        <div class="divider dropdown-divider"></div>
+                        <h6 class="dropdown-header">TEEKA</h6>
+                        <a class="dropdown-item" href="javascript:void(0)" *ngFor="let author of punjabiAuthors"
+                            [ngClass]="{'selected': author['isSelected']}"
+                            (click)="changeTranslationAuthor('teeka', author)">
+                            <i class="fa fa-fw fa-check"></i>
+                            {{author.name}}
+                        </a>
+                    </div>
+                </div> -->
+                <!-- <ul class="shabad-translation">
+            <li *ngFor="let translation of translationsByAuthors[selectedEnglishAuthor]">
+                {{translation}}
+            </li>
+            </ul> -->
+            </div>
+            <div class="scriptures-conatainer">
+                <ul class="scriptures">
+                    <li class="scripture-item" *ngFor="let scripture of shabadData['scriptures'];  let i = index">
+                        <!-- scriptures -->
+                        <ul [ngClass]="{'highlight': (scripture['is_highlight']
+                    && (highlightedScripture['language'] == 'english'
+                    || highlightedScripture['language'] == 'roman'
+                    || highlightedScripture['language'] == 'gurmukhi')) }" class="scripture-column-left">
+                            <li class="s-padched gurbani-text" *ngIf="isPadChedShow">
+                                <span *ngFor="let word of scripture.Scripture;" style="cursor: pointer;"
+                                    [popover]="wordDetailPopover" popoverTitle="{{word}}" #wordDetailPopObj="bs-popover"
+                                    [outsideClick]="true" placement="right" (onShown)="wordDetail(word)">
+                                    <!-- Template used for show word detail -->
+                                    <ng-template #wordDetailPopover>
+                                        <app-loader [isRunning]="isGetWordDetailApiRunning"></app-loader>
+                                        <div *ngIf="selectedWordDetail['pun_mahankosh']">
+                                            <h4>
+                                                Mahan Kosh Encyclopedia
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['pun_mahankosh']"></p>
+                                        </div>
+                                        <div *ngIf="selectedWordDetail['pun_kosh']">
+                                            <h4>
+                                                SGGS Gurmukhi-Gurmukhi Dictionary
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['pun_kosh']"></p>
+                                        </div>
+                                        <div *ngIf="selectedWordDetail['eng_dic_sri']">
+                                            <h4>
+                                                SGGS Gurmukhi-English Dictionary
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['eng_dic_sri']"></p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a class="btn btn-primary btn-sm" [routerLink]="['/worddetail']"
+                                                [queryParams]="{ lang: 'gurmukhi', value: selectedWordDetail['word'] }">
+                                                View
+                                            </a>
+                                            <button class="btn btn-default btn-sm" style="margin-left: 10px;"
+                                                (click)="wordDetailPopObj.hide()">
+                                                close
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                    {{word}}
+                                </span>
+                            </li>
+                            <li class="s-lareevaar gurbani-text" style="font-size: 18px" *ngIf="isLareevaarShow">
+                                {{scripture.ScriptureOriginal}}
+                            </li>
+                            <li class="s-roman" *ngIf="isRomanShow" style="font-size: 18px">
+                                {{scripture.ScriptureRoman}}
+                            </li>
+                        </ul>
+                        <!-- transltaitons -->
+                        <ul class="scripture-column-right" [ngClass]="{'highlight': (scripture['is_highlight']
+                    && (highlightedScripture['content'] == 'english-translation'
+                    || highlightedScripture['content'] == 'teeka')) }">
+                            <!-- <li *ngFor="let author of engAuthors" [ngClass]="{'displayNone': !author['isSelected']}">
+                                {{scripture.translation[author.key]}}
+                            </li>
+                            <li class="gur-lan" *ngFor="let author of punjabiAuthors"
+                                [ngClass]="{'displayNone': !author['isSelected']}">
+                                {{scripture.translation[author.key]}}
+                            </li> -->
+                            <li class="s-roman" style="font-size: 24px" *ngIf="scripture.translation.KhojgurbaaniEnglish">
+                                    {{scripture.translation.KhojgurbaaniEnglish}}
+                                </li>
+                            <li class="s-roman" style="font-size: 24px" *ngIf="!scripture.translation.KhojgurbaaniEnglish && i==0">No translation exists for this Sabad</li>
+                            <li *ngIf="isadmin && !scripture.translation.KhojgurbaaniEnglish">
+                                    <div style="display: flex;justify-content:flex-end"><button class="btn btn-primary add"><i class="fa fa-plus" aria-hidden="true"></i></button></div>
+                                </li>
+                                <li *ngIf="scripture.translation.KhojgurbaaniEnglish && isadmin">
+                                        <div style="display: flex;justify-content:flex-end"><button class="btn btn-primary add" data-id="{{scripture.translation.KhojgurbaaniEnglish}}" ><i class="fa fa-edit" aria-hidden="true"></i></button></div>
+                                </li>
+                                <li style="display: none" id="comm2">
+                                    <div class="d-flex">
+                                       <!-- <input type="text" class="form-control flex-grow-1"/> -->
+                                       <div class="form-inline d-flex" style="width: 100%">
+                                            <input class="form-control flex-grow-1" value="{{scripture.translation.KhojgurbaaniEnglish}}" id="txt{{scripture.id}}" type="search" id="searchtextbox">
+                                       </div>
+                                       <button class="btn btn-primary" (click)="save(scripture.id,loader)"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                       
+                                    </div>
+                                </li>
+                                    
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section> 
+ <section class="section_wrap" style="padding:0px !important">
+
+    <div class="container">
+        
+        <div class="row" style="display: none">
+            <div class="page-nav" style="display: flex;flex:1">
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                (click)="goToNextPrevPage('prev', 2)">
+                <fa name="angle-double-left" fixed='true'></fa>
+                </button>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+                (click)="goToNextPrevPage('prev', pageId)">
+                <fa name="angle-left" fixed='true'></fa>
+                </button>
+                <div class="page-nav-arrows" style="background: #fff !important">
+                    <div class="page-select">
+                        <!-- <select class="form-control"
+                            (change)="goToPage($event.target.value)">
+                            <option *ngFor='let in of counter(totalPages) ;let i = index'
+                                value="{{i + 1}}"
+                                [selected]="(i + 1) == pageId">{{i + 1}}</option>
+                            </select> -->
+                        <b style="text-align: center;margin-right:0.5vw;color:black">Ang</b>
+                        <ng-select class="custom" (change)="change()" [(ngModel)]="pageId" style="width:112px">
+                        <ng-option *ngFor='let in of counter(totalPages) ;let i = index' [value]="i + 1">{{i + 1}}
+                        </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                (click)="goToNextPrevPage('next', pageId)">
+                <fa name="angle-right" fixed='true'></fa>
+                </button>
+                <button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+                (click)="goToNextPrevPage('next', 1429)">
+                <fa name="angle-double-right" fixed='true'></fa>
+                </button>
+            </div>
+            <div class="d-flex justify-content-center align-items-center" style="flex:1;margin-right: 1em;">
+                <div class="ml-auto">
+                    <form class="side_search">
+                        <input type="text" id="search_val" [(ngModel)]="searchKeword" name="searchKeword"
+                        (keydown)=onKeydownEvent2($event) placeholder="To Search Type">
+                        <span><i class="fa fa-search"></i></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div style="border:1px solid #b7b7b7;display: none" class="mt-4 mb-4" *ngIf="search">
+            <div class="mb-4"
+                style="background: #1b4154;min-height: 71px;flex-wrap: wrap;display: flex;align-items: center;color:white"
+                *ngIf="searchedResult['data'].length > 0">
+                <h4 style="flex:1" class="ml-3 mb-4">{{searchedResult['pagination']['total']}} search results</h4>
+                <pagination id="p1" style="float: right;" *ngIf="metadata['total'] > 0" [boundaryLinks]="true"
+                [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']" [(ngModel)]="currentPage"
+                (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+                [maxSize]="5">
+                </pagination>
+            </div>
+            <div style="padding-left:8px">
+                <ol class="search-listing">
+                    <li *ngFor="let data of searchedResult['data'] ">
+                        <!-- gurmuki -->
+                        <div class="">
+                            <div *ngIf="data['attributes']['commentary']">
+                                <h4>
+                                    <a class="author" style="color: #2d8dac;font-weight: 700"
+                                    *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                    [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                    [innerHtml]="data['attributes']['commentary2']">
+                                    </a>
+                                </h4>
+                                <a class="gurbani-fonts"
+                                *ngIf="data['attributes']['page'] && data['attributes']['shabad_id']"
+                                [routerLink]="'/commentary/' + data['attributes']['page'] +'/'+ data['attributes']['shabad_id']"
+                                [innerHtml]="data['attributes']['scripture']">
+                                </a>
+                                <div class="search-item-meta">
+                                    <span>Page {{data['attributes']['page']}} Shabad
+                                    {{data['attributes']['shabad_id']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="data['author_data']">{{data['author_data']['author']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="data['melody_data']">{{data['melody_data']['melody']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="loadmore-item"
+                        *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+                        <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                        <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button>
+                        </li> -->
+                </ol>
+                <div class="loadmore-item mt-4" style="width: 100%; float:right"
+                    *ngIf="searchedResult['data'].length > 0 && searchedResult['data'].length != searchedResult['pagination']['total']">
+                    <!-- <button class="btn btn-primary btn-sm" *ngIf="!isLoadingMore" (click)="searchData(true)">Load More</button>
+                        <button class="btn btn-primary btn-sm" disabled="disabled" *ngIf="isLoadingMore">Loading...</button> -->
+                    <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0" [boundaryLinks]="true"
+                    [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']" [(ngModel)]="currentPage"
+                    (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+                    [maxSize]="5">
+                    <!-- firstText="&laquo;" lastText="&raquo;" -->
+                    </pagination>
+                </div>
+                <div *ngIf="searchedResult['data'].length == 0 && !isLoadingMore">
+                    No Result Found
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3" style="display:none">
+            <div class="col-lg-6 col-xl-6 col-12 plg">
+                <div class="shadow" style="padding-right:0.5em;border: solid 1px #b7b7b7;
+                    padding:0px !important;
+                    padding-top: 1em;
+                    ">
+                    <div style="background:#1b4154;display: flex;
+                        align-items: center;border-radius: 0px;min-height:71px;flex-wrap: wrap;">
+                        <div style="color:white" class="pl-2">SABAD</div>
+                        <div style="flex:1;display: flex;justify-content: center;width:100%">
+                            <div class="circle" (click)="change2()" style="background: #1b4154;cursor: pointer"
+                            [class.disabled]="checkdisabled()"> <a style="color:white;font-size: 11px"><i
+                                class="fas fa-sort-down" style="transform: rotate(450deg);"></i>
+                            </a>
+                        </div>
+                        <a class="circle mr-2" [routerLink]="['/commentary', pageId, page]"
+                        style="cursor: pointer;color:white"
+                        *ngFor="let page of shabadPages | slice:startindex:endindex"
+                        [ngClass]="{'active2': page === currentShabadPage}">
+                        <a style="color:white;font-size: 11px"> {{page}}</a></a>
+                        <div class="circle" [class.disabled]="checkdisablednext()" (click)="change3()"
+                        style="background: #1b4154;cursor: pointer"> <a style="color:white;font-size: 11px"> <i
+                            class="fas fa-sort-down fa-rotate-270"></i></a>
+                    </div>
+                </div>
+                <div style="flex:1;display: flex;justify-content: center">
+                    <!-- <div style="width: 30px;height:30px;cursor: pointer;"  (click)="play2()">
+                        <img src="assets/Play.svg" style="width: 32px;
+                            height: 32px;">
+                        </div> -->
+                    <i class="fa fa-play" aria-hidden="true" id="icon_cir" (click)="play2()"></i>
+                    <!-- <div style="width: 30px;height:30px;cursor: pointer;" (click)="openModal(share)">
+                        <img src="assets/Share.svg" style="width: 32px;
+                        height: 32px;">
+                        </div> -->
+                    <i class="fa fa-share-alt" aria-hidden="true" id="icon_cir" (click)="openModal(share)"></i>
+                    <!-- <div style="width: 30px;height:30px;cursor: pointer;" (click)="paperClip()">
+                        <img src="assets/Attach.svg" style="width: 32px;
+                        height: 32px;">
+                        </div> -->
+                    <i class="fa fa-paperclip" aria-hidden="true" id="icon_cir" (click)="paperClip()"></i>
+                </div>
+                <div class="scripture-options" style="flex: 1;
+                    justify-content: flex-end;
+                    float: right;
+                    display: flex;">
+                    <div class="scripture-options-item btn-group" dropdown>
+                        <button id="scripture-more-options" dropdownToggle type="button" class="option-menu-btn"
+                            aria-controls="dropdown-basic">
+                            <!-- <i class="fa fa-ellipsis-v"></i> -->
+                            <fa name="ellipsis-v" style="color: white" fixed='true'></fa>
+                        </button>
+                        <div id="scripture-more-options-menu" *dropdownMenu
+                            class="dropdown-menu dropdown-with-check" role="menu"
+                            aria-labelledby="scripture-more-options">
+                            <a href="javascript:void(0)" class="dropdown-item"
+                            [ngClass]="{'selected': isLareevaarShow}"
+                            (click)="onSelectLareevaarScriptureOption()">
+                            <i class="fa fa-fw fa-check"></i>
+                            Gurmukhi - Lareevaar
+                            </a>
+                            <a href="javascript:void(0)" class="dropdown-item" [ngClass]="{'selected': isRomanShow}"
+                            (click)="onSelectRomanScriptureOption()">
+                            <i class="fa fa-fw fa-check"></i>
+                            Roman Script
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="scriptures-conatainer" style="width: 100%;
+                    padding-left: 1em;
+                    padding-right: 1em;">
+                    <ul class="scriptures">
+                        <!-- style="min-height: 18vh;" -->
+                        <li class="scripture-item"
+                            *ngFor="let scripture of shabadData['scriptures'];  let i = index">
+                            <!-- scriptures -->
+                            <ul [ngClass]="{'highlight': (scripture['is_highlight']
+                                && (highlightedScripture['language'] == 'english'
+                                || highlightedScripture['language'] == 'roman'
+                                || highlightedScripture['language'] == 'gurmukhi')) }" id="ul{{i}}"
+                                class="scripture-column-left">
+                                <li class="s-padched gurbani-text" *ngIf="isPadChedShow">
+                                    <span *ngFor="let word of scripture.Scripture;"
+                                    style="cursor: pointer;font-size: 36px !important"
+                                    [popover]="wordDetailPopover" popoverTitle="{{word}}"
+                                    #wordDetailPopObj="bs-popover" [outsideClick]="true" placement="right"
+                                    (onShown)="wordDetail(word)">
+                                    <!-- Template used for show word detail -->
+                                    <ng-template #wordDetailPopover>
+                                        <app-loader [isRunning]="isGetWordDetailApiRunning"></app-loader>
+                                        <div *ngIf="selectedWordDetail['pun_mahankosh']">
+                                            <h4>
+                                                Mahan Kosh Encyclopedia
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['pun_mahankosh']"></p>
+                                        </div>
+                                        <div *ngIf="selectedWordDetail['pun_kosh']">
+                                            <h4>
+                                                SGGS Gurmukhi-Gurmukhi Dictionary
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['pun_kosh']"></p>
+                                        </div>
+                                        <div *ngIf="selectedWordDetail['eng_dic_sri']">
+                                            <h4>
+                                                SGGS Gurmukhi-English Dictionary
+                                            </h4>
+                                            <p [innerHtml]="selectedWordDetail['eng_dic_sri']"></p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a class="btn btn-primary btn-sm" [routerLink]="['/worddetail']"
+                                            [queryParams]="{ lang: 'gurmukhi', value: selectedWordDetail['word'] }"
+                                            target="_blank">
+                                            View
+                                            </a>
+                                            <button class="btn btn-default btn-sm" style="margin-left: 10px;"
+                                                (click)="wordDetailPopObj.hide()">
+                                            close
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                    {{word}}
+                                    </span>
+                                </li>
+                                <li class="s-lareevaar gurbani-text" style="font-size: 18px"
+                                    *ngIf="isLareevaarShow">
+                                    {{scripture.ScriptureOriginal}}
+                                </li>
+                                <li class="s-roman" style="font-size: 18px" *ngIf="isRomanShow">
+                                    {{scripture.ScriptureRoman}}
+                                </li>
+                                <li class="s-roman">
+                                    {{scripture.translation.KhojgurbaaniEnglish}}
+                                </li>
+                                <li *ngIf="isadmin && !scripture.translation.KhojgurbaaniEnglish">
+                                    <div style="display: flex;justify-content:flex-end"><button
+                                        class="btn btn-primary add"><i class="fa fa-plus"
+                                        aria-hidden="true"></i></button></div>
+                                </li>
+                                <li *ngIf="scripture.translation.KhojgurbaaniEnglish && isadmin">
+                                    <div style="display: flex;justify-content:flex-end"><button
+                                        class="btn btn-primary add"
+                                        data-id="{{scripture.translation.KhojgurbaaniEnglish}}"><i
+                                        class="fa fa-edit" aria-hidden="true"></i></button></div>
+                                </li>
+                                <li style="display: none" id="comm2">
+                                    <div class="d-flex">
+                                        <!-- <input type="text" class="form-control flex-grow-1"/> -->
+                                        <div class="form-inline d-flex" style="width: 100%">
+                                            <input class="form-control flex-grow-1"
+                                                value="{{scripture.translation.KhojgurbaaniEnglish}}"
+                                                id="txt{{scripture.id}}" type="search" id="searchtextbox">
+                                        </div>
+                                        <button class="btn btn-primary" (click)="save(scripture.id,loader)"><i
+                                            class="fa fa-check" aria-hidden="true"></i></button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xl-6 col-12 plg">
+        <div class="shadow" style="border: solid 1px #b7b7b7;height: 100%;">
+            <div class="pt-4 pb-4"
+                style="color:black;min-height: 71px;font-size:1.5em;padding-left: 1em;background: #f7f7f7">
+                Translation
+            </div>
+            <div class="row" style="padding-left:1em;">
+                <!-- <div class="scriptures-conatainer" style="width: 100%;
+                    ">
+                            <ul class="scriptures" style="padding-top:27px">
+                                <li  class="scripture-item" style="min-height: 11.8vh;display: flex;
+                                min-height: 18vh;padding: 15px 15px 8px 15px;width: 97%;
+                    " *ngFor="let scripture of shabadData['scriptures'];  let i = index">
+                                            {{scripture.translation.KhojgurbaaniEnglish}}
+                                </li>
+                            </ul>
+                        
+                        </div> -->
+                <div class="scriptures-conatainer" style="width: 97%;">
+                    <ul class="scriptures" style="padding-top:25px">
+                        <li class="scripture-item"
+                            *ngFor="let scripture of shabadData['scriptures'];  let i = index">
+                            <!-- scriptures style="min-height: 18vh;" -->
+                            <ul [ngClass]="{'highlight': (scripture['is_highlight']
+                                && (highlightedScripture['language'] == 'english'
+                                || highlightedScripture['language'] == 'roman'
+                                || highlightedScripture['language'] == 'gurmukhi')) }" id="ul2{{i}}"
+                                class="scripture-column-left">
+                                <li class="s-roman" style="font-size: 18px" *ngIf="scripture.translation.KhojgurbaaniEnglish">
+                                    {{scripture.translation.KhojgurbaaniEnglish}}
+                                </li>
+                                <li class="s-roman" style="font-size: 18px" *ngIf="!scripture.translation.KhojgurbaaniEnglish && i==0">No translation exists for this Sabad</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="commentaryArea" class="row mt-4 plg2" style="width:1131px" *ngIf="punjabipodcast || englishpodcast || commentary_available || add_commentary">
+            <div class="col-12 plg shadow" style="border: solid 1px #b7b7b7;">
+                <div style="display: flex;">
+                    <div style="color:black;font-size:2em;margin-top:20px;width: 300px;" class="title">Commentary</div>
+                    <div *ngIf="punjabipodcast || englishpodcast" style="height:50px;margin-left: 550px;">
+                        <div style="display: flex;float:right; font-size: 13px;">
+                            <div style="width: 10em;
+                            margin: 10px;
+                            padding: 10px;
+                            border-radius: 50px;
+                            background: #0c79be;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;color:white;cursor: pointer;" (click)="play(1)"
+                            title="play podcast in punjabi" *ngIf="punjabipodcast"><img src="assets/Commentary play.PNG"
+                                class="mr-2">Gurmukhi
+                            </div>
+                            <div style="width: 10em;
+                            margin: 10px;
+                            border-radius: 50px;
+                            padding: 10px;
+                            background: #58abdf;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;color:white;cursor: pointer;" title="play podcast in english"
+                            (click)="play(2)" *ngIf="englishpodcast"><img src="assets/Commentary play.PNG"
+                                class="mr-2">English
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul *ngIf="add_commentary" class="mt-4">
+                    <li>
+                        <div style="display: flex;justify-content:flex-end;flex-wrap: wrap">
+                            <button class="btn btn-primary add"><i class="fa fa-plus mr-2"
+                                aria-hidden="true"></i>{{commentary?"Edit Commentary":"Add commentary"}}</button>
+                            <button class="btn btn-primary" style="margin-left:1vw"
+                                (click)="openModalFileSubmit(content,1)"><i class="fa fa-plus mr-2"
+                                aria-hidden="true"></i>Add punjabi podcast</button>
+                            <button class="btn btn-primary" style="margin-left:1vw"
+                                (click)="openModalFileSubmit(content,2)"><i class="fa fa-plus mr-2" aria-hidden="true"></i>
+                            Add English podcast</button>
+                        </div>
+                    </li>
+                    <li style="display: none;margin-top:1vh" id="val">
+                        <div class="d-flex">
+                            <!-- <input type="text" class="form-control flex-grow-1"/> -->
+                            <div class="form-inline d-flex" style="width: 100%">
+                                <!-- <textarea class="form-control flex-grow-1" id='commentary' type="search" placeholder="add commentary" rows="5"></textarea> -->
+                                <quill-editor [styles]="{height: 'fit-content'}" style="width: 99%;" [(ngModel)]="htmlText"
+                                placeholder="Type your commentary here..."></quill-editor>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" (click)="saveCommentary(loader)"
+                            style="margin-top:1%">{{commentary?"Update":"Add"}}</button>
+                        <button class="btn btn-primary" (click)="cancel()"
+                            style="margin-top:1%;margin-left:1%">Cancel</button>
+                    </li>
+                </ul>
+            <div style="padding-top:2em;padding-bottom: 2em;
+                text-align: justify !important;" id="comm" [innerHtml]="commentary">
+            </div>
+            
+        <div *ngIf="!showallcomment" style="margin-top:2%">
+            <div class="comments-container" *ngIf="lastcomment && approve_comment_permission">
+                <div class="comments-section" style="padding-left:2%">
+                    <div class="comment">
+                        <div class="comment_avatar">
+                            <img src="assets/images/default.png" alt="DP">
+                        </div>
+                        <div class="comment_detail">
+                            <span class="name">
+                            {{lastcomment.name}}
+                            </span>
+                            <div class="comment_desc" *ngIf="showid!=lastcomment.id"
+                            style="padding-top:10px !important" [innerHTML]="lastcomment.comment">
+                        </div>
+                        <div *ngIf="showid==lastcomment.id">
+                            <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                            [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                            name="something"></quill-editor>
+                            <button class="btn btn-primary" (click)="update(1,loader)">Update</button>
+                        </div>
+                        <div class="d-flex">
+                            <div class="subheading"
+                            style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                            *ngIf="add_comment_permission" (click)="reply(lastcomment.id)">Reply
+                        </div>
+                        <div class="subheading" style="margin-left: 1%;">{{gettime(lastcomment.created_at)}}
+                        </div>
+                    </div>
+                    <div *ngIf="replyid==lastcomment.id">
+                        <div class="form-group">
+                            <quill-editor id="reply" style="width: 99%;"
+                            [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                            name="something">
+                            </quill-editor>
+                        </div>
+                        <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                        Reply</button>
+                        <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+                    </div>
+                    <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                        <button class="btn btn-primary btn-sm" *ngIf="lastcomment.user_id!=uid && item.approve_status!='1'"
+                        style="margin-left:1%"
+                        (click)="approve(lastcomment.id,1,loader,lastcomment.approve_status)">{{lastcomment.approve_status=="1"?"Reject":"Approve"}}</button>
+                        <!-- <button *ngIf="edit_own_comment" class="btn btn-success btn-sm" style="margin-left:1%"
+                            (click)="edit(lastcomment.comment,lastcomment.id)">Edit</button> -->
+                        <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                            (click)="delete(lastcomment.id,1,loader)">Delete</button>
+                    </div>
+                </div>
+                <div class="comments-container">
+                    <div class="comments-section" style="padding-left:2%">
+                        <div class="comment" *ngFor="let item of lastcomment.replies">
+                            <div class="comment_avatar">
+                                <img src="assets/images/default.png" alt="DP">
+                            </div>
+                            <div class="comment_detail">
+                                <span class="name">
+                                {{item.name}}
+                                </span>
+                                <div class="comment_desc" *ngIf="showid!=item.id"
+                                style="padding-top:10px !important" [innerHTML]="item.comment">
+                            </div>
+                            <div *ngIf="showid==item.id">
+                                <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                                [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                                name="something"></quill-editor>
+                                <button class="btn btn-primary"
+                                    (click)="update(2,loader)">Update</button>
+                            </div>
+                            <div class="d-flex">
+                                <!-- <div class="subheading" style="padding-left:0%;padding-right:1% !important;cursor: pointer;"*ngIf="iscommentshow"
+                                    (click)="reply(item.id)">Reply</div> -->
+                                <div class="subheading" style="margin-left:1px">{{gettime(item.created_at)}}</div>
+                            </div>
+                            <div *ngIf="replyid==item.id">
+                                <div class="form-group">
+                                    <quill-editor id="reply" style="width: 99%;"
+                                    [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                                    name="something"></quill-editor>
+                                </div>
+                                <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                                Reply</button>
+                                <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+                            </div>
+                            <div class="d-flex justify-content-end" *ngIf="iscommentshow">
+                                <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                                *ngIf="item.user_id!=uid && item.approve_status!='1'"
+                                (click)="approve(item.id,2,loader,item.approve_status)"
+                                >{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                                <!-- <button class="btn btn-success btn-sm" style="margin-left:1%"
+                                    (click)="edit(item.comment,item.id,2,loader)">Edit</button> -->
+                                <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                                    (click)="delete(item.id,2,loader)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        <!-- user-->
+        <div class="comments-container" *ngIf="acceptedlastcomment && !approve_comment_permission">
+            <div class="comments-section" style="padding-left:2%">
+                <div class="comment">
+                    <div class="comment_avatar">
+                        <img src="assets/images/default.png" alt="DP">
+                    </div>
+                    <div class="comment_detail">
+                        <span class="name">
+                        {{acceptedlastcomment.name}}
+                        </span>
+                        <div class="comment_desc" *ngIf="showid!=lastcomment.id"
+                        style="padding-top:10px !important" [innerHTML]="acceptedlastcomment.comment">
+                    </div>
+                    <div *ngIf="showid==lastcomment.id">
+                        <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                        [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                        name="something"></quill-editor>
+                        <button class="btn btn-primary" (click)="update(1,loader)">Update</button>
+                    </div>
+                    <div class="d-flex">
+                        <div class="subheading"
+                        style="padding-left:0%;padding: right 1em !important;cursor: pointer;"
+                        *ngIf="add_comment_permission" (click)="reply(acceptedlastcomment.id)">Reply
+                    </div>
+                    <div class="subheading"
+                    style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                    *ngIf="(edit_own_comment && acceptedlastcomment.user_id == uid) || uroleid == 3 || uroleid == 4"
+                    (click)="edit(acceptedlastcomment.comment,acceptedlastcomment.id)">Edit
+                </div>
+                <div class="subheading" style="margin-left:1px">{{gettime(acceptedlastcomment.created_at)}}</div>
+            </div>
+            <div *ngIf="replyid==acceptedlastcomment.id">
+                <div class="form-group">
+                    <quill-editor id="reply" style="width: 99%;"
+                    [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                    name="something">
+                    </quill-editor>
+                </div>
+                <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                Reply</button>
+                <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+            </div>
+            <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                    (click)="approve(last_id,1,loader,item.approve_status)" *ngIf="item.approve_status!='1'">{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                <!-- <button class="btn btn-success btn-sm" style="margin-left:1%"
+                    (click)="edit(lastcomment.comment,lastcomment.id)">Edit</button> -->
+                <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                    (click)="delete(last_id,1,loader)">Delete</button>
+            </div>
+        </div>
+        <div class="comments-container">
+            <div class="comments-section" style="padding-left:2%">
+                <div class="comment" *ngFor="let item of acceptedlastcomment.replies">
+                    <div class="comment_avatar">
+                        <img src="assets/images/default.png" alt="DP">
+                    </div>
+                    <div class="comment_detail">
+                        <span class="name">
+                        {{item.name}}
+                        </span>
+                        <div class="comment_desc" *ngIf="showid!=item.id"
+                        style="padding-top:10px !important" [innerHTML]="item.comment">
+                    </div>
+                    <div *ngIf="showid==item.id">
+                        <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                        [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                        name="something"></quill-editor>
+                        <button class="btn btn-primary"
+                            (click)="update(2,loader)">Update</button>
+                    </div>
+                    <div class="d-flex">
+                        <!-- <div class="subheading" style="padding-left:0%;padding-right:1% !important;cursor: pointer;"*ngIf="iscommentshow"
+                            (click)="reply(item.id)">Reply</div> -->
+                        <div class="subheading"
+                        style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                        *ngIf="(edit_own_comment && acceptedlastcomment.user_id == uid) || uroleid == 3 || uroleid == 4"
+                        (click)="edit(acceptedlastcomment.comment,acceptedlastcomment.id)">
+                        Edit
+                    </div>
+                    <div class="subheading" style="margin-left:1px">{{gettime(item.created_at)}}</div>
+                </div>
+                <div *ngIf="replyid==item.id">
+                    <div class="form-group">
+                        <quill-editor id="reply" style="width: 99%;"
+                        [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                        name="something"></quill-editor>
+                    </div>
+                    <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                    Reply</button>
+                    <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+                </div>
+                <div class="d-flex justify-content-end" *ngIf="iscommentshow">
+                    <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                        (click)="approve(item.id,2,loader,item.approve_status)" *ngIf="item.approve_status!='1'">{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                    <!-- <button class="btn btn-success btn-sm" style="margin-left:1%"
+                        (click)="edit(item.comment,item.id,2,loader)">Edit</button> -->
+                    <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                        (click)="delete(item.id,2,loader)">Delete</button>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div *ngIf="showallcomment">
+            <div class="comments-container" id="approve" *ngIf="approve_comment_permission">
+                <div class="comments-section" style="padding-left:2%">
+                    <div class="comment" *ngFor="let item of commentlist">
+                        <div class="comment_avatar">
+                            <img src="assets/images/default.png" alt="DP">
+                        </div>
+                        <div class="comment_detail">
+                            <span class="name">
+                            {{item.name}}
+                            </span>
+                            <div class="comment_desc" *ngIf="showid!=item.id" style="padding-top:10px !important"
+                            [innerHTML]="item.comment">
+                        </div>
+                        <div *ngIf="showid==item.id">
+                            <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                            [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                            name="something"></quill-editor>
+                            <button class="btn btn-primary" (click)="update(1,loader)">Update</button>
+                        </div>
+                        <div class="d-flex">
+                            <div class="subheading"
+                            style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                            *ngIf="add_comment_permission" (click)="reply(item.id)">Reply
+                        </div>
+                        <div class="subheading"
+                        style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                        *ngIf="(edit_own_comment && item.user_id == uid) || uroleid == 3 || uroleid == 4"
+                        (click)="edit(item.comment,item.id)">Edit
+                    </div>
+                    <div class="subheading" style="margin-left:1px">{{gettime(item.created_at)}}</div>
+                </div>
+                <div *ngIf="replyid==item.id">
+                    <div class="form-group">
+                        <quill-editor id="reply" style="width: 99%;"
+                        [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                        name="something">
+                        </quill-editor>
+                    </div>
+                    <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                    Reply</button>
+                    <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+                </div>
+                <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                    <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                    *ngIf="item.user_id!=uid && item.approve_status!='1'"
+                    (click)="approve(item.id,1,loader,item.approve_status)" >{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                    <!-- <button class="btn btn-success btn-sm" style="margin-left:1%"
+                        (click)="edit(item.comment,item.id,1,loader)">Edit</button> -->
+                    <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                        (click)="delete(item.id,1,loader)">Delete</button>
+                </div>
+            </div>
+            <div class="comments-container">
+                <div class="comments-section" style="padding-left:2%">
+                    <div class="comment" *ngFor="let item of item.replies">
+                        <div class="comment_avatar">
+                            <img src="assets/images/default.png" alt="DP">
+                        </div>
+                        <div class="comment_detail">
+                            <span class="name">
+                            {{item.name}}
+                            </span>
+                            <div class="comment_desc" *ngIf="showid!=item.id"
+                            style="padding-top:10px !important" [innerHTML]="item.comment">
+                        </div>
+                        <div *ngIf="showid==item.id">
+                            <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                            [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                            name="something"></quill-editor>
+                            <button class="btn btn-primary"
+                                (click)="update(2,loader)">Update</button>
+                        </div>
+                        <div class="d-flex">
+                            <!-- <div class="subheading" style="padding-left:0%;padding-right:1% !important;cursor: pointer;">Reply</div> -->
+                            <div class="subheading"
+                            style="padding-left:0%;padding-right:1% !important;cursor: pointer;"
+                            *ngIf="(edit_own_comment && item.user_id == uid) || uroleid == 3 || uroleid == 4"
+                            (click)="edit(item.comment,item.id)">Edit
+                        </div>
+                        <div class="subheading" style="margin-left:1px">{{gettime(item.created_at)}}</div>
+                    </div>
+                    <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                        <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                        *ngIf="item.user_id!=uid && item.approve_status!='1'"
+                        (click)="approve(item.id,2,loader,item.approve_status)">{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                        <!-- <button class="btn btn-success btn-sm" style="margin-left:1%"
+                            (click)="edit(item.comment,item.id,2,loader)">Edit</button> -->
+                        <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                            (click)="delete(item.id,2,loader)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- user-->
+        <div class="comments-container"  *ngIf="!approve_comment_permission">
+            <div class="comments-section" style="padding-left:2%">
+
+                <div class="comment" *ngFor="let item of acceptedcommentlist">
+                    <div class="comment_avatar">
+                        <img src="assets/images/default.png" alt="DP">
+                    </div>
+                    <div class="comment_detail">
+                        <span class="name">
+                        {{item.name}}
+                        </span>
+                        <div class="comment_desc" *ngIf="showid!=item.id" style="padding-top:10px !important"
+                        [innerHTML]="item.comment">
+                    </div>
+                    <div *ngIf="showid==item.id">
+                        <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                        [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                        name="something"></quill-editor>
+                        <button class="btn btn-primary" (click)="update(1,loader)">Update</button>
+                    </div>
+                    <div class="d-flex">
+                        <div class="subheading"
+                        style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                        *ngIf="edit_own_comment" (click)="reply(item.id)">Reply
+                    </div>
+                    <div class="subheading"
+                    style="padding-left:0%;padding-right:1em !important;cursor: pointer;"
+                    *ngIf="(edit_own_comment && item.user_id == uid) || uroleid == 3 || uroleid == 4"
+                    (click)="edit(item.comment,item.id)">Edit
+                </div>
+                <div class="subheading" style="margin-left: 1%;">{{gettime(item.created_at)}}</div>
+            </div>
+            <div *ngIf="replyid==item.id">
+                <div class="form-group">
+                    <quill-editor id="reply" style="width: 99%;"
+                    [(ngModel)]="htmlReply" placeholder="Type your comment here."
+                    name="something">
+                    </quill-editor>
+                </div>
+                <button class="btn btn-primary" (click)="addreply(replyid,loader)">Post
+                Reply</button>
+                <button style="margin-left:20px;border:none;background-color:#c82333" class="btn btn-primary" (click)="replyid = null">X</button>
+            </div>
+            <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                    (click)="approve(item.id,1,loader,item.approve_status)" ng-if="item.approve_status!='1'">{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                <button class="btn btn-success btn-sm" style="margin-left:1%"
+                *ngIf="(edit_own_comment) || uroleid == 3 || uroleid == 4"
+                (click)="edit(item.comment,item.id,1,loader)">Edit</button>
+                <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                    (click)="delete(item.id,1,loader)">Delete</button>
+            </div>
+        </div>
+        <div class="comments-container">
+            <div class="comments-section" style="padding-left:2%">
+                <div class="comment" *ngFor="let item of item.replies">
+                    <div class="comment_avatar">
+                        <img src="assets/images/default.png" alt="DP">
+                    </div>
+                    <div class="comment_detail">
+                        <span class="name">
+                        {{item.name}}
+                        </span>
+                        <div class="comment_desc" *ngIf="showid!=item.id"
+                        style="padding-top:10px !important" [innerHTML]="item.comment">
+                    </div>
+                    <div *ngIf="showid==item.id">
+                        <quill-editor [styles]="{height: '50px'}" style="width: 99%;"
+                        [(ngModel)]="htmlTextedit" placeholder="Type your comment here."
+                        name="something"></quill-editor>
+                        <button class="btn btn-primary"
+                            (click)="update(2,loader)">Update</button>
+                    </div>
+                    <div class="d-flex">
+                        <!-- <div class="subheading" style="padding-left:0%;padding-right:1% !important;cursor: pointer;">Reply</div> -->
+                        <div class="subheading" style="margin-left:1px">{{gettime(item.created_at)}}</div>
+                    </div>
+                    <div class="d-flex justify-content-end" *ngIf="approve_comment_permission">
+                        <button class="btn btn-primary btn-sm" style="margin-left:1%"
+                            (click)="approve(item.id,2,loader,item.approve_status)" ng-if="item.approve_status!='1'">{{item.approve_status=="1"?"Reject":"Approve"}}</button>
+                        <button class="btn btn-success btn-sm" style="margin-left:1%"
+                        *ngIf="edit_own_comment || uroleid == 3 || uroleid == 4"
+                        (click)="edit(item.comment,item.id,2,loader)">Edit</button>
+                        <button class="btn btn-danger btn-sm" style="margin-left:1%"
+                            (click)="delete(item.id,2,loader)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- <div *ngIf="commentlist.length>=2 && add_comment_permission" class="row d-flex justify-content-center"
+            style="margin-top: 2%;">
+            <a (click)="showallcomment = !showallcomment" style="font-size: 0.8em;font-weight:500"
+                style="cursor: pointer;text-decoration: underline;color:blue">{{showallcomment?"Hide comments":"View All Comments"}}</a>
+            </div>
+            
+            <div *ngIf="acceptedcommentlist.length>=2 && !add_comment_permission" class="row d-flex justify-content-center"
+            style="margin-top: 2%;">
+            <a (click)="showallcomment = !showallcomment" style="font-size: 0.8em;font-weight:500"
+                style="cursor: pointer;text-decoration: underline;color:blue">{{showallcomment?"Hide comments":"View All Comments"}}</a>
+            </div> -->
+
+
+
+
+            <div class="comment comment-box row d-flex mb-3" *ngIf="!replyid && add_comment_permission && commentary_available"
+                style="padding-left:2em;padding-right:2em">
+                <div class="comment_avatar">
+                    <img src="assets/images/default.png" style="width:50px;height:50px" alt="DP">
+                </div>
+                <div class="comment_detail" style="flex:1">
+                    <form class="form-outer-wrap">
+                        <div class="form-group">
+                            <quill-editor style="width: 99%;" [(ngModel)]="htmlText2"
+                            placeholder="Type your comment here." name="something"></quill-editor>
+                        </div>
+                        <button class="btn btn-primary" (click)="addcomment()">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        </div>
+
+        <div class="row" style="padding-top:2em">
+        </div>
+
+    </div>
+
+</section> 
+
+<!-- <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">{{msg}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <div id="fileupload" *ngIf="!fileupload">
+                    <div class="custom-file">
+                        <input type="file" (change)="handleFileInput($event.target.files)" class="custom-file-input" id="validatedCustomFile" required>
+                        <label class="custom-file-label" for="validatedCustomFile" id="lbl">Choose file...</label>
+                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                    </div><br/>
+                    <div class="row" style="margin-top:2vh;margin-left:0.5vw">
+                       <button class="btn btn-primary">Submit</button>
+                    </div>
+            </div>
+            <div id="progress" *ngIf="fileupload">
+                    <p><ngb-progressbar type="success" [value]="progressval" [striped]="true" [animated]="true">25</ngb-progressbar></p>
+            </div>
+    </div>
+    </ng-template>
+    -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{msg}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-danger" *ngIf="err">{{successmsg}}</div>
+        <label>Select Language</label>
+        <ng-select style="margin-bottom: 1vh" [(ngModel)]="selectedLg">
+        <ng-option *ngFor="let item of lg" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+        <label>Select Source</label>
+        <ng-select [(ngModel)]="selectedType">
+        <ng-option *ngFor="let item of type" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select><br />
+        <div class="custom-file" style="margin-bottom: 3vh" *ngIf="selectedType==1 || selectedType==0">
+            <input type="file" [ngClass]="{'is-invalid': fileinvalid}" (change)="handleFileInput($event.target.files,1)"
+            class="custom-file-input" id="validatedCustomFile" required>
+            <label class="custom-file-label" for="validatedCustomFile" id="lbl">Choose audio file</label>
+            <div class="invalid-feedback">{{invalidmsg}}</div>
+        </div>
+        <div class="input-group" *ngIf="selectedType==4">
+            <input type="text" class="form-control" (input)="onSearchChange($event.target.value)"
+            [ngClass]="{'is-invalid': exturlinvalid}" [(ngModel)]="mytxturl" placeholder="enter external url">
+            <div class="invalid-feedback">
+                Enter url
+            </div>
+            <br /><br /><br />
+        </div>
+        <div class="custom-file" style="margin-bottom: 3vh">
+            <input type="file" [ngClass]="{'is-invalid': fileinvalid2}"
+            (change)="handleFileInput($event.target.files,2)" class="custom-file-input" id="validatedCustomFile"
+            required>
+            <label class="custom-file-label" for="validatedCustomFile" id="lbl2">Choose image file</label>
+            <div class="invalid-feedback">{{invalidmsg2}}</div>
+        </div>
+        <br />
+        <label>Select Shabadid</label>
+        <ng-select [(ngModel)]="selectedShabad">
+        <ng-option *ngFor="let item of shabadlist" [value]="item.id">{{item.id}}</ng-option>
+        </ng-select>
+        <a (click)="open" href="./search" target="_blank">Find Shabad Id</a>
+        <br /><br />
+        <div class="input-group">
+            <input type="text" class="form-control" id="inputtxt" [ngClass]="{'is-invalid': nameinvalid}"
+            [(ngModel)]="mytitle" placeholder="Podcast title">
+            <div class="invalid-feedback">
+                Enter Podcast title
+            </div>
+        </div>
+        <br />
+        <div class="input-group">
+            <textarea class="form-control" id="inputtxt" [ngClass]="{'is-invalid': descinvalid}" [(ngModel)]="mydesc"
+            placeholder="Podcast Describtion"></textarea>
+            <div class="invalid-feedback">
+                Enter Podcast description
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-6">
+                <label>Select Categories</label>
+                <ng-select [multiple]="true" [(ngModel)]="selectedCategory">
+                <ng-option *ngFor="let item of categorieslist" [value]="item.id">{{item.name}}</ng-option>
+                </ng-select><br />
+            </div>
+            <div class="col-6">
+                <label>Select Sub Categories</label>
+                <ng-select [multiple]="true" [(ngModel)]="selectedSubCategory">
+                <ng-option *ngFor="let item of subcategorylist" [value]="item.id">{{item.name}}</ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row" style="margin-top:2vh;margin-left:0.5vw">
+            <button class="btn btn-primary" (click)="upload(loader)">add</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #loader let-modal>
+    <div class="modal-body">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="showupload" style="margin-top:1vh">
+            <span>{{uploaddata}}</span>
+        </div>
+    </div>
+</ng-template>
+<ng-template #share let-modal>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="display: flex;justify-content:center">
+        <share-buttons [include]="['facebook','twitter','print']" [show]="5" [autoSetMeta]="false"
+        (opened)="open($event)"></share-buttons>
+        <button class="sb-wrapper sb-show-icon" (click)="openModal(export)"
+            style="background: #607D8B; font-size: 14px;margin-top: .3125em;border-radius: 4px;color: white">
+        <i class="fa fa-link" style="font-size: 14px" aria-hidden="true"></i>
+        </button>
+    </div>
+</ng-template>
+<ng-template #export let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Export</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox11" value="option1"
+                (change)="CheckValue2($event,'Scripture','Gurmukhi-Pad Ched',1)">
+            <label class="form-check-label" for="inlineCheckbox11">Gurmukhi-Pad Ched</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+                (change)="CheckValue2($event,'ScriptureOriginal','Gurmukhi-Lareevaar',1)" id="inlineCheckbox2"
+                value="option2">
+            <label class="form-check-label" for="inlineCheckbox2">Gurmukhi-Lareevaar</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                (change)="CheckValue2($event,'ScriptureRoman','Roman Script',1)" value="option3">
+            <label class="form-check-label" for="inlineCheckbox3">Roman Script</label>
+        </div>
+        <!-- <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" (change)="CheckValue($event,'Translation','Translation',1)" value="option3">
+            <label class="form-check-label" for="inlineCheckbox3">Translation</label>
+            </div> -->
+        <div class="h5" style="padding-top:1.5em;padding-bottom:1em">English Translation</div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value=""
+                (change)="CheckValue2($event,'ManmohanSinghEnglish','Bhai Manmohan Singh',2)" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+            Bhai Manmohan Singh
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value=""
+                (change)="CheckValue2($event,'SantSinghKhalsaEnglish','Dr. Sant Singh Khalsa',2)" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+            Dr. Sant Singh Khalsa
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value=""
+                (change)="CheckValue2($event,'KhojgurbaaniEnglish','KhojgurbaaniEnglish',2)" id="defaultCheck3">
+            <label class="form-check-label" for="defaultCheck3">
+            New Translation
+            </label>
+        </div>
+        <div class="h5" style="padding-top:1.5em;padding-bottom:1em">Commentary</div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value=""
+                (change)="CheckValue2($event,'ManmohanSinghEnglish','Bhai Manmohan Singh',3)" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+            Commentary
+            </label>
+        </div>
+        <div class="form-group col-md-4" style="margin-top:1em">
+            <select id="inputState" (change)="ChangeValue2($event)" class="form-control">
+                <option value="section">Section</option>
+                <option value="line">Line</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <select id="inputState" class="form-control">
+                <option>TXT</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" (click)="submit()" style="margin-top:0.5em">Export</button>
+    </div>
+</ng-template>

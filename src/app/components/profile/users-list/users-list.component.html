@@ -1,0 +1,51 @@
+<h2 class="page-title">Users</h2>
+<table class="table table-kg">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Details</th>
+			<th>Status</th>
+			<th class="text-right">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<ng-container *ngFor="let user of users">
+			<tr *ngIf="!user['is_hide']">
+					<td>{{user['name']}}</td>
+					<!-- <td>{{user['role']}}</td> -->
+					<td>
+						<span class="email">{{user['email']}} </span>
+						{{ (user['city']) ? user['city']+', ' : ''}} {{ (user['state']) ? user['state']+', ' : ''}} {{ (user['country']) ? user['country']+'' : ''}}
+					</td>
+					<td class="">
+						<span 
+							*ngIf="!user['is_block'] && !user['is_active']">
+							<span class="status-dot status-yellow"></span> Not Verified
+						</span>
+						<span 
+							*ngIf="!user['auto_approve'] && !user['is_block'] && user['is_active']">
+							<span class="status-dot status-green"></span> Active
+						</span>
+						<span 
+							*ngIf="user['auto_approve'] && !user['is_block'] && user['is_active']">
+							<span class="status-dot status-blue"></span> Trusted
+						</span>
+						<span 
+							*ngIf="user['is_block']">
+							<span class="status-dot status-red"></span> Blocked
+						</span>
+					</td>
+					<td class="text-right">
+						<a [routerLink]="['/my-account/user/edit', user['id']]">
+							<fa name="pencil" fixed='true'></fa>
+						</a>
+					</td>
+			</tr>
+		</ng-container>
+		<tr>
+			<td colspan="4"
+				class="text-center"
+				*ngIf="users.length == 0">No user found</td>
+		</tr>
+	</tbody>
+</table>

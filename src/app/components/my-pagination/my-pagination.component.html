@@ -1,0 +1,65 @@
+
+<ul class="pagination" ng-reflect-klass="pagination" ng-reflect-ng-class="">
+    <li class="pagination-first page-item" (click)="setCurrentPage(1)"><a class="page-link borderNone">First</a></li>
+    <li class="pagination-prev page-item" (click)="setCurrentPage(currentPage - 1)"><a class="page-link borderNone">‹</a></li>
+    <li *ngIf="numPages > 0" [class]="currentPage == 1?'pagination-page page-item active':'pagination-page page-item'" (click)="setCurrentPage(1)">
+        <a class="page-link borderNone">1</a>
+    </li>
+    <li *ngIf="numPages > 1 && (currentPage < 3 || numPages <= 5)" [class]="currentPage == 2?'pagination-page page-item active':'pagination-page page-item'" (click)="setCurrentPage(2)">
+        <a class="page-link borderNone">2</a>
+    </li>
+    <li *ngIf="numPages > 2 && (currentPage < 3 || numPages <= 5)" [class]="currentPage == 3?'pagination-page page-item active':'pagination-page page-item'" (click)="setCurrentPage(3)">
+        <a class="page-link borderNone">3</a>
+    </li>
+
+    <li *ngIf="numPages > 5 && currentPage > 3 && currentPage <= numPages / 2" class="pagination-page page-item">
+        <a class="page-link borderNone">...</a>
+    </li>
+    
+    <li *ngIf="numPages > 5 && currentPage > 2 && currentPage <= numPages / 2" class="pagination-page page-item" (click)="setCurrentPage(currentPage - 1)">
+        <a class="page-link borderNone">{{ currentPage - 1 }}</a>
+    </li>
+    <li *ngIf="numPages > 5 && currentPage > 2 && currentPage <= numPages / 2" class="pagination-page page-item active">
+        <a class="page-link borderNone">{{ currentPage }}</a>
+    </li>
+    <li *ngIf="numPages > 5 && currentPage > 2 && currentPage <= numPages / 2" class="pagination-page page-item"  (click)="setCurrentPage(currentPage + 1)">
+        <a class="page-link borderNone">{{ currentPage + 1 }}</a>
+    </li>
+
+    <li *ngIf="currentPage - 1 != 2 && numPages > 5 || currentPage <= numPages / 2 && numPages > 5" class="pagination-page page-item">
+        <a class="page-link borderNone">...</a>
+    </li>
+    
+    <li *ngIf="numPages > 5 && currentPage < numPages - 1 && currentPage > numPages / 2" class="pagination-page page-item" (click)="setCurrentPage(currentPage - 1)">
+        <a class="page-link borderNone">{{ currentPage - 1 }}</a>
+    </li>
+    <li *ngIf="numPages > 5 && currentPage < numPages - 1 && currentPage > numPages / 2" class="pagination-page page-item active">
+        <a class="page-link borderNone">{{ currentPage }}</a>
+    </li>
+
+    <li *ngIf="numPages > 5 && currentPage + 1 < numPages - 1 && currentPage > numPages / 2" class="pagination-page page-item"  (click)="setCurrentPage(currentPage + 1)">
+        <a class="page-link borderNone">{{ currentPage + 1 }}</a>
+    </li>
+
+    <li *ngIf="numPages > 5 && currentPage + 1 < numPages - 1 && currentPage > numPages / 2" class="pagination-page page-item">
+        <a class="page-link borderNone">...</a>
+    </li>
+
+    <li *ngIf="numPages > 5 && currentPage >= numPages - 1" 
+        [class]="currentPage == numPages - 2?'pagination-page page-item active':'pagination-page page-item'"
+        (click)="setCurrentPage(numPages-2)">
+        <a class="page-link borderNone">{{ numPages - 2 | number:'1.0-0' }}</a>
+    </li>
+    <li *ngIf="numPages == 5 || numPages > 5 && currentPage >= numPages - 2" 
+        [class]="currentPage == numPages - 1?'pagination-page page-item active':'pagination-page page-item'"
+        (click)="setCurrentPage(numPages-1)">
+        <a class="page-link borderNone">{{ numPages - 1 | number:'1.0-0' }}</a>
+    </li>
+    <li *ngIf="numPages > 3" 
+        [class]="currentPage == numPages?'pagination-page page-item active':'pagination-page page-item'"
+        (click)="setCurrentPage(numPages)">
+        <a class="page-link borderNone">{{ numPages | number:'1.0-0' }}</a>
+    </li>
+    <li class="pagination-next page-item" (click)="setCurrentPage(currentPage + 1)"><a class="page-link borderNone">›</a></li>
+    <li class="pagination-last page-item" (click)="setCurrentPage(numPages)"><a class="page-link borderNone">Last</a></li>
+</ul>

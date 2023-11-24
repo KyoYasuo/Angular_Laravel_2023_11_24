@@ -1,0 +1,36 @@
+<h2 class="page-title">Authors</h2>
+<table class="table table-kg">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Language</th>
+			<th>Status</th>
+			<th>Default</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let author of translationAuthors">
+			<td>{{author['Author']}}</td>
+			<td>{{author['Language']}}</td>
+			<td>
+				<span class="kg-link" (click)="changeStatus(author)">
+					<span class="status-dot"
+						[ngClass]="(author['Active']) ? 'status-green' : 'status-red'"></span>
+					{{ (author['Active']) ? 'Enable' : 'Disabled'}}
+				</span>
+			</td>
+			<td>
+				<span class="kg-link" (click)="changeDefaultStatus(author)">
+					<span class="status-dot"
+						[ngClass]="(author['Default']) ? 'status-green' : 'status-red'"></span>
+					{{ (author['Default']) ? 'Active' : 'Inactive'}}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3"
+				class="text-center"
+				*ngIf="translationAuthors.length == 0">No author found</td>
+		</tr>
+	</tbody>
+</table>

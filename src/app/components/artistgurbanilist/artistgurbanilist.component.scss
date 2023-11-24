@@ -1,0 +1,20 @@
+
+.selected
+{
+	color:#0b79be;
+}
+.selectedicon{
+	background: #0b79be !important;
+	color:white !important;
+}
+.con-title {
+    cursor: pointer;
+}
+.breadcrumb_box.two-line {
+	padding: 76px 0px;
+}
+@media screen and (max-width: 576px) {
+	.breadcrumb_box.two-line {
+		padding: 27px 0px;
+	}
+}

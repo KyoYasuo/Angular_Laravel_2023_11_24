@@ -1,0 +1,1864 @@
+<!-- <div id="loader" *ngIf="loader" style="min-height: calc(90vh - 92px);display: flex;justify-content: center;align-items: center">
+    <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+</div>
+
+<div *ngIf="searchval && !loader" class="container-fluid" style="padding-left:17vw;padding-right:17vw;">
+    <div class="row d-flex">
+        <div (click)='back()' style="display: flex;justify-content:center; align-items:center"><i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i></div>
+        <div class="row flex-grow-1 d-flex justify-content-center">
+            <h1 class="page-title center">
+                Search result for {{searchKeword}} 
+            </h1>
+        </div>
+    
+    </div>
+    
+
+    <div class="row" *ngIf="search.media_result.length>=1">
+        <div style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600;">Featured Tracks</div>
+    </div>
+    <div class="row" *ngIf="search.media_result.length>=1">
+        <owl-carousel style="width: 100%" [options]="Options" [items]="search.media_result"
+                                        [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+                                        <div class="item" (click)="restrat2search(x)"  *ngFor="let media of search.media_result, let x = index">
+                                             
+                                                 <div class="box" style="background-color:#dadada;height:15vh;width:15vh"></div>
+                                             <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{media.title}}</h4>
+                                             <p style="font-size: 0.7em">Bhai Avatar Singh ji</p>
+                                             
+                                        </div>
+        </owl-carousel>
+    </div>
+
+
+    <div class="row" *ngIf="search.cat_result.length>=1">
+        <div style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600">Categories</div>
+    </div>
+    <div class="row" *ngIf="search.cat_result.length>=1">
+        <owl-carousel style="width: 100%" [options]="Options" [items]="search.cat_result"
+                                        [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+                                        
+                                        <div class="item" (click)="categoryClicksearch(x)"  *ngFor="let category of search.cat_result, let x = index">
+                                             <div class="box" style="background-color:#dadada;height:15vh;width:15vh"><img src="{{category.attachment_name}}" style="height:100%"></div>
+                                             <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{category.name}}</h4>
+                                             <p style="font-size: 0.7em">Bhai Avatar Singh ji</p>
+                                        </div>
+        </owl-carousel>
+    </div>
+
+    <div class="row" *ngIf="search.author_result.length>=1">
+        <div style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600">Featured Artist</div>
+    </div>
+    <div class="row" *ngIf="search.author_result.length>=1">
+        <owl-carousel style="width: 100%" [options]="Options" [items]="search.author_result"
+                                        [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+                                        <div class="item"  *ngFor="let artist of search.author_result, let x = index">
+                                             
+                                                 <div class="box" style="background-color:#dadada;height:15vh;width:15vh"></div>
+                                             <h4 style="font-size: 0.9em;margin-top:1vh">{{artist.title}}</h4>
+                                              
+                                        </div>
+        </owl-carousel>
+    </div>
+
+</div> -->
+<!--<div id="radioPlayer" style="display:none;width: 100%;height:62px;background-color: white;z-index: 999;border-top: 3px solid #607D8B;position:absolute;bottom:0">
+    <audio [id]="'vid'" controls name="mediavid" style="display:none">
+        <source id="srcvid" type="audio/mpeg">
+    </audio>  
+    <div style="display:inline-block;width: 50px;vertical-align: top;"></div>
+    <div style="width:calc(100% - 102px);display: inline-block;">
+        <div style="display: table;margin:auto;padding-top:10px">
+            <button mat-button style="color: #3c677d" class="p-1 btn" (click)='playRadio();'>
+                <fa-icon *ngIf="!radio.isPlayingRadio" class="fa fa-2x play-track" style="color:#3c677d"
+                [icon]="['fas','play']" aria-hidden="true"></fa-icon>
+                <fa-icon *ngIf="radio.isPlayingRadio" class="fa fa-2x pause-track" style="color:#3c677d"
+                [icon]="['fas','pause']" aria-hidden="true"></fa-icon>
+            </button>
+            
+            <p style="display:inline;margin:0;margin-left:15px">{{ radio.title }}</p>
+        </div>
+    </div>
+    <div style="display:inline-block;width: 50px;vertical-align: top;">
+        
+      <button id="closePlayerRadio" mat-button style="color: #3c677d;display: table;margin:auto;margin-top:13px" class="p-1 btn" (click)='stopRadio()'>
+        <fa-icon title="loading..." class="fas fa-times fa-lg" aria-hidden="true"></fa-icon>
+      </button>
+
+    </div>
+
+</div>-->
+
+<div class="breadcrumb_banner" style="background-image: url('assets/image/breadcrumb/media.png');">
+    <div class="container">
+        <div class="breadcrumb_box">
+            <h3>Media</h3>
+        </div>
+    </div>
+</div>
+
+
+
+<section class="media_list_wrap section_wrap" style="display:block;">
+
+<div class="main-search d-flex mb-3">
+
+    <div class="container">
+        
+    <button id="playerPauseEvent" (click)="playerPauseEvent()" style="display:none"></button>
+    <button id="playerPlayEvent" (click)="playerPlayEvent()" style="display:none"></button>
+
+        <form>
+        <div class="media_box media_filter">
+            <!-- <div class="row" style="padding-left:14px">                
+                 <div style="display:inline-block;padding-right:20px;width:calc(40% - 50px);min-width:250px;position: relative;" class="mobileWidth100">
+                    <p style="margin-bottom:5px;color:gray;font-size:10pt">Gurbani Search</p>
+                    <div class="form-group">
+                            <div class="flex-fill search-main-input">
+                                    <input id="inputSearch" type="text" [(ngModel)]="searchKeword" name="searchKeword" class="form-control form-control-lg"
+                                        (focus)="onFocusOfSearchInput()">
+                        
+                        
+                        
+                                    <div class="search-kb-container" style="position: absolute;
+                                    right: 25px;
+                                    bottom: 16px;">
+                                        <i class="fa fa-times search-clear" style="font-size:9px;vertical-align: top;margin-right: 10px;margin-top:2px;color:gray" *ngIf="searchKeword.length > 0" (click)="clearSearchInput()"></i>
+                                        <a id="tastatura" class="search-kb-icon" [ngClass]="{'active': isEngKeyboardShow}"
+                                            (click)="showHideKeyboard('eng')"><img style="width: 42px;
+                                            margin-top: -30px;
+                                            margin-right: 1px;
+                                            margin-left: 1px;" src="assets/images/english.png"></a>
+                                        <a id="tastatura" class="search-kb-icon" [ngClass]="{'active': isPunKeyboardShow}"
+                                            (click)="showHideKeyboard('pun')"><img style="width: 42px;
+                                            margin-top: -30px;
+                                            margin-right: 1px;
+                                            margin-left: 1px;" src="assets/images/punjabi.png"></a>
+                        
+                                        <div id="trebaFokus" class="kb-container shadow rounded" style="position: absolute;
+                                        top: 100%;
+                                        right: -100px;
+                                        z-index: 9;
+                                        background: #f7f7f7;" *ngIf="isEngKeyboardShow" (keydown.enter)="f('eng')" (keydown.backspace)="showHideKeyboard('eng')">
+                                            <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                                        </div>
+                        
+                                        <div  style="position: absolute;
+                                        top: 100%;
+                                        right: -100px;
+                                        z-index: 9;
+                                        background: #f7f7f7;" class="kb-container shadow rounded" *ngIf="isPunKeyboardShow" (keydown.enter)="f('pun')" (keydown.backspace)="showHideKeyboard('pun')">
+                                            <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                                        </div>
+                                    </div>
+                                </div>
+           
+                    </div>                    
+                </div>     
+                <div style="display:inline-block;width:calc(30% - 50px);min-width:250px;padding-right:20px;vertical-align: top;" class="mobileWidth100">
+                    <p style="margin-bottom:5px;color:gray;font-size:10pt">Search Options</p>
+                    <div class="form-group">
+                        <select class="form-control form-control-sm" style="height: 37px;" name="selectedSearchOption" [(ngModel)]="selectedSearchOption">
+                            <ng-container *ngFor="let option of searchOtions">
+                                <option *ngIf="option['is_show']" value="{{option['code']}}">
+                                    {{option['name']}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>                
+                </div>    
+                <div style="display:inline-block;width:calc(20% - 50px);min-width:290px;padding-right:0px;vertical-align: top;" class="mobileWidth100">
+                    <p style="margin-bottom:5px;color:gray;font-size:10pt">Ragi</p>
+                    <div class="form-group d-flex align-items-center">
+                        <select class="form-control form-control-sm" style="height: 37px;" name="advanceSearchOptions['selectedRaagiSinger']" [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']">
+                            <option value="0">All</option>
+                            <ng-container *ngFor="let singer of singers">
+                                <option value="{{singer['id']}}" >
+                                    {{singer['attributes']['name']}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </div>                                     
+                <div class="mobileTableMarginAuto">
+                    
+                    <div class="divHeight23"></div>
+                    <button id="dugmeSearch" (click)="searchData()" style="height:37px"
+                        [disabled]="!searchKeword && advanceSearchOptions['selectedContent'] !== 'audio'"
+                        class="btn btn-primary btn-block filter_btn">Search</button>
+                </div>
+            </div> -->
+			
+			<div class="row align-items-end media-search">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">Gurbani Search</label>
+						<div class="flex-fill search-main-input">
+                                <input id="inputSearch" type="text" [(ngModel)]="searchKeword" name="searchKeword" class="form-control form-control-lg"
+                                    (focus)="onFocusOfSearchInput()" autocomplete="off" autocorrect="off">
+                                <div class="search-kb-container" style="position: absolute;
+                                right: 25px;
+                                bottom: 16px;">
+                                    <i class="fa fa-times search-clear" style="font-size:9px;vertical-align: top;margin-right: 10px;margin-top:2px;color:gray" *ngIf="searchKeword.length > 0" (click)="clearSearchInput()"></i>
+                                    <a id="tastatura" class="search-kb-icon" [ngClass]="{'active': isEngKeyboardShow}"
+                                        (click)="showHideKeyboard('eng')"><img style="width: 42px;
+                                        margin-top: -30px;
+                                        margin-right: 1px;
+                                        margin-left: 1px;" src="assets/images/english.png"></a>
+                                    <a id="tastatura" class="search-kb-icon" [ngClass]="{'active': isPunKeyboardShow}"
+                                        (click)="showHideKeyboard('pun')"><img style="width: 42px;
+                                        margin-top: -30px;
+                                        margin-right: 1px;
+                                        margin-left: 1px;" src="assets/images/punjabi.png"></a>
+                    
+                                    <div id="trebaFokus" class="kb-container shadow rounded" style="position: absolute;
+                                    top: 100%;
+                                    right: 0px;
+                                    z-index: 9;
+                                    background: #f7f7f7;" *ngIf="isEngKeyboardShow" (keydown.enter)="f('eng')" (keydown.backspace)="showHideKeyboard('eng')">
+                                        <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                                    </div>
+                    
+                                    <div  style="position: absolute;
+                                    top: 100%;
+                                    right: 0px;
+                                    z-index: 9;
+                                    background: #f7f7f7;" class="kb-container shadow rounded" *ngIf="isPunKeyboardShow" (keydown.enter)="f('pun')" (keydown.backspace)="showHideKeyboard('pun')">
+                                        <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                                    </div>
+                                </div>
+                            </div>
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="form-group">
+                        <div class="d-flex justify-content-between">
+						<label class="control-label">Search Options</label>
+
+                        <ng-template #tipContent class="toolTipText">
+                            <p *ngIf="selectedSearchOption ==1">
+                            You can search in both English and Punjabi language. Use this field for searches when you intend to find those sabad lines that contain an exact combination of words/letters. Example: Typing "ਹਰਿ ਜਨ " will find 132 results that contain this exact combination of words</p>
+
+                            <p *ngIf="selectedSearchOption ==2">
+                            You can search in both English and Punjabi language. Use this field for searches when beginning letters of a sabad line are known. Example:Typing "jo" or “ਜੋ” will find 801 results that starts with these letters</p>
+
+                            <p *ngIf="selectedSearchOption ==3">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words should be from the start of the Sabad line. For example search “jmtat’ for ‘Jo Mangay Thakur Apnay Te” or “ਜਮਠ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+
+                            <p *ngIf="selectedSearchOption ==4">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words can be anywhere in the Shabad line. For example search “tat’ for ‘Jo Mangay Thakur Apnay Te” or “ਮਠਅ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+
+                            <p *ngIf="selectedSearchOption ==5">
+                            You can search in both English and Punjabi language. Use this field for searches with combination of any number of whole words and they don’t need to be in exact order. Example: Typing "har jan" or “jan har” will both find 656 results</p>
+
+                            <p *ngIf="selectedSearchOption ==6">
+                            You can search in both English and Punjabi language. Use this filed for searches when you intend to find those sabad lines that contain any one of the typed words. Example: Typing "har jan" will find all lines that contain either of these words or both of these words</p>
+
+                            <p *ngIf="selectedSearchOption ==7">
+                            You can search in both English and Punjabi language. Use this field for searches with combination of any number of partial words and they don’t need to be in exact order</p>
+
+                            <p *ngIf="selectedSearchOption ==8">
+                            You can search in both English and Punjabi language. Enter the first characters of words and the words should be from the start of the Sabad line. For example search “jmtat’ for ‘Jo Mangay Thakur Apnay Te” or “ਜਮਠ” for “ਜੋ ਮਾਗਹਿ ਠਾਕੁਰ ਅਪੁਨੇ ਤੇ ਸੋਈ ਸੋਈ ਦੇਵੈ ॥“</p>
+                        </ng-template>
+
+                        <span class="showOnDeskTooltip"><i class="fas fa-info-circle" [ngbTooltip]="tipContent" style="color: #0b79be;font-size: 22px;"></i>
+                        </span>
+
+                        <span class="hideOnDeskTooltip"><i class="fas fa-info-circle" triggers="click" [autoClose]="'outside'" [ngbTooltip]="tipContent" style="color: #0b79be;font-size: 22px;"></i>
+                        </span>
+
+                        </div>
+
+						<select class="form-control form-control-sm" style="height: 40px;" name="selectedSearchOption" [(ngModel)]="selectedSearchOption" (ngModelChange)="onSearchChange($event.target.value)">
+                            <ng-container *ngFor="let option of searchOtions">
+                                <option *ngIf="option['is_show']" value="{{option['code']}}">
+                                    {{option['name']}}
+                                </option>
+                            </ng-container>
+                        </select>
+					</div>
+				</div> 
+
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Ragi</label>
+						<!-- <select class="form-control form-control-sm" style="height: 40px;" name="advanceSearchOptions['selectedRaagiSinger']" [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']" >
+                            <option value="0">All</option>
+                            <ng-container *ngFor="let singer of singers">
+                                <option value="{{singer['id']}}" >
+                                    {{singer['attributes']['name']}}
+                                </option>
+                            </ng-container>
+                        </select> --> 
+
+                        <select id="select_page" class="form-control form-control-sm" style="height: 40px;" name="advanceSearchOptions['selectedRaagiSinger']" [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']" > 
+                             <option value="0">All</option>
+                             <ng-container *ngFor="let singer of singers">
+                                <option value="{{singer['id']}}" >
+                                    {{singer['attributes']['name']}}
+                                </option>
+                            </ng-container>
+                        </select>
+
+					</div>
+				</div>
+
+
+
+				<div class="col-md-2">
+					<div class="form-group">
+						<button id="dugmeSearch" (click)="searchData()" 
+                        [disabled]="!searchKeword && advanceSearchOptions['selectedContent'] !== 'audio'"
+                        class="btn btn-primary btn-block filter_btn">Search</button>
+					</div>
+				</div>
+			</div>
+        </div>
+    </form>
+
+<div *ngIf="is_search && searchResult.length == 0" style="margin:50px 0">
+    No Result Found
+</div>
+<!-- mobile view -->
+<div *ngIf="is_search && searchResult.length > 0" class="showMobile">
+
+    <h4 style="margin-bottom:2vh;text-align: center;
+    color: #0b79be;" *ngIf="searchResult.length != 0">
+            {{searchResult.length}} search results
+    </h4>
+        
+    <div class="row" *ngIf="numPages > 1">
+        <div class="col-md-3 col-sm-12">
+            <div class="loadmore-item mb-1">
+                <app-my-pagination style="display: table;margin:auto;" [currentPage]="currentPage" [numPages]="numPages" (onChangePage)="setCurrentPage($event)"></app-my-pagination>
+            </div>
+        </div>
+    </div>
+
+    <div>            
+        <div style="display:inline-block;width:15%;vertical-align: top;">
+            <div class="tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-right-radius: 0px;">
+                <div style="display: inline-block;padding-top:12px;font-size:18px;padding-left:15px">#</div>
+            </div>
+        </div>
+        <div style="display:inline-block;width:85%;vertical-align: top;">            
+            <div class="row tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-left-radius: 0px;">
+                <div class="col-md-12" style="padding-top:12px;font-size:18px">Shabad</div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div *ngFor="let list of searchResultPaginated;let x=index" style="border:1px solid lightgray;width:100%">
+            <div style="display:inline-block;width:15%;">
+                <div style="vertical-align: top">
+                    <div style="display:inline-block;margin:0px;min-height:51px;border-top-right-radius: 0px;;width:100%">
+                        <div class="mediaStyle" style="padding:0;display: inline-block;padding-top:12px;padding-left:20px;vertical-align: top;">{{ (currentPage - 1) * per_page + (x+1)  }}</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:inline-block;width:85%;vertical-align: top;">            
+                <div class="row" style="display:inline-block;margin:0px;min-height:51px;border-top-left-radius: 0px;">
+                    <div class="col-md-12" style="padding-top:12px;font-size:18px;padding-right:3px">
+                        <div>    
+                            
+                            <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'">
+                                <h4 class="gurbani-fonts">
+                                    <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                            highlighted_scripture_lang: 'english',
+                                                                            selected_content: 'gurbani',
+                                                                            from: 'media'}"
+                                        [innerHtml]="list['Scripture']">
+                                    </a>
+                                </h4>
+        
+        
+                                <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani',
+                                                from: 'media'}"
+                                    [innerHtml]="list['ScriptureRomanEnglish']">
+                                </a>
+                            </div>
+                            
+                            <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'">
+                                <h4>
+                                    <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                    highlighted_scripture_lang: 'english',
+                                                    selected_content: 'gurbani'}"
+                                        [innerHtml]="list['ScriptureRomanEnglish']">
+                                    </a>
+                                </h4>
+
+                            
+                                <a class="" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                        highlighted_scripture_lang: 'english',
+                                                                        selected_content: 'gurbani'}"
+                                    [innerHtml]="list['Scripture']">
+                                </a>
+
+
+                            </div>
+                            <div class="search-item-meta fontSizeForLastRowShabadMobile" style="color:#9a9a9a ">
+                                <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                <span *ngIf="list['Author']"> - </span>
+                                <span *ngIf="list['Author']">{{list['Author']}}</span>
+                                <span *ngIf="list['Melody']"> - </span>
+                                <span *ngIf="list['Melody']">{{list['Melody']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:20px"></div>
+    <div class="row" *ngIf="numPages > 1">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+        </div>        
+        <div class="col-md-3 col-sm-12">
+            <div class="loadmore-item mb-1">
+                <app-my-pagination style="display: table;margin:auto;" [currentPage]="currentPage" [numPages]="numPages" (onChangePage)="setCurrentPage($event)"></app-my-pagination>
+            </div>
+        </div>
+    </div>
+    <div style="height:20px"></div>
+</div>
+<!-- desktop -->
+<div *ngIf="is_search && searchResult.length > 0" class="showlg">
+    <div class="row">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+            <h4 style="margin-bottom:2vh;text-align: center;
+            color: #0b79be;" *ngIf="searchResult.length != 0">
+                    {{searchResult.length}} search results
+            </h4>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-12">
+            <div class="loadmore-item mb-1" style="float:right" *ngIf="numPages > 1">
+                <app-my-pagination [currentPage]="currentPage" [numPages]="numPages" (onChangePage)="setCurrentPage($event)"></app-my-pagination>
+            </div>
+        </div>
+    </div>
+
+    <div>            
+        <div style="display:inline-block;width:60%;vertical-align: top;">
+            <div class="tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-right-radius: 0px;">
+                <div style="display: inline-block;width: 10%;padding-top:12px;font-size:18px;padding-left:15px">#</div>
+                <div style="display: inline-block;width: 50%;padding-top:12px;font-size:18px;padding-left:15px">Ragi</div>
+                <div style="display: inline-block;width: 20%;padding-top:12px;font-size:18px;padding-left:15px">Action</div>
+                <div style="display: inline-block;width: 20%;padding-top:12px;font-size:18px;padding-left:15px">Duration</div>
+            </div>
+        </div>
+        <div style="display:inline-block;width:40%;vertical-align: top;">            
+            <div class="row tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-left-radius: 0px;">
+                <div class="col-md-12" style="padding-top:12px;font-size:18px">Shabad</div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div *ngFor="let list of searchResultPaginated;let x=index" style="border:1px solid lightgray;width:100%">
+            <div style="display:inline-block;width:60%;">
+                <div *ngFor="let item of list.sounds;let i=index" style="vertical-align: top">
+                    <div style="display:inline-block;margin:0px;min-height:51px;border-top-right-radius: 0px;;width:100%">
+                        <div class="mediaStyle" style="padding:0;display: inline-block;width: 10%;padding-top:12px;padding-left:20px;vertical-align: top;">{{ i==0?(startFrom) * per_page + (x+1):''  }}</div>
+                        <div class="mediaStyle" style="padding:0;display: inline-block;width: 50%;padding-top:12px;padding-left:20px;vertical-align: top;">{{item.name}}</div>
+                        <div class="mediaStyle" style="padding:0;display: inline-block;width: 20%;padding-top:12px;padding-left:20px;vertical-align: top;">
+                            <div class="mb-3">
+                                <a (click)="restratsearchLAST(item.id,x,i, item)" class="action_btn fa-sm playbtn" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'">
+                                    <i [ngClass]="(index == item.id) ? 'fas fa-pause':'fas fa-play'" style="font-size: 16px;color: #0b79be"></i>
+                                </a>
+                                <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn playbtn" *ngIf="validateAction('download')" style="margin-left:10px" ><i class="fa fa-cloud-download" style="color: #0b79be"></i></a>
+                            </div>
+                        </div>
+                        <div class="mediaStyle" style="padding:0;display: inline-block;width: 20%;padding-top:12px;padding-left:20px;vertical-align: top;">{{item.duration}}</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:inline-block;width:40%;vertical-align: top;">            
+                <div class="row" style="display:inline-block;margin:0px;height:51px;border-top-left-radius: 0px;">
+                    <div class="col-md-12" style="padding-top:12px;font-size:18px">
+                        <div>    
+                            
+                            <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'">
+                                <h4 class="gurbani-fonts">
+                                    <a style="color: #0b79be;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                            highlighted_scripture_lang: 'english',
+                                                                            selected_content: 'gurbani',
+                                                                            from: 'media'}"
+                                        [innerHtml]="list['Scripture']">
+                                    </a>
+                                </h4>
+        
+        
+                                <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani',
+                                                from: 'media'}"
+                                    [innerHtml]="list['ScriptureRomanEnglish']">
+                                </a>
+                            </div>
+                            
+                            <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'">
+                                <h4>
+                                    <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                    highlighted_scripture_lang: 'english',
+                                                    selected_content: 'gurbani'}"
+                                        [innerHtml]="list['ScriptureRomanEnglish']">
+                                    </a>
+                                </h4>
+
+                            
+                                <a class="" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                        highlighted_scripture_lang: 'english',
+                                                                        selected_content: 'gurbani'}"
+                                    [innerHtml]="list['Scripture']">
+                                </a>
+
+
+                            </div>
+                            <div class="search-item-meta fontSizeForLastRowShabadMobile" style="color:#9a9a9a ">
+                                <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                <span *ngIf="list['Author']"> - </span>
+                                <span *ngIf="list['Author']">{{list['Author']}}</span>
+                                <span *ngIf="list['Melody']"> - </span>
+                                <span *ngIf="list['Melody']">{{list['Melody']}}</span>
+    
+                            </div>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:20px"></div>
+    <div class="row">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+        </div>        
+        <div class="col-md-3 col-sm-12">
+            <div class="loadmore-item mb-1" style="float:right" *ngIf="numPages > 1">
+                <app-my-pagination [currentPage]="currentPage" [numPages]="numPages" (onChangePage)="setCurrentPage($event)"></app-my-pagination>
+            </div>
+        </div>
+    </div>
+    <!---------------------------------------------------------------------------------------->
+        <!--<div class="row">
+            <div class="col-md-3 col-sm-12"></div>
+            <div class="col-md-6 col-sm-12">
+                <h4 style="margin-bottom:2vh;text-align: center;
+                color: #0b79be;" *ngIf="searchdata.length != 0">
+                        {{metadata['total']}} search results
+                </h4>
+            </div>
+            
+            
+            <div class="col-md-3 col-sm-12">
+                <div class="loadmore-item mb-1" style="float:right">
+                    <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+                        [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+                        [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+                        nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+                    </pagination>
+                </div>
+            </div>
+        </div>
+
+        <div>            
+            <div style="display:inline-block;width:60%;vertical-align: top;">
+                <div class="tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-right-radius: 0px;">
+                    <div style="display: inline-block;width: 10%;padding-top:12px;font-size:18px;padding-left:15px">#</div>
+                    <div style="display: inline-block;width: 50%;padding-top:12px;font-size:18px;padding-left:15px">Singer</div>
+                    <div style="display: inline-block;width: 20%;padding-top:12px;font-size:18px;padding-left:15px">Action</div>
+                    <div style="display: inline-block;width: 20%;padding-top:12px;font-size:18px;padding-left:15px">Duration</div>
+                </div>
+            </div>
+            <div style="display:inline-block;width:40%;vertical-align: top;">            
+                <div class="row tableWrap tableHead" style="display:inline-block;margin:0px;height:51px;border-top-left-radius: 0px;">
+                    <div class="col-md-12" style="padding-top:12px;font-size:18px">Shabad</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div *ngFor="let list of searchdata;let x=index" style="border:1px solid lightgray;width:100%">
+                <div style="display:inline-block;width:60%;">
+                    <div *ngFor="let item of list.data_m;let i=index" style="vertical-align: top">
+                        <div style="display:inline-block;margin:0px;min-height:51px;border-top-right-radius: 0px;;width:100%">
+                            <div class="mediaStyle" style="padding:0;display: inline-block;width: 10%;padding-top:12px;padding-left:20px;vertical-align: top;">{{ i==0?startfrom+x:''}}</div>
+                            <div class="mediaStyle" style="padding:0;display: inline-block;width: 50%;padding-top:12px;padding-left:20px;vertical-align: top;">{{item.auth_name}}</div>
+                            <div class="mediaStyle" style="padding:0;display: inline-block;width: 20%;padding-top:12px;padding-left:20px;vertical-align: top;">
+                                <div class="mb-3">
+                                    <a (click)="restratsearch(item.id,x,i)" class="action_btn fa-sm playbtn" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'">
+                                        <i [ngClass]="(index == item.id) ? 'fas fa-pause':'fas fa-play'" style="font-size: 16px;color: #2d8dac"></i>
+                                    </a>
+                                    <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn playbtn" *ngIf="validateAction('download')" style="margin-left:10px" ><i class="fa fa-cloud-download" style="color: #2d8dac"></i></a>
+                                </div>
+                            </div>
+                            <div class="mediaStyle" style="padding:0;display: inline-block;width: 20%;padding-top:12px;padding-left:20px;vertical-align: top;">{{item.duration}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:inline-block;width:40%;vertical-align: top;">            
+                    <div class="row" style="display:inline-block;margin:0px;height:51px;border-top-left-radius: 0px;">
+                        <div class="col-md-12" style="padding-top:12px;font-size:18px">
+                            <div>    
+                                <h4 class="gurbani-fonts">
+                                    <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                            highlighted_scripture_lang: 'english',
+                                                                            selected_content: 'gurbani',
+                                                                            from: 'media'}"
+                                        [innerHtml]="list['Scripture']">
+                                    </a>
+                                </h4>
+        
+        
+                                <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani',
+                                                from: 'media'}"
+                                    [innerHtml]="list['ScriptureRomanEnglish']">
+                                </a>
+                                <div class="search-item-meta fontSizeForLastRowShabadMobile" style="color:#9a9a9a ">
+                                    <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                    <span *ngIf="list['author']"> - </span>
+                                    <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                                    <span *ngIf="list['melody']"> - </span>
+                                    <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+        
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <table class="tableWrap" *ngIf="false"> <!--searchdata.length != 0-->
+      
+            <div class="tableHead">
+              <div class="tableCell" style="width:5%;">#</div>
+             <!--  <div class="tableCell" style="width:30%;">Title</div> -->
+              <div class="tableCell" style="width:20%" id="singer">Ragi</div>
+              <div class="tableCell" style="width:10%;">Action</div>
+              <div class="tableCell" style="width:10%;">Duration</div>
+              <div class="tableCell" style="width:15%;">Shabad</div>
+            </div>
+            <div class="tableBody" *ngFor="let list of searchdata;let x=index">
+              
+              <div class="tableCell" style="width:5%;">
+                <div class="tableCell-heading">#</div>
+                <div class="tableCell-content">{{startfrom+x}}</div>
+              </div> 
+              <!-- <div class="tableCell" style="width:50%;">
+                <div class="tableCell-heading">Title</div>
+                <div class="tableCell-content"[ngClass]="(x == previndex) ? 'selected':'select'"
+                style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                {{list.ScriptureRomanEnglish}}</div>
+              </div> -->
+              <div class="tableCell" style="width:20%;">
+                <div class="tableCell-heading">Ragi</div>
+                <div class="tableCell-content">
+
+                    <div *ngIf="datalength[x] != 0">
+                        <div *ngFor="let item of list.data_m;let i=index" class="mb-3">
+
+                            <!-- <button (click)="restratsearch(item.id,x,i)"
+                                [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                class="ui circular icon button">
+                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                            </button> -->
+                            <!-- <button (click)="restratsearch(item.id,x,i)"
+                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac">
+                                    <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                </button> 
+                                
+                            <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download"></i></a> -->
+
+                            <div class="" *ngIf="item.auth_name!=''">
+                                {{item.auth_name}}
+                                   
+                
+                                   
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+
+              <div class="tableCell" style="width:10%;display: flex;margin-left:2em">
+                <div class="tableCell-heading">Action</div>
+                <div class="tableCell-content">
+                    <div *ngIf="datalength[x] != 0">
+                        <div *ngFor="let item of list.data_m;let i=index" class="mb-3">
+<!-- 
+                            <button 
+                            (click)="restratsearch(item.id,x,i)"
+                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac">
+                                    <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                 </button> 
+ -->
+                              <a (click)="restratsearch(item.id,x,i)" class="action_btn fa-sm" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'">
+                              	<i [ngClass]="(index == item.id) ? 'fas fa-pause':'fas fa-play'" style="font-size: 16px;color: #0b79be"></i>
+                              </a>
+                              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download" style="color: #0b79be"></i></a>
+                        </div>
+                    </div>
+                 
+                </div>
+              </div>
+            <div class="tableCell" style="width:10%;display: flex;margin-left:2em">
+                <div class="tableCell-heading">Duration</div>
+                <div class="tableCell-content">
+                    <div *ngIf="datalength[x] != 0">
+                        <div *ngFor="let item of list.data_m;let i=index" class="mb-3">
+                            <!-- 
+                                        <button 
+                                        (click)="restratsearch(item.id,x,i)"
+                                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac">
+                                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                            </button> 
+            -->
+            <div class="" *ngIf="item.auth_name!=''">
+                {{item.duration}}
+
+
+
+            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+              
+              <div class="tableCell" style="width:20%;">
+                <div class="tableCell-heading">Shabad</div>
+                <div class="tableCell-content">
+                    <div>
+    
+                        <h4 class="gurbani-fonts">
+                            <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                    highlighted_scripture_lang: 'english',
+                                                                    selected_content: 'gurbani'}"
+                                [innerHtml]="list['Scripture']">
+                            </a>
+                        </h4>
+
+
+                        <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                            [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                        highlighted_scripture_lang: 'english',
+                                        selected_content: 'gurbani'}"
+                            [innerHtml]="list['ScriptureRomanEnglish']">
+                        </a>
+                        <div class="search-item-meta fontSizeForLastRowShabadMobile">
+                            <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                            <span *ngIf="list['author']"> - </span>
+                            <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                            <span *ngIf="list['melody']"> - </span>
+                            <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+              
+      
+            </div>
+      
+        </table>
+
+        <!--<div *ngIf="searchdata.length == 0">
+            No Result Found
+        </div>-->
+          <div class="loadmore-item mt-4" style="width: 100%; float:right"
+          >
+              <pagination id="p2" style="float: right;margin-bottom:60px" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+                  [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+                  [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+                  nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+              </pagination>
+          </div>
+
+
+        </div>
+
+
+
+
+
+
+<div *ngIf="is_search" class="hidelg">
+    <h4 class="mb-4" style="margin-top:2vh;text-align: center;
+    color: #0b79be;" *ngIf="searchdata.length != 0">
+            {{metadata['total']}} search results
+    </h4>
+        
+    <div class="loadmore-item mb-1" style="width: 100%;">
+        <pagination id="p2" style="margin:auto" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+            [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+            [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+            nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+        </pagination>
+    </div>
+    <table class="tableWrap" style="display: none" *ngIf="searchdata.length != 0">
+  
+        <div class="tableHead">
+          <div class="tableCell" style="width:5%;">#</div>
+          <!--  <div class="tableCell" style="width:30%;">Title</div> -->
+          <div class="tableCell" style="width:20%" id="singer">Singer</div>
+          <div class="tableCell" style="width:10%;">Action</div>
+          <div class="tableCell" style="width:15%;">Shabad</div>
+        </div>
+  
+        <div class="tableBody" *ngFor="let list of searchdata;let x=index">
+          
+          <div class="tableCell" style="width:5%;">
+            <div class="tableCell-heading">#</div>
+            <div class="tableCell-content">{{x+1}}</div>
+          </div> 
+          <!-- <div class="tableCell" style="width:50%;">
+            <div class="tableCell-heading">Title</div>
+            <div class="tableCell-content"[ngClass]="(x == previndex) ? 'selected':'select'"
+            style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+            {{list.ScriptureRomanEnglish}}</div>
+          </div> -->
+          <div class="tableCell" style="width:20%;">
+            <div class="tableCell-heading">Singer</div>
+            <div class="tableCell-content">
+
+                <div *ngIf="datalength[x] != 0">
+                    <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex;
+                    align-items: center;">
+
+                        <!-- <button (click)="restratsearch(item.id,x,i)"
+                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                            class="ui circular icon button">
+                            <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                        </button> -->
+                        <!-- <button (click)="restratsearch(item.id,x,i)"
+                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac">
+                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                            </button> 
+                            
+                        <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download"></i></a> -->
+
+                        <div class="" *ngIf="item.auth_name!=''">
+                            {{item.auth_name}}
+                               
+            
+                               
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
+
+          <div class="tableCell" style="width:10%;display: flex;">
+            <div class="tableCell-heading">Action</div>
+            <div class="tableCell-content">
+                <div *ngIf="datalength[x] != 0">
+                    <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex">
+<!-- 
+                        <button 
+                        (click)="restratsearch(item.id,x,i)"
+                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac">
+                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                             </button> 
+-->
+                          <a (click)="restratsearch(item.id,x,i)" class="action_btn fa-sm" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'">
+                              <i [ngClass]="(index == item.id) ? 'fas fa-pause':'fas fa-play'" style="font-size: 16px"></i>
+                          </a>
+                          <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download"></i></a>
+                    </div>
+                </div>
+             
+            </div>
+          </div>
+
+          
+          <div class="tableCell" style="width:20%;">
+            <div class="tableCell-heading">Shabad</div>
+            <div class="tableCell-content">
+                <div>
+                    <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'english'">
+                        <h4 class="gurbani-fonts">
+                            <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                    highlighted_scripture_lang: 'english',
+                                                                    selected_content: 'gurbani'}"
+                                [innerHtml]="list['Scripture']">
+                            </a>
+                        </h4>
+
+
+                        <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                            [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                        highlighted_scripture_lang: 'english',
+                                        selected_content: 'gurbani'}"
+                            [innerHtml]="list['ScriptureRomanEnglish']">
+                        </a>
+                    </div>
+                    
+                    <div  *ngIf="advanceSearchOptions['selectedLanguage'] == 'gurmukhi'">
+                        <h4>
+                            <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                            highlighted_scripture_lang: 'english',
+                                            selected_content: 'gurbani'}"
+                                [innerHtml]="list['ScriptureRomanEnglish']">
+                            </a>
+                        </h4>
+
+                       
+                        <a class="" *ngIf="list['Page'] && list['ShabadID']"
+                            [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                highlighted_scripture_lang: 'english',
+                                                                selected_content: 'gurbani'}"
+                            [innerHtml]="list['Scripture']">
+                        </a>
+
+
+                    </div>
+                    <div class="search-item-meta fontSizeForLastRowShabadMobile">
+                        <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                        <span *ngIf="list['author']"> - </span>
+                        <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                        <span *ngIf="list['melody']"> - </span>
+                        <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+
+                    </div>
+                </div>
+
+            </div>
+          </div>
+          
+  
+        </div>
+  
+    </table>
+
+    <!--<div *ngIf="searchdata.length == 0" style="display: none">
+        No Result Found
+    </div>-->
+      <div class="loadmore-item mt-4" style="width: 100%; float:right;display: none">
+          <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+              [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+              [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+              nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+          </pagination>
+      </div>
+
+
+
+
+      <div *ngIf="searchdata.length != 0">
+        <div class="gurbanilist_table table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="center">#</th>
+                <!-- <th>Title</th> -->
+                <!-- <th>Singers</th>
+                <th>Action</th> -->
+                <th>Shabad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let list of searchdata;let x=index">
+
+                <td  [ngClass]="(x == previndex) ? 'selected':'select'"
+                    style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                    {{x+1}}
+                </td>
+                <!-- <td [ngClass]="(x == previndex) ? 'selected':'select'"
+                    style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                    {{list.ScriptureRomanEnglish}}
+                </td>
+                -->
+                <td style="vertical-align: top;">
+
+                    <div>
+
+                        <h4 class="gurbani-fonts">
+                            <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                    highlighted_scripture_lang: 'english',
+                                                                    selected_content: 'gurbani'}"
+                                [innerHtml]="list['Scripture']">
+                            </a>
+                        </h4>
+
+
+                        <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                            [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                        highlighted_scripture_lang: 'english',
+                                        selected_content: 'gurbani'}"
+                            [innerHtml]="list['ScriptureRomanEnglish']">
+                        </a>
+                        <div class="search-item-meta fontSizeForLastRowShabadMobile">
+                            <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                            <span *ngIf="list['author']"> - </span>
+                            <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                            <span *ngIf="list['melody']"> - </span>
+                            <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+
+                        </div>
+                    </div>
+
+                </td>
+
+                <!-- <td>
+                            <div *ngIf="list.data_m.length!=0">
+                                    <ul class="list-inline" style="display: inline-flex">
+                                        <li *ngFor="let item of list.data_m;let i=index">
+                                                    <button (click)="restratsearch(item.id,x,i)" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button">
+                                                        <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                                    </button>
+                                        </li>
+                                    </ul>
+                            </div>
+                      </td> -->
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+
+
+    </div>
+
+    <div class="loadmore-item mt-4" style="width: 100%; float:right;margin-bottom:60px">
+        <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+            [totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+            [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+            nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+        </pagination>
+    </div>
+
+</div>
+<!--<div *ngIf="searchdata.length == 0">
+    No Result Found
+</div>-->
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+         
+
+
+
+        <div *ngIf="is_search" style="margin-top:2vh;margin-bottom:4vh;display: none">
+            <h4 class="mb-4" style="margin-top:2vh">
+                {{searchedResult['pagination']['total']}} search results
+            </h4>
+            <div *ngIf="searchdata.length != 0">
+                    <div class="gurbanilist_table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="center">#</th>
+                            <th>Title</th>
+                            <th>Ragi</th>
+                            <th>Action</th>
+                            <th>Shabad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let list of searchdata;let x=index">
+    
+                            <td  [ngClass]="(x == previndex) ? 'selected':'select'"
+                                style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                                {{x+1}}
+                            </td>
+                            <td [ngClass]="(x == previndex) ? 'selected':'select'"
+                                style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                                {{list.ScriptureRomanEnglish}}
+                            </td>
+                            <td style="vertical-align: top;">
+    
+                                <div *ngIf="datalength[x] != 0">
+                                    <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex;
+                                    align-items: center;">
+    
+                                        <!-- <button (click)="restratsearch(item.id,x,i)"
+                                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                            class="ui circular icon button">
+                                            <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                        </button> -->
+                                        <div class="" *ngIf="item.auth_name!=''">
+                                            {{item.auth_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td style="vertical-align: top;">
+    
+                                    <div *ngIf="datalength[x] != 0">
+                                        <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex">
+        
+                                            <!-- <button (click)="restratsearch(item.id,x,i)"
+                                                [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                                class="ui circular icon button">
+                                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                            </button> -->
+                                            <button (click)="restratsearch(item.id,x,i)"
+                                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #0b79be;">
+                                                    <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                                 </button> 
+                                                  
+                                              <!-- <a href="javascript:void(0);" (click)="restrat2(x)" [ngClass]="(x == previndex) ? 'selectedicon':'select'" class="action_btn mr-2"><i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i></a> -->
+                                              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download"></i></a>
+
+                                        </div>
+                                    </div>
+                                </td>
+    
+                            <td style="vertical-align: top;">
+    
+                                <div>
+    
+                                    <h4 class="gurbani-fonts">
+                                        <a style="color: #2d8dac;font-weight: 700;font-size:16px" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                            [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                                highlighted_scripture_lang: 'english',
+                                                                                selected_content: 'gurbani'}"
+                                            [innerHtml]="list['Scripture']">
+                                        </a>
+                                    </h4>
+    
+    
+                                    <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                    highlighted_scripture_lang: 'english',
+                                                    selected_content: 'gurbani'}"
+                                        [innerHtml]="list['ScriptureRomanEnglish']">
+                                    </a>
+                                    <div class="search-item-meta fontSizeForLastRowShabadMobile">
+                                        <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                        <span *ngIf="list['author']"> - </span>
+                                        <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                                        <span *ngIf="list['melody']"> - </span>
+                                        <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+    
+                                    </div>
+                                </div>
+    
+                            </td>
+    
+                            <!-- <td>
+                                        <div *ngIf="list.data_m.length!=0">
+                                                <ul class="list-inline" style="display: inline-flex">
+                                                    <li *ngFor="let item of list.data_m;let i=index">
+                                                                <button (click)="restratsearch(item.id,x,i)" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button">
+                                                                    <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                                                </button>
+                                                    </li>
+                                                </ul>
+                                        </div>
+                                  </td> -->
+                        </tr>
+    
+                    </tbody>
+                </table>
+
+
+
+
+
+
+                </div>
+
+                <div class="loadmore-item mt-4" style="width: 100%; float:right"
+				>
+				    <pagination id="p2" style="float: right;;margin-bottom:60px" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+						[totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+						[(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+						nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+					</pagination>
+				</div>
+
+            </div>
+           <!-- <div *ngIf="searchdata.length == 0">
+                No Result Found
+            </div>-->
+        </div>
+
+        
+
+        <div class="media_box">
+            <h3 class="heading" *ngIf="recentlyplayed.length>=1">Recently Played</h3>
+			
+            <owl-carousel [options]="RP_options" [items]="recentlyplayed" *ngIf="recentlyplayed.length>=1"
+                [carouselClasses]="['owl-theme', 'sliding', 'nav_design']">
+                <div class="item" *ngFor="let list of recentlyplayed, let x = index">
+                    <a href="javascript:void(0);" class="media_content" (click)="restratRecentleyPlayed(x)">
+						<div class="inner_item">
+                            <img src="{{list.img}}" *ngIf="list.img"  href="javascript:void(0);">
+                            <img src="assets/image/2picture.png" *ngIf="!list.img">
+                        </div>
+						<div class="row h-100 mt-1 align-items-start mx-0">
+						  <div class="col-10 text-left my-auto padding_left"> <span *ngIf="list.title" class="listTitleSize">{{list.title}}</span> <p *ngIf="list.author_name" class="time_duration_color">{{list.author_name}}</p> </div>
+						  <div class="col-2 time_duration_color px-1 text-right" *ngIf="list.duration"> {{list.duration==null?"N/A":list.duration}} </div>
+						</div>
+                    </a>
+                </div>
+				
+				
+				<!-- <div class="item"   *ngFor="let list of recentlyplayed, let x = index">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="{{list.img}}" *ngIf="list.img" (click)="restratRecentleyPlayed(x)" href="javascript:void(0);">
+
+                            <img src="assets/image/2picture.png" *ngIf="!list.img">
+                            <div class="upper_content">
+                                <h5>{{list.title}}</h5>
+                            </div>
+                            <div class="audio_paly text-center" style="bottom:-20px; color: white;">
+                                <a class="play_audio" (click)="restratRecentleyPlayed(x)" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                                <div style="padding-top:10px">
+                                  <div style="display:inline-block;color:white;padding:6px 20px;background-color:rgba(0, 0, 0, 0.5);;border-radius:15px">
+                                    {{list.duration==null?"N/A":list.duration}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+				
+				
+				
+				
+                <!-- <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/2picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/3picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/1picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+            </owl-carousel>
+        </div>
+        
+        <div class="media_box">
+            <h3 class="heading">Featured Tracks</h3>
+            <owl-carousel [items]="featuredMedia" [options]="FT_options" [carouselClasses]="['owl-theme', 'sliding', 'nav_design']">
+
+                <div class="item" *ngFor="let media of featuredMedia, let x = index">
+                    <a href="javascript:void(0);" class="media_content" (click)="restrat2(x)">
+                        <div class="inner_item">
+                            <img src="{{media.img}}" *ngIf="media.img" href="javascript:void(0);">
+                            <img src="assets/image/2picture.png" *ngIf="!media.img">
+                        </div>
+                        <div class="row h-100 mt-1 align-items-start mx-0">
+                          <div class="col-10 text-left my-auto padding_left"> <span *ngIf="media.title" class="mediaTitleSize">{{media.title}}</span> <p *ngIf="media.author_name" class="time_duration_color">{{media.author_name}}</p> </div>
+                          <div class="col-2 time_duration_color px-1 text-right" *ngIf="media.duration"> {{media.duration==null?"N/A":media.duration}} </div>
+                        </div>
+                    </a>
+                </div>
+
+				<!-- <div class="item" *ngFor="let media of featuredMedia, let x = index">
+                    <a href="javascript:void(0);" class="media_content">
+						<div class="inner_item">
+                            <img src="{{media.img}}" *ngIf="media.img" (click)="restrat2(x)" href="javascript:void(0);">
+                            <img src="assets/image/2picture.png" *ngIf="!media.img">
+                        </div>
+						<div class="row h-100 mt-1 mx-0 align-items-start">
+						  <div class="col-10 text-left my-auto pl-0"> <span *ngIf="media.title" class="listTitleSize">{{media.title}}</span> <p *ngIf="media.author_name" class="time_duration_color">{{media.author_name}}</p> </div>
+						  <div class="col-2 my-auto time_duration_color px-0 text-right" *ngIf="media.duration"> {{media.duration==null?"N/A":media.duration}} </div>
+						</div>
+                    </a>
+                </div> -->
+			
+                <!-- <div class="item" *ngFor="let media of featuredMedia, let x = index">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                                <img src="{{media.img}}" *ngIf="media.img" style="height:100%"  href="javascript:void(0);" (click)="restrat2(x)">
+                            <img src="assets/image/1picture.png" *ngIf="!media.img">
+                            <div class="upper_content">
+                                <h5>{{media.title}}</h5>
+                            </div>
+                            <div class="audio_paly text-center" style="bottom:-20px; color: white;">
+                                <a class="play_audio" href="javascript:void(0);" (click)="restrat2(x)">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                                <div style="padding-top:10px">
+                                  <div style="display:inline-block;color:white;padding:6px 20px;background-color:rgba(0, 0, 0, 0.5);;border-radius:15px">
+                                    {{media.duration==null?"N/A":media.duration}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+				
+				
+				
+                <!-- <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/2picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/3picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="javascript:void(0);" class="media_content">
+                        <div class="inner_item">
+                            <img src="assets/image/1picture.png">
+                            <div class="upper_content">
+                                <h5>Anand Sahib</h5>
+                            </div>
+                            <div class="audio_paly text-center">
+                                <a class="play_audio" href="javascript:void(0);">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+            </owl-carousel>
+        </div>
+
+        <div class="media_box">
+            <h3 class="heading">Featured Categories</h3>
+            <owl-carousel [items]="featuredCategoriesList" [options]="FT_options" [carouselClasses]="['owl-theme', 'sliding', 'nav_design']">
+        
+					<div class="item" *ngFor="let category of featuredCategoriesList, let x = index">
+						<a href="javascript:void(0);" class="media_content" (click)="categoryClick(x)">
+							<div class="inner_item">
+								<img src="{{category.attachment_name}}" *ngIf="category.attachment_name" alt="category item"  href="javascript:void(0);">
+								<img src="assets/image/2picture.png"  alt="category item" *ngIf="!category.attachment_name">
+							</div>
+							<div class="row text-center h-100 mt-1">
+							  <div class="col-12 text-left my-auto margin_left" style="margin-left: 4px;"> <span *ngIf="category.name" class="listTitleSize">{{category.name}}</span> </div>
+							</div>
+						</a>
+					</div>
+		
+                   <!--  <div class="item" (click)="categoryClick(x)"  *ngFor="let category of featuredCategoriesList, let x = index">
+                        <div>
+                            <a href="javascript:void(0);" class="media_content media_content_col">
+                                <div class="inner_item">
+                                    <img *ngIf="category.attachment_name" src="{{category.attachment_name}}">
+                                    <img src="assets/image/asa-di-var.png" *ngIf="!category.attachment_name">
+                                    <div class="upper_content">
+                                        <h5>{{category.name}}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div> -->
+					
+					
+					
+            </owl-carousel>
+        </div>
+
+        <div class="media_box liveKirtan">
+            <h3 class="heading">Live Kirtan Radio</h3>
+            <owl-carousel [items]="radioList" [options]="FT_options" [carouselClasses]="['owl-theme', 'sliding', 'nav_design']">
+                <div class="item" *ngFor="let media of radioList, let x = index">
+                    <a href="javascript:void(0);" class="media_content" (click)="play(media)">
+                        <div class="inner_item" >
+                                <img src="{{media.img}}" *ngIf="media.img" style="height:100%" >
+                            <img src="assets/image/1picture.png" *ngIf="!media.img">
+                            <div class="audio_paly text-center" style="bottom:95px;width:100%"> <!-- class="upper_content"-->
+                                <h5 style="color:white">{{media.title}}</h5>
+                            </div>
+                            <div class="audio_paly text-center" style="bottom:25px;">
+                                <a class="play_audio" href="javascript:void(0);"  (click)="play(media)">
+                                    <i class="fa fa-youtube-play"></i> &nbsp; Play Radio
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </owl-carousel>
+        </div>
+
+        <div class="media_box featuredRagi">
+            <h3 class="heading">Featured Ragi</h3>
+            <owl-carousel [items]="featuredArtists" [options]="FT_options2" [carouselClasses]="['owl-theme', 'sliding', 'nav_design']">
+           
+            <div class="item" (click)="featuredArtistsClicked(x)" *ngFor="let artist of featuredArtists, let x = index">
+                <div class="">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img *ngIf="artist.attachment_name" style="border-radius: 14px" src="{{artist.attachment_name}}">
+                            <img src="assets/image/artist/1.png" style="border-radius: 14px" *ngIf="!artist.attachment_name">
+                            <div class="upper_content">
+                                <h5>{{artist.name}}</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img src="assets/image/artist/2.png">
+                            <div class="upper_content">
+                                <h5>Bhai Dharam Singh Zakhmi</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img src="assets/image/artist/3.png">
+                            <div class="upper_content">
+                                <h5>Bhai Dharam Singh Zakhmi</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img src="assets/image/artist/4.png">
+                            <div class="upper_content">
+                                <h5>Bhai Dharam Singh Zakhmi</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img src="assets/image/artist/5.png">
+                            <div class="upper_content">
+                                <h5>Bhai Dharam Singh Zakhmi</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                    <a href="javascript:void(0);" class="media_content media_content_col">
+                        <div class="inner_item inner_item_2">
+                            <img src="assets/image/artist/6.png">
+                            <div class="upper_content">
+                                <h5>Bhai Dharam Singh Zakhmi</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+            </div>
+            </owl-carousel>            
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="btn_option text-center">
+                    <a href="javascript:void(0);" [routerLink]="['/artistfulllist']" class="btn btn-info btn_design">View All Ragis </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<div class="padding2" style="display: none;">
+
+    <!-- <div class="row justify-content-center">
+        <h1 class="page-title center">RESOURCES</h1>
+    </div> -->
+
+    <div class="row" *ngIf="recentlyplayed.length>=1">
+        <div style="font-size: 1em;margin-top:2vh;margin-bottom: 2vh;font-weight: 600">Recently Played</div>
+    </div>
+
+    <div class="row d-flex" *ngIf="recentlyplayed.length>=1">
+        <i class="fa fa-angle-left" style="font-size:2em; padding-top: 7vh;cursor: pointer;margin-right: 12px;"
+            (click)="prev()"></i>
+        <owl-carousel #owlElement class="flex-grow-1" style="width: 89%;margin: 13px;" [items]="recentlyplayed"
+            [options]="Options2" [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+            <div class="item" (click)="restratRecentleyPlayed(x)" *ngFor="let list of recentlyplayed, let x = index">
+                <!-- <div class="box"></div>
+                <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{list.title}}</h4> -->
+                <div class="box" style="height:15vh;width:15vh">
+                    <div class="img" style="background-color:#dadada;height:100%;width:100%"><img
+                            src="{{list.attachment_name}}" *ngIf="list.img" style="height:100%"></div>
+                </div>
+                <h4 style="font-size: 0.9em;margin-top:1vh;color:#000;width:15vh;word-break: break-all">{{list.title}}
+                </h4>
+                <!-- <p style="font-size: 0.7em">Bhai Avatar Singh ji</p> -->
+            </div>
+        </owl-carousel>
+        <i style="font-size:2em; padding-top: 7vh;margin-right: 12px;cursor: pointer;" (click)="next()"
+            class="fa fa-angle-right"></i>
+    </div>
+	
+	
+	
+	
+	
+	
+
+
+    <div class="row">
+        <div style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600;">Featured Tracks</div>
+    </div>
+
+    <div class="row">
+        <owl-carousel style="width: 100%;margin: 13px;" [options]="Options" [items]="featuredMedia"
+            [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+            <div class="item" (click)="restrat2(x)" *ngFor="let media of featuredMedia, let x = index">
+                <!-- <div class="box" style="background-color:#dadada;height:15vh;width:15vh"></div>
+                <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{media.title}}</h4> -->
+                <div class="box" style="height:15vh;width:15vh">
+                    <div class="img" style="background-color:#dadada;height:100%;width:100%"><img
+                            src="{{media.attachment_name}}" *ngIf="media.img" style="height:100%"></div>
+                </div>
+                <h4 style="font-size: 0.9em;margin-top:1vh;color:#000;width:15vh;word-break: break-all">{{media.title}}
+                </h4>
+                <!-- <p style="font-size: 0.7em">Bhai Avatar Singh ji</p>-->
+            </div>
+        </owl-carousel>
+    </div>
+
+    <div class="row">
+        <div style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600">Featured Categories</div>
+    </div>
+
+    <div class="row">
+        <owl-carousel style="width: 100%;margin: 13px;" [options]="Options" [items]="featuredCategoriesList"
+            [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+            <div class="item" (click)="categoryClick(x)" *ngFor="let category of featuredCategoriesList, let x = index">
+                <!-- <div class="box" style="background-color:#dadada;height:15vh;width:15vh"><img src="{{category.attachment_name}}" style="height:100%"></div>
+                    <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{category.name}}</h4> -->
+                <!-- <div class="box" style="height:15vh;width:15vh">
+                    <div class="img" style="background-color:#dadada;height:100%;width:100%"><img src="{{category.attachment_name}}" style="height:100%"></div>
+                </div> -->
+                <div style="height:15vh;width:15vh" *ngIf="category.attachment_name.length!=0">
+                    <div class="img" style="height:100%;width:100%"><img *ngIf="category.attachment_name"
+                            src="{{category.attachment_name}}" style="height:100%"></div>
+                </div>
+                <div class="box" style="height:15vh;width:15vh" *ngIf="category.attachment_name.length==0">
+                </div>
+                <h4 style="font-size: 0.9em;margin-top:1vh;color:#000;width:15vh;word-break: break-all">
+                    {{category.name}}</h4>
+                <!-- <p style="font-size: 0.7em">Bhai Avatar Singh ji</p> -->
+            </div>
+        </owl-carousel>
+    </div>
+
+    <!-- <div class="row d-flex">
+        <div class="flex-grow-1" style="font-size: 1em;margin-top:5vh;margin-bottom: 2vh;font-weight: 600">Featured Artist</div>
+        <button class="btn btn-primary btn-sm">view all</button>
+    </div> -->
+
+    <div class="d-flex row">
+        <div class="flex-grow-1 topheading" style="font-size: 1em;padding-top:5vh;padding-bottom: 2vh;font-weight: 600">
+            Ragi</div>
+        <div style="margin-top:3vh">
+            <button class="btn btn-outline-success btn-sm" [routerLink]="['/artistfulllist']"
+                style="margin-top:2vh;margin-bottom:2vh;margin-right:2vw">view all</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <owl-carousel style="width: 100%;margin: 13px;" [options]="Options" [items]="featuredArtists"
+            [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+            <div class="item" (click)="featuredArtistsClicked(x)" *ngFor="let artist of featuredArtists, let x = index">
+                <div style="height:15vh;width:15vh" *ngIf="artist.attachment_name.length!=0">
+                    <div class="img" style="height:100%;width:100%"><img *ngIf="artist.attachment_name"
+                            src="{{artist.attachment_name}}" style="height:100%"></div>
+                </div>
+                <div class="box" style="height:15vh;width:15vh" *ngIf="artist.attachment_name.length==0">
+                </div>
+                <h4 style="font-size: 0.9em;margin-top:1vh;color:#000;width:15vh;word-break: break-all;">{{artist.name}}
+                </h4>
+                <!-- <h4 style="font-size: 1em;color:#000;margin-top:1vh">{{artist.attributes.name}}</h4> -->
+            </div>
+        </owl-carousel>
+    </div>
+
+</div>
+
+<div class="container-fluid padding2 " style="margin-top:3vh;display: none;">
+
+    <div class="row justify-content-center" style="margin-bottom:3vh">
+        <h1 class="page-title center">
+            Audio search
+        </h1>
+    </div>
+
+    <div class="main-search d-flex mb-3">
+        <div class="flex-fill search-main-input">
+            <input type="text" [(ngModel)]="searchKeword" class="form-control form-control-lg"
+                placeholder="Gurbani Search..." (focus)="onFocusOfSearchInput()" (keyup.enter)="searchData()"> <!-- (keyup.enter)="searchData()" -->
+
+
+
+            <div class="search-kb-container">
+                <i class="fa fa-times search-clear" *ngIf="searchKeword.length > 0" (click)="clearSearchInput()"></i>
+                <a class="search-kb-icon" [ngClass]="{'active': isEngKeyboardShow}"
+                    (click)="showHideKeyboard('eng')"><img src="assets/images/english.png"></a>
+                <a class="search-kb-icon" [ngClass]="{'active': isPunKeyboardShow}"
+                    (click)="showHideKeyboard('pun')"><img src="assets/images/punjabi.png"></a>
+
+                <div class="kb-container shadow rounded" *ngIf="isEngKeyboardShow">
+                    <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                </div>
+
+                <div class="kb-container shadow rounded" *ngIf="isPunKeyboardShow">
+                    <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <select class="form-control form-control-lg" [(ngModel)]="selectedSearchOption">
+                <ng-container *ngFor="let option of searchOtions">
+                    <option *ngIf="option['is_show']" value="{{option['code']}}">
+                        {{option['name']}}
+                    </option>
+                </ng-container>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="d-flex as-section mb-3">
+        <!-- tbl Authors -->
+        <!-- <div class="search-control">
+                <label for="">Gurbani Authors</label>
+                <select class="form-control form-control-sm"
+                    [(ngModel)]="advanceSearchOptions['selectedTblAuthor']"
+                    [disabled]="advanceSearchOptions['selectedContent'] == 'audio'">
+                    <option value="0">All</option>
+                    <ng-container *ngFor="let author of tblAuthors">
+                        <option value="{{author['id']}}">
+                            {{author['attributes']['author']}}
+                        </option>
+                    </ng-container>
+                </select>
+            </div>
+     -->
+        <!-- tbl Melodies -->
+        <div class="search-control">
+            <label for="">Melody (Raag)</label>
+            <select class="form-control form-control-sm" [(ngModel)]="advanceSearchOptions['selectedTblMelody']"
+                [disabled]="advanceSearchOptions['selectedContent'] == 'english-translation'">
+                <option value="0">All</option>
+                <ng-container *ngFor="let melody of tblMelodies">
+                    <option value="{{melody['id']}}">
+                        {{melody['attributes']['melody']}}
+                    </option>
+                </ng-container>
+            </select>
+        </div>
+
+
+        <!-- Singer Raagi -->
+        <div class="search-control">
+            <label for="">Singer (Ragi)</label>
+            <select class="form-control form-control-sm" [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']">
+                <option value="0">All</option>
+                <ng-container *ngFor="let singer of singers">
+                    <option value="{{singer['id']}}">
+                        {{singer['attributes']['name']}}
+                    </option>
+                </ng-container>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button (click)="searchData()"
+                [disabled]="!searchKeword && advanceSearchOptions['selectedContent'] !== 'audio'"
+                class="btn btn-primary">
+                Search
+            </button>
+            <button class="btn btn-link btn-primary-outline" (click)="resetSearchAndOptions()">Reset</button>
+        </div>
+    </div>
+
+
+    <div *ngIf="is_search" style="margin-top:2vh;margin-bottom:4vh">
+        <h4 class="mb-4" style="margin-top:2vh">
+            {{searchedResult['pagination']['total']}} search results
+        </h4>
+        <div *ngIf="searchdata.length != 0">
+            <table class="ui unstackable table">
+                <thead>
+                    <tr>
+                        <th class="center">#</th>
+                        <th>Title</th>
+                        <th>Ragi</th>
+                        <th>Shabad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of searchdata;let x=index">
+
+                        <td class="centered" [ngClass]="(x == previndex) ? 'selected':'select'"
+                            style="font-size:1.1em;padding-top: 1em;">
+                            {{x+1}}
+                        </td>
+                        <td class="centered" [ngClass]="(x == previndex) ? 'selected':'select'"
+                            style="font-size:1.1em;padding-top: 1em;">
+                            {{list.ScriptureRomanEnglish}}
+                        </td>
+                        <td>
+
+                            <div *ngIf="datalength[x] != 0">
+                                <div *ngFor="let item of list.data_m;let i=index">
+
+                                    <button (click)="restratsearch(item.id,x,i)"
+                                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                        class="ui circular icon button">
+                                        <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                    </button>
+                                    <div class="ui label" *ngIf="item.auth_name!=''">
+                                        {{item.auth_name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+
+                            <div>
+
+                                <h4 class="gurbani-fonts">
+                                    <a class="" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                            highlighted_scripture_lang: 'english',
+                                                                            selected_content: 'gurbani'}"
+                                        [innerHtml]="list['Scripture']">
+                                    </a>
+                                </h4>
+
+
+                                <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani'}"
+                                    [innerHtml]="list['ScriptureRomanEnglish']">
+                                </a>
+                                <div class="search-item-meta fontSizeForLastRowShabadMobile">
+                                    <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                                    <span> - </span>
+                                    <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+
+                        <!-- <td>
+                                    <div *ngIf="list.data_m.length!=0">
+                                            <ul class="list-inline" style="display: inline-flex">
+                                                <li *ngFor="let item of list.data_m;let i=index">
+                                                            <button (click)="restratsearch(item.id,x,i)" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button">
+                                                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                                            </button>
+                                                </li>
+                                            </ul>
+                                    </div>
+                              </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <!--<div *ngIf="searchdata.length == 0">
+            No Result Found
+        </div>-->
+    </div>

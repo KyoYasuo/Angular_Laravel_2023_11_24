@@ -1,0 +1,18 @@
+
+<ng-template #progress let-modal>
+<div class="modal-body">
+        <ngb-progressbar type="warning" [value]="i" [striped]="true" [animated]="true"><i>{{i}}%</i></ngb-progressbar>
+
+        <h3> success: {{success}}</h3>
+        
+        <h3> error: {{error}}</h3>
+</div>
+</ng-template>
+
+<div *ngFor="let item of items;let x=index">
+    <button class="btn btn-primary" (click)="start(progress,x)">Add</button>
+</div>
+
+<div *ngIf="errdesc.length!=0">
+   <div class="text-danger" *ngFor="let item of errdesc">{{ item | json }}<br/><br/></div>
+</div>

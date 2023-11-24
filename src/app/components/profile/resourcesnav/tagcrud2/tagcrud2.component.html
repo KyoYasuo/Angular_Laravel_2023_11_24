@@ -1,0 +1,88 @@
+<div style="margin-top:2vh;margin-bottom:4vh">
+    <button class="positive ui button" (click)="
+    add(content)">Add tag</button>
+</div>
+
+
+<div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+
+<div class="alert alert-danger" *ngIf="err">{{successmsg}}</div>
+
+
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of list;">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        
+        <!-- <td *ngIf="!(item.name === 'Santhiya') && !(item.name === 'Kirtan') && !(item.name === 'Katha')">
+                   <ui-switch (change)="onChanged($event,item.id,loader)" [checked]="true" *ngIf="item.status==1"></ui-switch>
+
+                    <ui-switch (change)="onChanged($event,item.id,loader)" [checked]="false" *ngIf="item.status==0"></ui-switch>
+        </td>
+        <td *ngIf="!(item.name === 'Santhiya') && !(item.name === 'Kirtan') && !(item.name === 'Katha')">
+                <button class="circular positive ui icon button" (click)="edit(content)">
+                        <i class="edit icon"></i>
+                </button>
+        </td>
+
+        <td *ngIf="!(item.name === 'Santhiya') && !(item.name === 'Kirtan') && !(item.name === 'Katha')">
+                <button class="circular negative ui icon button" (click)="delete(loader)">
+                        <i class="trash icon"></i>
+                </button>
+        </td> -->
+      </tr>
+      
+    </tbody>
+</table>
+
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">{{msg}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <div id="fileupload" *ngIf="!fileupload">
+                <div class="input-group">
+                    <input type="text" class="form-control" [ngClass]="{'is-invalid': nameinvalid}" id="inputtxt" [(ngModel)]="mytxt" placeholder="Tag name"><br/>
+                    <div class="invalid-feedback">
+                            Enter tag name
+                    </div>
+                </div><br/>
+                    <div class="row" style="margin-top:2vh;margin-left:0.5vw">
+                       <button class="btn btn-primary" (click)="upload(loader)">{{btntxt}}</button>
+                    </div>
+            </div>
+    </div>
+</ng-template>
+
+
+
+
+
+<ng-template #loader let-modal>
+    
+    <div class="modal-body">
+            <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+            </div>
+    </div>
+
+</ng-template>
+

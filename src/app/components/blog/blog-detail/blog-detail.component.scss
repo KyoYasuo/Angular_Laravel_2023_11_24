@@ -1,0 +1,27 @@
+@media(max-width:567px){
+    .blog-img {
+        width: auto!important;
+    }
+}
+h4 {
+    font-family: nyt-imperial, georgia, "times new roman", times, serif !important;
+}
+
+.recent-blog-list > li > *  {
+    font-family: nyt-imperial, georgia, "times new roman", times, serif !important;
+}
+.comments-container .comment{
+    padding: 0;
+}
+.comments-container .comment_detail{
+    margin-left: 0px;
+}
+.comments-container .comment_avatar.name_avatar {
+	background: #0f78be;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding-top: 8px;
+}

@@ -1,0 +1,150 @@
+<section class="login_bag_image">
+	<div class="container">
+		<div class="outer_form">
+			<h1 class="page-title center">Sign In</h1>	
+			<div class="form-signin">
+				<div class="service-singin-buttons">
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<button class="btn btn-block btn-google" style="padding-left:0;padding-right: 0;" (click)="signInWithGoogle()">
+								<div>
+									<img src="assets/images/google.png"> 
+								</div>
+								<div class="mobileMargin0" >
+									<div>
+										<p class="gf_btn_text">Sign in with Google</p>
+									</div>
+								</div>
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<button class="btn btn-block btn-facebook" style="padding-left:0;padding-right: 0;" (click)="signInWithFB()">
+								<div>
+									<img src="assets/images/facebook.png">
+								</div>
+								<div class="mobileMargin0" >
+									<div >
+										<p class="gf_btn_text">Sign in with Facebook</p>
+									</div>
+								</div>
+							</button>
+						</div>
+					</div>
+					<div class="or-login-with"> OR <!-- or sign in using email --></div>
+				</div>
+				<div *ngIf="false" style="margin-bottom:5px">
+			<!--	<h5 style="text-align: center;color:green">Your account is successfully registered, waiting for approval.</h5>-->
+				</div>		
+				<form class="form-outer-wrap" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group">
+
+								<div class="input-group align-items-center" *ngIf="!showPasswordInput">
+									<input type="email" formControlName="email" class="form-control custom-form-control" placeholder="Email" autocomplete="off" [ngClass]="{'error-field': submitted && f.email.errors}" style="border-radius: 5px;" required>
+								</div>
+
+								<div class="input-group align-items-center" *ngIf="showPasswordInput">
+									<input type="email" formControlName="email" class="form-control custom-form-control" placeholder="Email" autocomplete="off" [ngClass]="{'error-field': submitted && f.email.errors}" [attr.disabled]="showPasswordInput ? '' : null" style="border-radius: 5px; background-color: #ffffff; border: none; padding-left: 0px;" required>
+									<div class="input-group-append" style="margin-top: 10px;">
+										<span class="email-edit nput-group-text" *ngIf="showPasswordInput" (click)="revertToEmailInput()">
+											<fa name="pencil" fixed='true'></fa>
+										</span>
+									</div>
+								</div>
+
+								<div *ngIf="submitted && f.email.errors" class="form-error">
+									<div *ngIf="f.email.errors.required">Email is required</div>
+									<div *ngIf="!f.email.errors.required && f.email.errors.email">Email must be a valid
+										email address</div>
+								</div>
+								<div *ngIf="apierror" class="form-error">
+									{{apierror}}
+								</div>
+							</div>
+						</div>
+					</div>							
+					<div class="btn_opt col-lg-10 offset-lg-1 col-md-12 px-0" *ngIf="!showPasswordInput">
+						<button type="button" class="btn btn-primary btn-block auth_btn" (click)="continueToPassword()">
+							Continue
+						</button>
+					</div>
+
+					<!-- <div class="form-group" *ngIf="showPasswordInput">
+						<input type="password" formControlName="password" class="form-control custom-form-control"
+							placeholder="Password" [ngClass]="{'error-field': submitted && f.password.errors}"
+							autocomplete="off" required>
+						<div *ngIf="submitted && f.password.errors" class="form-error">
+							<div *ngIf="f.password.errors.required">Password is required</div>
+						</div>
+						<div *ngIf="submitted && loginFormErros['email'] && !f.email.errors" class="form-error">
+							<div>{{loginFormErros['email']}}</div>
+						</div>
+						<div *ngIf="submitted && loginFormErros['password']" class="form-error">
+							<div>{{loginFormErros['password']}}</div>
+						</div>
+					</div> -->
+
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group" *ngIf="showPasswordInput">
+								<input type="password" formControlName="password" class="form-control custom-form-control"
+									placeholder="Password" [ngClass]="{'error-field': submitted && f.password.errors}"
+									autocomplete="off" required>
+								<div *ngIf="submitted && f.password.errors" class="form-error">
+									<div *ngIf="f.password.errors.required">Password is required</div>
+								</div>
+								<div *ngIf="submitted && loginFormErros['email'] && !f.email.errors" class="form-error">
+									<div>{{loginFormErros['email']}}</div>
+								</div>
+								<div *ngIf="submitted && loginFormErros['password']" class="form-error">
+									<div>{{loginFormErros['password']}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="form-group" *ngIf="showPasswordInput">
+								<ngx-recaptcha2 #captchaElem [siteKey]="sitekey" (reset)="handleReset()"
+									(expire)="handleExpire()" (load)="handleLoad()" (success)="handleSuccess($event)"
+									[useGlobalDomain]="false" [size]="size" [hl]="lang" [theme]="theme" [type]="type"
+									formControlName="recaptcha">
+								</ngx-recaptcha2>
+								<div *ngIf="submitted && f.recaptcha.errors" class="form-error">
+									Please verify Captcha
+								</div>
+							</div>
+						</div>
+					</div>			
+
+					<div class="row">
+						<div class="col-lg-10 offset-lg-1 col-md-12">
+							<div class="btn_opt" *ngIf="showPasswordInput">
+								<button type="submit" class="btn btn-primary btn-block auth_btn" (click)="continueToPassword()"[ngClass]="{'disabled': loginAPIRunnning}" [disabled]="loginAPIRunnning"> Sign in </button>
+						   </div>
+						</div>
+					</div>
+					<!-- <div *ngIf="showPasswordInput">
+						<button type="submit" name="submit" class="btn btn-primary btn-block"
+							[ngClass]="{'disabled': loginAPIRunnning}" [disabled]="loginAPIRunnning">
+							Sign in
+						</button>
+					</div> -->
+
+					<div class="per_link mt-3 row text-center">
+						<p class="col-12 text-center"><a style="color:#0b79be;" [routerLink]="['/forgot-password']">Can't log in?</a> <span style="color:#0b79be; font-weight:bolder; margin-left:5px; margin-right:5px;">&sdot;</span> <a style="color:#0b79be;" href="javascript:void(0);" [routerLink]="['/register']"> Sign up for an account </a></p>
+
+						<!-- <p class="col-12 text-center"><a href="javascript:void(0);" [routerLink]="['/register']"><span class="signin_accout">Don't have an account?</span> <span class="signin_title"> Register Now</span></a></p>
+ -->
+						<!-- <p class="col-12 text-center">Don't have an account?</p>
+						<p class="col-12 text-center"><a class="ml-auto" routerLink="/register" style="color:#0b79be">Register Now</a></p> -->
+					</div>							
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

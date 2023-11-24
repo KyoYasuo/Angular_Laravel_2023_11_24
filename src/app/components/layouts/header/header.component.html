@@ -1,0 +1,82 @@
+<header class="main_nav" style="
+position: sticky;width:100%;z-index: 9999;background: #252638">
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-light main_nav">
+				<div class="container p-0">
+				<a class="navbar-brand" routerLink="/home"><img src="assets/image/logo2.png"></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+					<div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav ml-auto menu_link">
+							<li class="nav-item link_nav" id="home"  routerLinkActive="active1">
+							<a class="nav-link" routerLink="/home">Home  <span class="sr-only">(current)</span></a>
+							</li>
+							<li class="nav-item link_nav" id="shabad" routerLinkActive="active1">
+								<a class="nav-link" (click)="goToSGGS()" style="cursor:pointer">Sri Guru Granth Sahib </a>
+							</li>
+							<li class="nav-item link_nav" id="commentary" routerLinkActive="active1">
+									<a class="nav-link" (click)="goToCommentary()" style="cursor:pointer">Commentary</a>
+							</li>
+							<li class="nav-item link_nav" id="worddetail" routerLinkActive="active1">
+									<a class="nav-link" routerLink="/worddetail">Dictionary</a>
+							</li>
+							<li class="nav-item link_nav" id="blog" routerLinkActive="active1">
+								<a class="nav-link" routerLink="/blog">Glossary</a>
+							</li>
+							<li class="nav-item link_nav" id="resources" routerLinkActive="active1" id="resources">
+								<a class="nav-link" routerLink="/resources">Media</a>
+							</li>
+							<li class="nav-item link_nav" id="search" style="cursor: pointer" routerLinkActive="active1" >
+								<a class="nav-link" (click)="click()" 
+								[attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic">
+									Gurbani Search
+								</a>
+							</li>
+							<!-- <li class="nav-item link_nav" id="donate" routerLinkActive="active1" id="donate">
+								<a class="nav-link" routerLink="/donate">Donate</a>
+							</li> -->
+							<li class="nav-item link_nav" id="login" routerLinkActive="active1" *ngIf="!isUserLoggedIn()">
+								<a class="nav-link" routerLink="/login" style="padding-right:15px !important">Login</a>
+							</li>
+							<li class="nav-item link_nav" id="login" *ngIf="isUserLoggedIn2()">
+									<a class="nav-link" (click)="logout()">Logout</a>
+							</li>
+						</ul>
+					</div>
+					<div class="kg-nav-right d-none d-lg-inline" style="margin-left: 1em;">
+						<div class="profile-nav-item dropdown"
+							*ngIf="isUserLoggedIn()">
+							<a data-target="#"
+								href="page.html"
+								data-toggle="dropdown"
+								class="dropdown-toggle">
+								<img class="profile-thumb" [attr.src]="(user['photo_url']) ? user['photo_url'] : 'assets/images/default.png'"
+									alt="DP">
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" style="color: #212529 !important" routerLink="/my-account">
+									<i class="fa fa-fw fa-user"></i>
+									My Account
+								</a>
+								<a class="dropdown-item" style="color: #212529 !important" href="javascript:void(0)"
+									(click)="logout()">
+									<i class="fa fa-fw fa-sign-out"></i>
+									Logout
+								</a>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</header>
+		
+	<div id="collapseBasic" style="display: none" [collapse]="isCollapsed" [isAnimated]="true">
+		<div class="advance_search_wrap">
+				<div class="container">
+					<app-shabad-search style="width: 100%" init="#f2f2f2"></app-shabad-search> 
+			</div>
+		</div>
+	</div>

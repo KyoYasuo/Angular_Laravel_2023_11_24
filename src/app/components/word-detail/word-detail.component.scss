@@ -1,0 +1,64 @@
+.vkeyboard {
+	font-size:14px;
+	padding: 15px 0px;
+
+	table{
+		background:#767676;
+		border:1px solid #e7e7e7;
+		border-radius: 5px;
+
+		td {
+			padding:1px !important;
+
+			a {
+				padding:5px 4px;
+				display:block;
+				text-decoration:none;
+				background:#FFF;
+				color:#000;
+				-webkit-border-radius: 4px;
+				-moz-border-radius: 4px;
+				border-radius: 4px;
+				padding: 0.3em 0.5em;
+
+				&:hover {
+					background-color:#000;
+					color: #fff;
+				}
+			}
+		}
+	}
+}
+
+.df .df-area-form {
+    width: 54%;
+    padding: 1rem;
+}
+
+.enable{
+	background: #0c79be;border: none
+}
+.disable{
+	background: #58abdf !important;;border: none
+}
+.vkeyboard {
+    font-size: 14px;
+    width: 100%;
+    padding: 15px 0px;
+	table {
+		margin: 0 auto;
+		a {
+			font-size: 20px;
+		}
+	}
+}
+.dr-section h4 {
+	font-size: 26px;
+	font-weight: 600;
+}
+.dr-section span {
+	font-size: 24px;
+}
+.dr-section .eng p, .dr-section .eng p span{
+	font-size: 22px;
+}

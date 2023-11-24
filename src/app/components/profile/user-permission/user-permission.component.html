@@ -1,0 +1,47 @@
+<h2 class="page-title">User Permissions</h2>
+
+<div class="mac-page-content">
+    <table class="table table-kg permissions">
+        <thead>
+            <tr>
+                <th>
+                    Modules
+                </th>
+                <!-- <th *ngFor="let role of userRoles">
+                    {{role['name']}}
+                </th> -->
+                <th class="p-check">Super Admin</th>
+                <th class="p-check">Admin</th>
+                <th class="p-check">User</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let permission of rolePermissions">
+                <td>
+                    {{permission['name']}}
+                </td>
+                <td>
+                    <input
+                        type="checkbox"
+                        [(ngModel)]="permission['super_admin']">
+                </td>
+                <td>
+                    <input
+                        type="checkbox"
+                        [(ngModel)]="permission['admin']">
+                </td>
+                <td>
+                    <input
+                        type="checkbox"
+                        [(ngModel)]="permission['authenticated_user']">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button
+        class="btn btn-primary btn-edit-profile"
+        (click)="savePermissions()"
+        [disabled]="isSavePermissionsApiRunning">
+        Save Permissions
+    </button>
+</div>

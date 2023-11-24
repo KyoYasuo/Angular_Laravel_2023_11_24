@@ -1,0 +1,75 @@
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item"
+    routerLinkActive="active"
+	[routerLinkActiveOptions]="{exact: true}"					
+    >
+      <a class="nav-link active"  routerLink="podcast" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+    </li>
+    <li class="nav-item"
+    routerLinkActive="active"
+	[routerLinkActiveOptions]="{exact: true}"
+    >
+      <a class="nav-link"  routerLink="addpodcast" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Add/update/delete Podcast</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="dailypodcast" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Podcast listing</a>
+    </li>
+</ul>
+<div style="margin-top:3vh;margin-left:1vw;margin-right:1vw">
+<router-outlet></router-outlet>
+</div> -->
+
+<ngb-tabset #t="ngbTabset">
+    <ngb-tab id="tab-selectbyid1">
+        <ng-template ngbTabTitle><b>Home</b> </ng-template>
+      <ng-template ngbTabContent>
+            <div class="margins">
+       <app-podcast></app-podcast>
+       </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id="tab-selectbyid2">
+      <ng-template ngbTabTitle><b>Category</b> </ng-template>
+      <ng-template ngbTabContent>
+            <div class="margins">
+          <app-podcastcrud></app-podcastcrud>
+          </div>
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab id="tab-selectbyid3">
+        <ng-template ngbTabTitle><b>Subcategory</b> </ng-template>
+        <ng-template ngbTabContent>
+              <div class="margins">
+            <app-podcastsubcategorycrud></app-podcastsubcategorycrud>
+            </div>
+        </ng-template>
+      </ngb-tab>
+  
+
+
+    <ngb-tab id="tab-selectbyid4">
+      <ng-template ngbTabTitle><b>Add Podcast Media</b> </ng-template>
+      <ng-template ngbTabContent>
+          <div class="margins"> <app-addpodcastcrud></app-addpodcastcrud>
+          </div>
+
+      </ng-template>
+</ngb-tab>
+<!-- <ngb-tab id="tab-selectbyid6">
+  <ng-template ngbTabTitle><b>Archive listing</b></ng-template>
+  <ng-template ngbTabContent>
+      <div class="margins"> <app-archive></app-archive>
+      </div>
+  </ng-template>
+</ngb-tab> -->
+    <ngb-tab id="tab-selectbyid5" *ngIf="enable">
+            <ng-template ngbTabTitle><b>Podcast listing</b> </ng-template>
+            <ng-template ngbTabContent>
+                <div class="margins"> <app-dailypodcast></app-dailypodcast>
+                </div>
+
+            </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+  

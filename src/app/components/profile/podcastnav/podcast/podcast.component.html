@@ -1,0 +1,100 @@
+
+<div class="container-fluid">
+        <div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+        <div class="alert alert-danger" *ngIf="err">Something went wrong</div>
+            <div style="margin-top:1vh;">
+                    <h3 style="margin-bottom: 2vh">Featured Podcast Media</h3>
+                    <tag-input [(ngModel)]="mediaObjects"
+                           [theme]="'dark'"
+                           [dragZone]="'zone1'"
+                           [editable]="true"
+                           >
+                            <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                                [dynamicUpdate]="false"
+                                                [displayBy]="'value'"
+                                                [autocompleteItems]="mediaList"
+                                                [appendToBody]="false">
+                                <ng-template let-item="item" let-index="index">
+                                    {{ item.value }}
+                                </ng-template>
+                            </tag-input-dropdown>
+                    </tag-input>
+                    <div class="row"  style="margin-top:1vh;padding-left:0.5vw">
+                        <button (click)="save(content,1)" class="btn btn-primary">Save</button>
+                    </div>
+            </div>
+    
+    
+    
+    
+<!--     
+            <div style="margin-top:2vh;">
+                    <h3 style="margin-bottom: 2vh">Featured Podcast Artist</h3>
+                    <tag-input [(ngModel)]="artistObjects"
+                           [theme]="'dark'"
+                           [dragZone]="'zone1'"
+                           [editable]="true"
+                           >
+                            <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                                [dynamicUpdate]="false"
+                                                [displayBy]="'value'"
+                                                [autocompleteItems]="artistList">
+                                <ng-template let-item="item" let-index="index">
+                                    {{ item.value }}
+                                </ng-template>
+                            </tag-input-dropdown>
+                    </tag-input>
+                    <div class="row"  style="margin-top:1vh;padding-left:0.5vw">
+                        <button (click)="save(2)" class="btn btn-primary">Save</button>
+                    </div>
+    
+            </div>
+    
+     -->
+    
+            <div style="margin-top:2vh;">
+                    <h3 style="margin-bottom: 2vh">Featured Podcast Categories</h3>
+                    <tag-input [(ngModel)]="categoriesObjects"
+                           [theme]="'dark'"
+                           [dragZone]="'zone1'"
+                           [editable]="true"
+                           >
+                            <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                                [dynamicUpdate]="false"
+                                                [displayBy]="'value'"
+                                                [autocompleteItems]="categoriesList"
+                                                [appendToBody]="false">
+                                <ng-template let-item="item" let-index="index">
+                                    {{ item.value }}
+                                </ng-template>
+                            </tag-input-dropdown>
+                    </tag-input>
+                    <div class="row" style="margin-top:1vh;padding-left:0.5vw">
+                        <button (click)="save(content,3)"    class="btn btn-primary">Save</button>
+                    </div>
+            </div>
+    
+    
+
+
+
+
+
+
+
+    </div>
+
+
+
+<ng-template #content let-modal>
+        
+        <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                </div>
+        </div>
+    </ng-template>
+    
+    

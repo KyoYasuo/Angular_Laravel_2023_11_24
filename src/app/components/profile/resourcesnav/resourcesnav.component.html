@@ -1,0 +1,88 @@
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item"
+    routerLinkActive="active"
+	[routerLinkActiveOptions]="{exact: true}"					
+    >
+      <a class="nav-link active"  routerLink="podcast" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+    </li>
+    <li class="nav-item"
+    routerLinkActive="active"
+	[routerLinkActiveOptions]="{exact: true}"
+    >
+      <a class="nav-link"  routerLink="addpodcast" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Add/update/delete Podcast</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="dailypodcast" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Podcast listing</a>
+    </li>
+</ul>
+<div style="margin-top:3vh;margin-left:1vw;margin-right:1vw">
+<router-outlet></router-outlet>
+</div> -->
+
+<ngb-tabset #t="ngbTabset">
+        <ngb-tab id="tab-selectbyid1">
+            <ng-template ngbTabTitle><b>Home</b> </ng-template>
+          <ng-template ngbTabContent>
+                <div class="margins">
+           <app-resources></app-resources>
+           </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="tab-selectbyid2">
+          <ng-template ngbTabTitle><b>Category</b> </ng-template>
+          <ng-template ngbTabContent>
+                <div class="margins">
+              <app-resourcescategorycrud></app-resourcescategorycrud>
+              </div>
+          </ng-template>
+        </ngb-tab>
+    
+        <ngb-tab id="tab-selectbyid3">
+            <ng-template ngbTabTitle><b>Subcategory</b> </ng-template>
+            <ng-template ngbTabContent>
+                  <div class="margins">
+                <app-resourcessubcategorycrud></app-resourcessubcategorycrud>
+                </div>
+            </ng-template>
+          </ngb-tab>
+      
+         <ngb-tab id="tab-selectbyid4">
+                <ng-template ngbTabTitle><b>Artist</b> </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="margins"> <app-mediaartistcrud></app-mediaartistcrud>
+                    </div>
+    
+                </ng-template>
+        </ngb-tab>
+        
+        
+
+        <ngb-tab id="tab-selectbyid5">
+          <ng-template ngbTabTitle><b>Tags</b> </ng-template>
+          <ng-template ngbTabContent>
+              <div class="margins"> <app-tagcrud></app-tagcrud>
+              </div>
+
+          </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="tab-selectbyid6">
+    <ng-template ngbTabTitle><b>Media</b> </ng-template>
+    <ng-template ngbTabContent>
+        <div class="margins"> <app-mediacrud></app-mediacrud>
+        </div>
+
+    </ng-template>
+</ngb-tab>
+
+
+<ngb-tab id="tab-selectbyid7">
+    <ng-template ngbTabTitle><b>Auditing</b> </ng-template>
+    <ng-template ngbTabContent>
+        <div class="margins"> <app-auditing></app-auditing>
+        </div>
+
+    </ng-template>
+</ngb-tab> 
+      </ngb-tabset>
+      

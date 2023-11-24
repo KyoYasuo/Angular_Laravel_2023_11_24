@@ -1,0 +1,298 @@
+<div id="loader" *ngIf="loader"
+  style="min-height: calc(100vh - 92px);display: flex;justify-content: center;align-items: center">
+  <div> <i class="fas fa-spinner fa-spin fa-2x"></i></div>
+</div>
+
+<div class="padding" *ngIf="!available">
+  <div class=" alert alert-info">{{msgerr}}</div>
+</div>
+
+<div class="breadcrumb_banner" *ngIf="!loader && available" style="background-image: url('assets/image/breadcrumb/nitnem.jpg');">
+  <div class="container">
+    <div class="breadcrumb_box {{ hasTwoLine ? 'two-line' : '' }}">
+      <h3 [innerHTML]="wrap(title)"></h3>
+    </div>
+  </div>
+</div>
+
+<section class="artistgurbani_list section_wrap" *ngIf="!loader && available">
+  <div class="container">
+    
+    <div class="row" style="width:100%">
+        <ol class="breadcrumb" style="background:white !important">
+
+                <li class="breadcrumb-item" *ngFor="let item of breadcrumlist"><a href="javascript:void(0);" (click)="change(item.path)">{{item.name}}</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+        </ol>
+    </div>
+
+    <!-- New Table Design -->
+    <div class="tableWrap TableHide" >
+      
+      <div class="tableHead">
+        <div class="tableCell" style="width:5%;">#</div>
+        <div class="tableCell" style="width:30%;">Title</div>
+        <div class="tableCell" style="width:15%;">Duration</div>
+        <div class="tableCell" style="width:30%;">Shabad</div>
+        <div class="tableCell" style="width:20%;">Action</div>
+      </div>
+
+      <div class="tableBody" *ngFor="let list of gurbanilist;let x=index">
+        
+        <div class="tableCell" style="width:5%;">
+          <div class="tableCell-heading">#</div>
+          <div class="tableCell-content">{{x+1}}</div>
+        </div> 
+        <div class="tableCell" style="width:30%;">
+          <div class="tableCell-heading">Title</div>
+          <div class="tableCell-content"><div class="con-title" (click)="restrat2(x)">{{list.title}}</div></div>
+        </div>
+        <div class="tableCell" style="width:15%;">
+          <div class="tableCell-heading">Duration</div>
+          <div class="tableCell-content">{{list.duration==null?"N/A":list.duration}}</div>
+        </div>
+        <div class="tableCell" style="width:30%;">
+          <div class="tableCell-heading">Shabad</div>
+          <div class="tableCell-content">
+            <a class="title" href="javascript:void(0);"
+            *ngIf="list.page && list.shabad_id"
+                                                  [routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+                                                  [queryParams]="{highlighted_scripture_id: list.scripture_id,
+                                                  highlighted_scripture_lang: 'english',
+                                                  selected_content: 'gurbani'}"
+                                                  [innerHtml]="list.Scripture"
+            ></a>
+            <a class="author" href="javascript:void(0);"
+            *ngIf="list.page && list.shabad_id"
+            [routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+            [queryParams]="{highlighted_scripture_id: list.scripture_id,
+                  highlighted_scripture_lang: 'english',
+                  selected_content: 'gurbani'}"
+            [innerHtml]="list.ScriptureRomanEnglish"
+            ></a>
+            <div class="search-item-meta">
+              <span *ngIf="list.page && list.shabad_id">
+                <span>Page {{list.page}}  Shabad {{list.shabad_id}}</span>
+                </span>
+            </div>
+          </div>
+        </div>
+        <div class="tableCell" style="width:20%;">
+          <div class="tableCell-heading">Action</div>
+          <div class="tableCell-content">
+             <!-- <a href="javascript:void(0);" (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #2d8dac" class="action_btn mr-2">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+              
+            </a>
+            <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}" *ngIf="validateAction('download')" download="largefile.zip" class="action_btn" ><i class="fa fa-cloud-download"></i></a> -->
+            <button (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #0b79be;">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+             </button>
+             <!-- (click)="download(list.attachment_name,list.id)" -->
+          <!-- <a href="javascript:void(0);" (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="action_btn mr-2"><i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i></a> -->
+          <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}" *ngIf="validateAction('download')" download="largefile.zip" class="action_btn" ><i class="fa fa-cloud-download"></i></a>
+           
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+      <div class="cardDiv" *ngFor="let list of gurbanilist;let x=index">
+        <div class="row">
+          <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <span>
+              <span class="mr-3">{{x+1}}</span>
+              <span (click)="restrat2(x)" style="font-size: 15px;">{{list.title | truncate1 }} <!-- <i class="fa fa-circle ml-1 mr-1 dotIcon" aria-hidden="true"></i> --></span> <span class="opac7 ml-1" style="font-size: 13px;">{{list.duration==null?"N/A":list.duration}}</span>
+             </span> 
+            <span>
+              <a (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'"
+                class="ui circular icon button " style="color: #0b79be;">
+                <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+
+    <!-- New Table Design End -->
+
+    <div class="gurbanilist_table table-responsive" style="display: none">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Shabad</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of gurbanilist;let x=index">
+            <td>{{x+1}}</td>
+            <td>{{list.title}}</td>
+            <td>{{list.duration==null?"N/A":list.duration}}</td>
+            <td>
+                      <div *ngIf="list.page && list.shabad_id">
+
+                                  <h4 class="gurbani-fonts">
+                                          <a class="" class="title"
+                                                  *ngIf="list.page && list.shabad_id"
+                                                  [routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+                                                  [queryParams]="{highlighted_scripture_id: list.scripture_id,
+                                                  highlighted_scripture_lang: 'english',
+                                                  selected_content: 'gurbani'}"
+                                                  [innerHtml]="list.Scripture">
+                                          </a>
+                                  </h4>
+
+
+                          <a class="author"
+							*ngIf="list.page && list.shabad_id"
+							[routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+							[queryParams]="{highlighted_scripture_id: list.scripture_id,
+							highlighted_scripture_lang: 'english',
+							selected_content: 'gurbani'}"
+							[innerHtml]="list.ScriptureRomanEnglish">
+						 </a>
+                          <div class="search-item-meta" *ngIf="list.page && list.shabad_id">
+						  <span>Page {{list.page}}  Shabad {{list.shabad_id}}</span>
+
+                                  <!-- <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                                  <span> - </span>
+                                  <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+                                    -->
+                          </div>
+                  </div>
+
+                  <div *ngIf="!list.Page && !list.shabad_id">N/A</div>
+
+              <!-- <a href="javascript:void(0);" class="title">ਜਲਿ ਥਲਿ ਮਹੀਅਲਿ ਪੂਰਿਆ ਪ੍ਰਭੁ ਆਪਣੀ ਨਦਰਿ ਨਿਹਾਲਿ ॥੨॥</a>
+              <p>jal thal mahial puria prabh apani nadar nihal .2.
+              Page 48 Shabad 141 -</p> -->
+            </td>
+            <td style="display: flex;">
+                <!-- <button (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="action_btn mr-2">
+                    <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+                </button>
+                 -->
+
+                 <button (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #0b79be;">
+                    <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+                 </button>
+                 <!-- (click)="download(list.attachment_name,list.id)" -->
+              <!-- <a href="javascript:void(0);" (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'" class="action_btn mr-2"><i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i></a> -->
+              <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{list.id}}" *ngIf="validateAction('download')" download="largefile.zip" class="action_btn" ><i class="fa fa-cloud-download"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="padding" *ngIf="!loader && available" style="overflow-x:hidden;display: none;">
+  <!-- <div class="row">
+    <div class="col-1" [routerLink]="[ '/resources']" style="padding-top:50px;cursor: pointer;"><i class="fas fa-arrow-left fa-2x"></i></div>
+    <div class="col-10">
+        <h1 class="page-title center">
+            {{title}}
+        </h1>
+    </div>
+   </div> -->
+  <!-- <div
+   style="display: flex;align-items: flex-end;justify-content: flex-end;min-height:35vh;background: url('assets/logo_podcast.jpg');background-repeat: no-repeat;background-size: cover;background-position: center">
+   </div> -->
+
+  <div class="row d-flex justify-content-center" style="margin: 1em 0;">
+    <div class="col-lg-2 col-sm-12">
+      <img [src]="artistimg" *ngIf="artistimg" style="width:10em;height:10em">
+    </div>
+    <div class="col-lg-10 col-sm-12">
+      <div class="ui large label">
+        {{title}}
+      </div>
+      <div style="margin-top:1em">Describtion</div>
+      <div style="margin-top:0.9em">{{artistdesc}}</div>
+    </div>
+  </div>
+
+  <table *ngIf="gurbanilist.length>=1 && !loader" class="ui selectable unstackable table">
+    <thead>
+      <tr>
+        <th class="center aligned collapsing"></th>
+        <th class="center">#</th>
+        <th>Title</th>
+        <th>Duration</th>
+        <th></th>
+        <th>Shabad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let list of gurbanilist;let x=index">
+
+        <td>
+          <button (click)="restrat2(x)" [ngClass]="(x == currentPlaying) ? 'selectedicon':'select'"
+            class="ui circular icon button">
+            <i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i>
+          </button>
+        </td>
+        <td class="centered" [ngClass]="(x == index) ? 'selected':'select'"
+          style="font-size:1.1em;padding-top: 1em;">
+          {{x+1}}
+        </td>
+        <td class="centered" [ngClass]="(x == index) ? 'selected':'select'"
+          style="font-size:1.1em;padding-top: 1em;">
+          {{list.title}}
+        </td>
+        <td class="centered" [ngClass]="(x == index) ? 'selected':'select'"
+          style="font-size:1.1em;padding-top: 1em;">
+          {{list.duration==null?"N/A":list.duration}}
+        </td>
+        <td>
+          <button class="ui circular icon button">
+
+            <i class="cloud download icon" (click)="download(list.attachment_name)"></i>
+          </button>
+        </td>
+        <td>
+          <div *ngIf="list.page && list.shabad_id">
+            <h4 class="gurbani-fonts">
+              <a class="" *ngIf="list.page && list.shabad_id"
+                [routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+                [queryParams]="{highlighted_scripture_id: list.scripture_id,
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani'}"
+                [innerHtml]="list.Scripture">
+              </a>
+            </h4>
+            <a class="author" *ngIf="list.page && list.shabad_id"
+              [routerLink]="'/shabad/' + list.page +'/'+ list.shabad_id"
+              [queryParams]="{highlighted_scripture_id: list.scripture_id,
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani'}"
+              [innerHtml]="list.ScriptureRomanEnglish">
+            </a>
+            <div class="search-item-meta" *ngIf="list.page && list.shabad_id">
+              <span>Page {{list.page}} Shabad {{list.shabad_id}}</span>
+              <!-- <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                <span> - </span>
+                <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+                -->
+            </div>
+          </div>
+          <div *ngIf="!list.page && !list.shabad_id">N/A</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="gurbanilist.length==0 && !loader" class="alert alert-info" style="margin-top:2%">
+    <h5>No data found</h5>
+  </div>
+</div>
+<button id="playerPauseEvent" (click)="playerPauseEvent()" style="display:none"></button>
+<button id="playerPlayEvent" (click)="playerPlayEvent()" style="display:none"></button>

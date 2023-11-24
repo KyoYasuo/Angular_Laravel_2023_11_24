@@ -1,0 +1,468 @@
+<!-- <div class="container-fluid" style="padding: 0;overflow-x: hidden">	
+   	<div _ngcontent-jgt-c29="" class="topbox" style="background-image: url('assets/images/blog-bg.jpg');min-height: 45vh;display: flex;justify-content: center;align-items: center;">
+	<div _ngcontent-jgt-c29="" class="d-flex flex-column" style="">
+	<div _ngcontent-jgt-c29="" class="flex-grow-1 d-flex flex-column justify-content-center align-self-center align-items-center" style="flex-grow: 1;">
+<div _ngcontent-jgt-c29="" style="margin-top:2%">{{ dateObj | date }} </div><div _ngcontent-jgt-c29="" class="heading mb-2">{{title}}</div><div _ngcontent-jgt-c29="" class="heading2 text-center mb-2" [innerHtml]="desc"></div><div _ngcontent-jgt-c29="" class="d-flex justify-content-center align-items-center" style="margin-top:2%;"><i _ngcontent-jgt-c29="" class="fas fa-play-circle fa-2x" style="margin-right:2vw;color:#1f516a;cursor: pointer;" (click)="restrat(1)"></i><div _ngcontent-jgt-c29="" class="text-center">{{time}}</div></div></div><div _ngcontent-jgt-c29="" class="d-flex justify-content-end" id="subscripebox" style="width: 100vw;">
+<div _ngcontent-jgt-c29="" style="font-weight: 400;margin-right: 0px">Subscribe:</div><a _ngcontent-jgt-c29="" class="anchor" href="https://podcasts.apple.com/us/podcast/khojgurbani/id1435439834">Apple Podcasts</a><div _ngcontent-jgt-c29="" class="anchor">|</div><a _ngcontent-jgt-c29="" class="anchor" href="https://play.google.com/music/listen?u=0#/ps/Ishskejjy7siyjmsxp77gqan63m">Google Podcasts</a></div></div></div>
+
+<div class="padding">
+
+	<div class="row" style="font-weight:500;margin-bottom:1vh;justify-content: flex-end">
+		<div class="ui row search" style="margin-top: 2vh;margin-bottom: 2vh">
+		  <div class="ui icon input"style='width:70%;'>
+			<input class="prompt" id="search" (keydown)=onKeydownEvent($event) type="text" placeholder="Search Podcast">
+		  </div>
+		  <div class="ui circular animated button" (click)="search()" tabindex="0">
+			<div class="hidden content">Search</div>
+			<div class="visible content" >
+			  <i class="search icon"></i>
+			</div>
+		  </div>
+	  </div>
+	</div>
+
+	<div class="row">
+		<div class="topheading">Featured Podcast</div>
+	</div>
+	<div class="row">
+		<owl-carousel #owlElement style="width: 100%;margin:13px" [items]="featuredObjects" [options]="Options" [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+				<div class="item" (click)="podcast(x)"  *ngFor="let obj of featuredObjects, let x = index">													 
+				<div class="box" *ngIf="obj.thumbnail.length!=0">
+					<img src="{{obj.thumbnail}}" style="width:100%;height:100%">
+				</div>
+				<div class="box" *ngIf="obj.thumbnail.length==0"></div>
+				<h4 class="mainheading" style="width: 100%">{{obj.value}}</h4>
+			</div>
+		</owl-carousel>
+	</div>
+				
+   <div class="row">
+        <div class="topheading">Featured Categories</div>
+	</div>
+	
+    <div class="row">
+        <owl-carousel style="width: 100%;margin:13px" [items]="categoriesObjects" [options]="Options" [carouselClasses]="['owl-theme', 'gradient-nav', 'sliding']">
+			<div class="item" (click)='categoryclick(x)'  *ngFor="let obj of categoriesObjects, let x = index">                                            
+				<div class="box" *ngIf="obj.category_image.length!=0"><img src="{{obj.category_image}}" style="width:100%;height:100%"></div>
+				<div class="box" *ngIf="obj.category_image.length==0"></div>
+				<h4 class="mainheading">{{obj.value}}</h4>
+			</div>F
+        </owl-carousel>
+	</div>
+	
+	<div class="d-flex row">
+		<div class="flex-grow-1 topheading" >Archive</div>
+		<button class="btn btn-outline-success btn-sm" [routerLink]="['/archivelist']" style="margin-top:2vh;margin-bottom:2vh;margin-right:2vw">view all</button>
+	</div>
+	
+	<div class="row" style="padding-left:10px">
+	     <div class="col-lg-3 col-md-6 col-sm-6" (click)="restratarchive(x)" style="padding:0px !important;cursor: pointer;" *ngFor="let list of archivelist, let x = index">
+			<div class="box2">
+				<div class="d-flex flex-column" style="height: 100%">
+					<div class="flex-grow-1 d-flex flex-column justify-content-center align-self-center align-items-center">
+						<img [src]="list.thumbnail" style="width: 100%;height:100%">
+					</div>								
+				</div>
+			</div>
+			<h4 class="mainheading" style="font-weight: 600;width:95%;word-wrap: break-word;">{{list.title}}</h4>
+			<p class="subheading" style="margin-bottom:1vh">{{ list.created_at | date }}</p>			
+		 </div>
+	</div>
+</div>
+</div> -->
+
+<!--- Slider Banner section -->
+<div class="slider_part home-slider">
+	<div class="slider_image" style="background-position-x: center;">
+		<div class="container">
+			<div class="outer_slider">
+				<div class="slider_content">
+					<div class="col-md-6 col-sm-12 d-md-block d-none p-0">
+						<h2 class="poppins-bold">{{title}}</h2>
+						<span>{{dateObj | Datefilter }}</span>
+						
+					</div>
+						
+					<div class="col-md-6 col-sm-12 d-md-block d-none pl-0" style="padding-top:21px" id="section1">
+						<button type="button" class="btn btn-primary btn_slider mr-2" (click)="restrat(1,'e')">English - ਅੰਗਰੇਜ਼ੀ</button>
+						<button type="button" class="btn btn-primary btn_slider_1 ml-2" (click)="restrat(1,'p')">Punjabi - ਪੰਜਾਬੀ</button>
+						<span title="Go to commentary" style="cursor: pointer;" (click)="goShabadADay(shabad_id,shabad_page_id)">
+							<i class="fas fa-info-circle" style="color: #6e7376;font-size: 16px; margin: 0px 0px 0px 10px; "></i>
+						</span>
+
+					</div> 
+				</div>
+
+				<ul class="play_stroe">
+					<li style="display: flex;justify-content: flex-end;margin-bottom: 1em;">
+						<a  href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkLnBvZGJlYW4uY29tL2tob2pndXJiYW5pL2ZlZWQueG1s" target="_blank" style="width: 11em;">
+							<img src="assets/image/Google_Podcast.PNG" class="img-fluid">
+						</a>
+					</li>
+					<li style="display: flex;justify-content: flex-end;">
+						<a href="https://podcasts.apple.com/us/podcast/khojgurbani/id1435439834" target="_blank" style="width: 11em;">
+							<img src="assets/image/apple_Podcast.png" class="img-fluid">
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row podcast_row mb-4 d-md-none">
+	<div class="col-6 text-center" style="padding-right: 0px;  "> 
+		<span class="heading-header-podcast" style="font-size: 16px;" (click)="goShabadADay(shabad_id,shabad_page_id)" > <a class="shabad_underline"  href="javascript:void(0);">A Sabad A Day<br></a> <span style="color: #767373; font-size: 12px;">{{dateObj | Datefilter}}</span> </span>
+	</div>
+	<div class="col-6" style="padding-left: 0px; margin-top: 5px;">
+		<div class="btn-group mt-1">
+			<button type="button" class="btn btn-primary" style=" color: #fff; background-color: #0a79be; border-color: #6e6e6e;
+			border-radius: 20px;" (click)="restrat(1,'e')">English</button>
+			<button type="button" class="btn btn-primary ml-1"
+			style=" border-radius: 20px; background-color: #252638; border-color: #6e6e6e"
+			(click)="restrat(1,'p')">Punjabi</button>
+		</div>
+	</div>
+</div>
+
+<!-- <ul class="play_stroe mobile-store" style="padding-bottom: 0px !important;">
+	<li><span class="heading-header-podcast">Daily Podcast <span>{{dateObj | date}}</span> </span></li>
+	<li>
+		<button type="button" class="btn btn-primary btn_slider" (click)="restrat(1,'e')">Listen
+			Now</button>
+	</li>
+	<li>
+		<button type="button" class="btn btn-primary btn_slider_1" (click)="restrat(1,'p')">ਹੁਣ
+			ਸੁਣੋ</button>
+	</li>
+</ul> -->
+
+<ul class="play_stroe mobile-store" style="padding-bottom: 0px !important;">
+	
+	<li class="mr-3" >
+		<a  href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkLnBvZGJlYW4uY29tL2tob2pndXJiYW5pL2ZlZWQueG1s" target="_blank" style="width: 11em;">
+			<img src="assets/image/Google_Podcast.PNG" class="img-fluid">
+		</a>
+	</li>
+	<li>
+		<a href="https://podcasts.apple.com/us/podcast/khojgurbani/id1435439834" target="_blank" style="width: 11em;">
+			<img src="assets/image/apple_Podcast.png" class="img-fluid">
+		</a>
+	</li>
+</ul>
+
+
+<!--- About section -->
+<section class="about d-xl-block d-lg-block pb-0">
+	<div class="container">
+		<div class="about_section" >
+			<div class="row">
+				<div class="col-lg-6 col-md-6 d-md-block d-none">
+					<div class="images_about">
+						<img src="assets/image/about_1.jpg" class="img-fluid">
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 px-md-3 px-2">
+					
+					<div class="about_contnet" *ngIf="!commentary_status">
+						<h3 class="poppins-bold">{{title}}</h3>
+						<!-- <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </p>
+						<p>     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem						</p> -->
+						<!-- <p [innerHtml]="desc" class="poppins-regular"></p> -->
+					</div>
+
+					<div class="about_contnet d-md-block d-none" > <!-- *ngIf="commentary_status"-->
+							<!-- <h3 class="poppins-bold" >{{title}}</h3>
+							<p [innerHtml]="commentary"  style="height: 34vh;
+							overflow: hidden;" class="poppins-regular"></p> -->
+
+							<h3 class="poppins-bold text-center mt-3">Welcome to KhojGurbani</h3>
+						    
+							<div style="height: 51vh;"
+							 class="poppins-regular">
+						   <p>KhojGurbani is a collaborative platform that provides content and resources for anyone wishing to establish or deepen their engagement with Gurbani – Sikh teachings.
+						   </p>
+						   <p>
+						   KhojGurbani envisions a world where every Sikh commits to at least ONE complete reading and study of the Guru Granth Sahib. 
+						   </p>
+						   <p>
+						   By leveraging technology and online collaborative tools, KhojGurbani hopes to establish a cyber-Sangat, a virtual kinship that will create the necessary synergy to encourage and facilitate an individual Sikh’s apprenticeship to the Guru. 
+						   </p>
+						   <p>
+							   KhojGurbani resources include: access to a digital version of the Guru Granth Sahib with unique functions and features including hyperlinks to dictionaries and Panjabi and English commentaries. An unmatched repository of Gurbani Kirtan, an interactive blog, a weekly online discussion forum with over 200 YouTube videos and podcasts.
+						   </p>
+						   
+					   </div>
+					</div>
+
+					<div class="about_contnet d-block d-md-none" > <!-- *ngIf="commentary_status"-->
+							<!-- <h3 class="poppins-bold" >{{title}}</h3>
+							<p [innerHtml]="commentary"  style="height: 34vh;
+							overflow: hidden;" class="poppins-regular"></p> -->
+
+							<h3 class="poppins-bold text-center">Welcome to KhojGurbani</h3>
+						    
+							<div class="poppins-regular onMobileShowText">
+						    <p>Your site for a holistic experience with the Guru. Engage Gurbani with interactive access to multiple commentaries and dictionaries. Enjoy the bliss of listening to a vast collection of Gurmat sangeet with some rare collections. Enhance your understanding of key Gurmat concepts by listening to KhojGurbani's thought-provoking webinars.
+						   </p>
+					   </div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<div class="ml-auto form_bx hidelg mb-4 d-md-none d-block px-3">
+		<form class="side_search">
+			<input type="text"style="width: 100%;"  class="searchbox" id="search_val" [(ngModel)]="searchval" name="searchval" (keydown)=onKeydownEvent($event) placeholder="Search Podcast">
+			<span><i class="fa fa-search"></i></span>
+		</form>
+</div>
+
+<!--- featured section -->
+<section class="section_wrap featured">
+	<div class="container">
+		<div class="ml-auto form_bx hidelg mb-4 d-md-block d-none">
+				<form class="side_search">
+					<input type="text"style="width: 100%;"  class="searchbox" id="search_val" [(ngModel)]="searchval" name="searchval" (keydown)=onKeydownEvent($event) placeholder="Search Podcast">
+					<span><i class="fa fa-search"></i></span>
+				</form>
+		</div>
+		<div class="d-block d-md-flex justify-content-center align-items-center mb-3 sidenew_search">
+			<h3 class="heading mt-3">Featured Themes</h3>
+			<div class="ml-auto form_bx showlg">
+			  <form class="side_search">
+				<input type="text" id="search_val" [(ngModel)]="searchval" name="searchval" (keydown)=onKeydownEvent($event) placeholder="Search Podcast">
+				<span><i class="fa fa-search"></i></span>
+			  </form>
+			</div>
+		  </div>
+
+		<div class="row d-md-flex d-none">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="cursor: pointer;display: flex" *ngFor="let obj of categoriesObjects, let x = index">
+				<div class="card_1" style="flex:1;display: flex;flex-direction: column">
+					<div class="featured_image">
+						<img [src]="obj.category_image"  (click)="categoryclick(x)">
+						<!-- <div class="name_bx">
+							<p class="name poppins-bold">{{obj.value}}</p>
+						</div> -->
+					</div>
+					<div class="featured_content" (click)="categoryclick(x)" style="flex:1;display: flex;flex-direction: column">
+						<div class="featured_link">
+							<a href="javascript:void(0);" class="poppins-bold">{{obj.value}}</a>
+						</div>
+						<div class="featured_txt d-md-block d-none " style="flex:1" >
+							<p class="poppins-light">{{obj.description}}</p>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<owl-carousel [options]="archive_options" [items]="featuredObjects" [carouselClasses]="['owl-theme', 'sliding', 'nav_design', 'nav_design_new']" class="d-block d-md-none forFeaturedMob">
+			<div class="item" *ngFor="let obj of categoriesObjects, let x = index">
+				<div class="card_1" style="flex:1;display: flex;flex-direction: column">
+					<div class="featured_image" (click)="categoryclick(x)">
+						<img [src]="obj.category_image">
+						<!-- <div class="name_bx">
+							<p class="name poppins-bold">{{obj.value}}</p>
+						</div> -->
+					</div>
+					<div class="featured_content" (click)="categoryclick(x)" style="flex:1;display: flex;flex-direction: column">
+						<div class="featured_link">
+							<a href="javascript:void(0);" class="poppins-bold">{{obj.value}}</a>
+						</div>
+						<div class="featured_txt d-md-block d-none" style="flex:1">
+							<p class="poppins-light">{{obj.description}}</p>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</owl-carousel>
+	</div>
+</section>
+
+<!--- Featured Podcast Section -->
+<section class="section_wrap slider_profuct">
+	<div class="container">
+		<h2 class="heading text-white  mt-3 mb-4">Featured Podcasts</h2>
+		<owl-carousel [options]="F_podcast" [items]="featuredObjects" [carouselClasses]="['owl-theme', 'sliding', 'nav_design', 'nav_design_new']">
+			<div class="item" *ngFor="let obj of featuredObjects;let x=index">
+
+				<div class="introduce">
+					<div class="inner_item">
+						<!-- <img src="assets/image/1picture.png"> -->
+						<img [src]="obj.thumbnail" (click)="podcast(x)">
+						<div class="upper_content">
+							<h5>{{obj.value}}</h5>
+						</div>
+						<!-- <div class="audio_paly text-center">
+							<a href="javascript:void(0);" class="play_audio" (click)="podcast(x)">
+								<i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+							</a>
+						</div> -->
+					</div>
+				</div>
+			</div>
+			<!-- <div class="item">
+				<div class="introduce">
+					<div class="inner_item">
+						<img src="assets/image/1picture.png">
+						<div class="upper_content">
+							<h5>Haumai (ਹਉਮੈ) Episode 1</h5>
+						</div>
+						<div class="audio_paly text-center">
+							<a href="javascript:void(0);" class="play_audio">
+								<i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="introduce">
+					<div class="inner_item">
+						<img src="assets/image/1picture.png">
+						<div class="upper_content">
+							<h5>Haumai (ਹਉਮੈ) Episode 1</h5>
+						</div>
+						<div class="audio_paly text-center">
+							<a href="javascript:void(0);" class="play_audio">
+								<i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="introduce">
+					<div class="inner_item">
+						<img src="assets/image/1picture.png">
+						<div class="upper_content">
+							<h5>Haumai (ਹਉਮੈ) Episode 1</h5>
+						</div>
+						<div class="audio_paly text-center">
+							<a href="javascript:void(0);" class="play_audio">
+								<i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+							</a>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</owl-carousel>
+		<!--<div id="demo" class="carousel slide position-relative" data-ride="carousel">					
+			<div class="carousel-inner">				
+				<div class="carousel-item" [ngClass]="{'active': x==0}"
+					*ngFor="let item of featuredlength;let x=index">
+					<div class="d-flex">
+						<div class="col-lg-4 col-md-6 col-sm-12 col-12 d-flex flex-column "
+							*ngFor="let obj of item, let x = index">
+							<a href="#" class="introduce">
+								<div class="inner_item">
+									<img [src]="obj.thumbnail">
+									<div class="upper_content">
+										<h5>{{obj.value}}</h5>
+									</div>
+									<div class="audio_paly text-center">
+										<a href="#" class="play_audio" (click)="podcast(x)">
+											<i class="fa fa-youtube-play"></i> &nbsp; Play Audio
+										</a>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>				
+			</div>
+			<a class="carousel-control-prev" href="#demo" data-slide="prev">
+				<i class="fa fa-chevron-left"></i>
+			</a>
+			<a class="carousel-control-next" href="#demo" data-slide="next">
+				<i class="fa fa-chevron-left"></i>
+			</a>
+		</div>-->
+	</div>
+</section>
+
+<!--- Archive section -->
+<section class="section_wrap archive_sec">
+	<div class="container">
+		<div class="d-flex justify-content-center align-items-center mb-3">
+			<h2 class="heading mb-0 poppins-medium">Archive</h2>
+			<a href="javascript:void(0);" [routerLink]="['/archivelist']" class="hlink ml-auto">View All Podcasts</a>
+		</div>		
+		<owl-carousel [options]="archive_options" [items]="archivelist" [carouselClasses]="['owl-theme', 'sliding', 'nav_design', 'nav_design_new']">			
+			<div class="item" *ngFor="let list of archivelist;let x=index">
+				<div class="introduce">
+					<div class="outer_archive">
+						<!-- <img src="assets/image/1.jpg">
+						<h5>Haumai (ਹਉਮੈ) Episode 1</h5> -->
+						<img [src]="list.thumbnail" (click)="restratarchive(x)">
+						<div class="row">
+							<div class="col-8">
+								<h5 (click)="restratarchive(x)">{{list.title }}</h5>
+							</div>
+							<div class="col-4" >
+								<h5 style="font-size: 11px; margin-top: 12px; text-align: right; color: #9a9595;">{{list.created_at | Datefilter : "MMM DD, YYYY"}}</h5>
+							</div>
+						</div>
+
+						<!-- <p class="d-md-block d-none">{{list.description}}</p> -->
+						<!-- <a href="javascript:void(0);" class="play_you" >
+							<i class="fa fa-youtube-play"></i> &nbsp;Play Audio
+						</a> -->
+					</div>
+				</div>
+			</div>
+		</owl-carousel>
+		<!--<div id="demo1" class="carousel slide" data-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item" [ngClass]="{'active': x==0}" *ngFor="let item of archivelength;let x=index">
+					<div class="d-flex">
+						<div class="col-lg-3 col-md-6 col-sm-12 col-12 d-flex flex-column" *ngFor="let list of item, let x = index">
+							<a href="#" class="introduce">
+								<div class="outer_archive">
+									<img [src]="list.thumbnail">
+									<h5>{{list.title}}</h5>
+									<p style="max-height: 7vh !important; overflow: hidden !important;">{{list.description}} </p>
+									<a href="#" class="play_you" (click)="restratarchive(x)">
+										<i class="fa fa-youtube-play" aria-hidden="true"></i> &nbsp;Play Audio
+									</a>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a class="carousel-control-prev" href="#demo1" data-slide="prev">
+				<i class="fa fa-chevron-left"></i>
+			</a>
+			<a class="carousel-control-next" href="#demo1" data-slide="next">
+				<i class="fa fa-chevron-left"></i>
+			</a>
+		</div>-->
+	</div>
+</section>
+
+<section class="subscribe_section">
+	<div class="container">
+		<div class="subscribe text-center">
+			<h3>Subscribe to our newsletter</h3>
+			<!-- <p>In this episode chetandeep singh present his understandingof the shabad "bisr gai sabh tai parai"</p> -->
+			<!-- <form class="foot_sub_form">
+          <input type="email" class="form-control" [(ngModel)]="email" id="email"
+            placeholder="Enter Email Address">
+          <button type="submit" (click)="submit()" class="btn btn-primary mb-2 btn_sub">Subscribe Now</button>
+		</form> -->
+			<form class="foot_sub_form">
+				<input type="email" id="email" class="form-control" [(ngModel)]="email" placeholder="Enter Email Address">
+				<button  class="btn btn-primary mb-2 btn_sub" (click)="submit()">Subscribe Now</button>
+			</form>
+		</div>
+	</div>
+</section>

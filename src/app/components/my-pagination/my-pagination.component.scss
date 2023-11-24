@@ -1,0 +1,120 @@
+.box{
+    background-color:#dadada;height:15vh;width:15vh;
+}
+.item{
+    cursor: pointer;
+}
+
+.padding2{
+padding-left:17vw;padding-right:17vw;}
+
+.mediaStyle{
+    font-weight: 400;
+    padding: 12px 15px;
+    color: #707070;
+    font-size: 16px;
+}
+
+.showMobile{
+    display: none;
+}
+.borderNone{
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+
+@media (max-width:500px){
+    .showMobile{
+        display: block;
+    }
+}
+
+@media(max-width:1024px)
+{
+	.padding2{
+		padding-left:8vw;
+		padding-right: 8vw;
+	}
+}
+
+.selected
+{
+	color:#1f5169;
+}
+.selectedicon{
+	background: #1f5169 !important;
+	color:white !important;
+}
+
+
+@media (max-width:578px){
+    .hidelg{
+           display: block;
+           width: 100%;
+    }
+    .showlg{
+        display: none !important;
+    }
+  }
+  @media (min-width:579px){
+    .hidelg{
+           display: none !important;
+    }
+    .showlg{
+    display: block;
+    }
+  }
+
+
+
+#all-slide .owl-nav div.owl-prev, 
+    #all-slide .owl-nav div.owl-next {
+        color: #fff;
+        font-size: 18px;
+        margin-top: -20px;
+        position: absolute;
+        top: 50%;
+        text-align: center;
+        line-height: 39px;
+        opacity: 0;
+        border:1px solid #fff;
+        width: 40px;
+        height: 40px;
+    }
+    #all-slide .owl-nav div.owl-prev{
+        left: 10%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+    }
+    #all-slide .owl-nav div.owl-next {
+        right: 10%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+    }
+    #all-slide:hover .owl-nav div.owl-next{
+        right: 2%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+        opacity: 1;
+    }
+    #all-slide:hover .owl-nav div.owl-prev{
+        left: 2%;
+        -webkit-transition: 0.4s;
+        -moz-transition: 0.4s;
+        -o-transition: 0.4s;
+        -ms-transition: 0.4s;
+        opacity: 1;
+    }
+    #all-slide:hover .owl-nav div.owl-next:hover,
+    #all-slide:hover .owl-nav div.owl-prev:hover{
+        color:#fff;
+        background: #0C94B8;
+        border: 1px solid #0C94B8;
+    }

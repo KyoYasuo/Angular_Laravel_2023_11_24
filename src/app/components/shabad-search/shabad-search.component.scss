@@ -1,0 +1,24 @@
+.optionBtn {
+	.btn .btn-primary .active {
+		color: #fff;
+	    background-color: #0b79be;
+	    border-color: #0b79be;
+	}
+}
+a.author, a.gurbani-fonts {
+    font-size: 24px;
+}
+.search-item-meta span {
+    font-size: 16px;
+}
+@media only screen and (max-width: 768px) {
+	.search-listing {
+		padding-left: 30px;
+	}
+	.search-result {
+		width: 100%;
+	}
+	#p1 {
+		margin: 0 auto;
+	}
+}

@@ -1,0 +1,790 @@
+<div class="breadcrumb_banner" style="background-image: url('assets/banner.PNG');">
+	<div class="container">
+		<div class="breadcrumb_box">
+			<h3>Sri Guru Granth Sahib</h3>
+		</div>
+	</div>
+</div>
+<div *ngIf="isLoading">
+	<div class="loader">&nbsp;</div>
+</div>
+<div [ngClass]="{ 'isLoading': isLoading }">
+	<!-- Sabad List -->
+	<section class="section_wrap pb-0">
+		<div class="container">
+			<div class="row justify-content-center align-items-center mb-2" >
+				<div class="page-nav col-12 col-md-6 col-lg-6 d-flex" id="flexbox" >
+					<button class="page-nav-arrows" [ngClass]="{'disabled2': pageId <= 1}"
+					(click)="goToNextPrevPage('prev', pageId)">
+					<fa name="angle-left" fixed='true'></fa>
+					</button>
+					<div class="page-nav-arrows" style="background: #fff !important;">
+						<div class="page-select" style="padding:0 15%;margin-top: 2px;">
+							<b style="text-align: center;margin-right:15px;color:black;font-size: 28px;">Ang</b>
+							<!-- original -->
+							<ng-select2 id="select2" [(ngModel)]="pageId" [data]="pageList" [placeholder]="'Page'"
+							style="width:80px;height:50px;padding-top:10px;">
+							</ng-select2>
+						</div>
+					</div>
+					<button class="page-nav-arrows" [ngClass]="{'disabled2': pageId >= 1430}"
+					(click)="goToNextPrevPage('next', pageId)">
+					<fa name="angle-right" fixed='true'></fa>
+					</button>
+				</div>
+				<div class="btn_option col-12 col-md-6 col-lg-6 d-flex justify-content-end displayButtonContainer mobileDisplayCenter">
+					<button type="button" class="btn {{ transEffect===false?'info-btn-trans':'info-btn' }} btn-lg mobileDisplayNone1" (click)="displaydialog(displaymodal)">
+						<div class="click-for-trans-button">Click for Translation Authors</div>
+					</button>
+					<button type="button" class="btn btn-default btn-lg btn_design display-button" (click)="displaydialog(displaymodal)">
+						<fa name="cog" fixed='true'></fa>
+					</button>
+					<button type="button" class="btn btn-default btn-lg mobileDisplayNone" (click)="exportdialog(modal)">
+						<fa name="print" fixed='true'></fa>
+					</button>
+				</div>
+			</div>
+			<div class="split-container-shabad hide-translation">
+				<div class="column-left">
+					<nav class="shabad-pagination" style="display: flex;
+						justify-content: center;
+						align-items: center;
+						background: #1b4154;
+						min-height: 71px;
+						width: 100%;">
+						<div style="background:#1b4154;flex:1;display: flex;
+							align-items: center;border-radius: 4px;min-height:71px;flex-wrap: wrap;">
+							<div style="color:white;padding-left:0.5em">SABAD</div>
+							<div style="flex: 1;
+								display: flex;
+								margin-left: 1.5em;
+								flex-wrap: wrap;">
+								<div class="circle" (click)="change2()" style="background: #1b4154;cursor: pointer"
+								[class.disabled]="checkdisabled()"> <a style="color:white;font-size: 11px">
+									<i class="fas fa-sort-down" style="transform: rotate(450deg);"></i>
+									</a>
+								</div>
+								<a class="circle mr-2" [routerLink]="['/shabad', pageId, page]"
+								style="cursor: pointer;color:white"
+								*ngFor="let page of shabadPages | slice:startindex:endindex"
+								[ngClass]="{'active2': page === currentShabadPage}">
+								<span style="color:white;font-size: 11px"> {{page}}</span></a>
+								<div class="circle mr-2" [class.disabled]="checkdisablednext()" (click)="change3()"
+								style="background: #1b4154;cursor: pointer"> <a style="color:white;font-size: 11px"> <i
+										class="fas fa-sort-down fa-rotate-270"></i></a>
+								</div>
+							</div>
+						</div>
+						<div class="scripture-options" style="display: none;">
+						<div class="scripture-options-item btn-group" dropdown>
+						<button id="scripture-more-options" dropdownToggle type="button" class="option-menu-btn"
+							aria-controls="dropdown-basic">
+						<fa name="ellipsis-v" style="color: white" fixed='true'></fa>
+						</button>
+						<div id="scripture-more-options-menu" *dropdownMenu
+							class="dropdown-menu dropdown-with-check" role="menu"
+							aria-labelledby="scripture-more-options">
+						<a href="javascript:void(0)" class="dropdown-item"
+						[ngClass]="{'selected': isLareevaarShow}"
+						(click)="onSelectLareevaarScriptureOption()">
+						<i class="fa fa-fw fa-check"></i>
+						Gurmukhi - Lareevaar
+						</a>
+						<a href="javascript:void(0)" class="dropdown-item" [ngClass]="{'selected': isRomanShow}"
+						(click)="onSelectRomanScriptureOption()">
+						<i class="fa fa-fw fa-check"></i>
+						Roman Script
+						</a>
+						</div>
+						</div>
+						</div>
+					</nav>
+				</div>
+				<div class="column-right d-flex justify-content-end align-items-center">
+					<div class="btn-group author-dropdown" dropdown style="font-size: 20px;">
+						<button id="choose-translation" dropdownToggle type="button" class="dropdown-toggle"
+							aria-controls="dropdown-basic">
+						{{selectedAuthorName}} <span class="caret"></span>
+						</button>
+						<div id="translation-authors" *dropdownMenu class="dropdown-menu dropdown-with-check" role="menu"
+							aria-labelledby="choose-translation">
+							<h6 class="dropdown-header">ENGLISH TRANSLATION</h6>
+							<a class="dropdown-item" href="javascript:void(0)" *ngFor="let author of engAuthors"
+							[ngClass]="{'selected': author['isSelected']}"
+							(click)="changeTranslationAuthor('english', author)">
+							<i class="fa fa-fw fa-check"></i>
+							{{author.name}}
+							</a>
+							<div class="divider dropdown-divider"></div>
+							<h6 class="dropdown-header">TEEKA</h6>
+							<a class="dropdown-item" href="javascript:void(0)" *ngFor="let author of punjabiAuthors"
+							[ngClass]="{'selected': author['isSelected']}"
+							(click)="changeTranslationAuthor('teeka', author)">
+							<i class="fa fa-fw fa-check"></i>
+							{{author.name}}
+							</a>
+							<div class="divider dropdown-divider"></div>
+							<h6 class="dropdown-header">HINDI TRANSLATION</h6>
+							<a class="dropdown-item" href="javascript:void(0)" *ngFor="let author of hindiAuthors"
+							[ngClass]="{'selected': author['isSelected']}"
+							(click)="changeTranslationAuthor('hindi', author)">
+							<i class="fa fa-fw fa-check"></i>
+							{{author.name}}
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="scriptures-conatainer">
+					<ul class="scriptures">
+						<li class="scripture-item" *ngFor="let scripture of shabadData['scriptures'];  let i = index">
+							<!-- scriptures --> 
+							<ul [ngClass]="{'highlight ': (scripture['is_highlight'] && (highlightedScripture['language'] == 'english'  || highlightedScripture['language'] == 'roman'	|| highlightedScripture['language'] == 'gurmukhi')) }" class="scripture-column-left" id="{{(scripture['is_highlight'] && (highlightedScripture['language'] == 'english'  || highlightedScripture['language'] == 'roman'	|| highlightedScripture['language'] == 'gurmukhi')) ? 'highlight':'not_heightlight'}}" >
+								<li class="s-padched gurbani-text" *ngIf="isPadChedShow" >
+									<span *ngFor="let word of scripture.Scripture;" style="cursor: help;" title="Click To View"
+									[popover]="wordDetailPopover" popoverTitle="{{word}}" #wordDetailPopObj="bs-popover"
+									[outsideClick]="true" placement="top" (onShown)="wordDetail(word)">
+									<!-- Template used for show word detail -->
+									<ng-template #wordDetailPopover>
+										<app-loader [isRunning]="isGetWordDetailApiRunning"></app-loader>
+										<div class="word-detail-box" *ngIf="selectedWordDetail['pun_mahankosh']">
+											<h4>
+												Mahan Kosh Encyclopedia
+											</h4>
+											<p class="panjabi-font" [innerHtml]="selectedWordDetail['pun_mahankosh']"></p>
+										</div>
+										<div class="word-detail-box" *ngIf="selectedWordDetail['pun_kosh']">
+											<h4>
+												SGGS Gurmukhi-Gurmukhi Dictionary
+											</h4>
+											<p class="panjabi-font" [innerHtml]="selectedWordDetail['pun_kosh']"></p>
+										</div>
+										<div class="word-detail-box" *ngIf="selectedWordDetail['eng_dic_sri']">
+											<h4>
+												SGGS Gurmukhi-English Dictionary
+											</h4>
+											<p [innerHtml]="selectedWordDetail['eng_dic_sri']"></p>
+										</div>
+										<div class="actions pull-right">
+											<button class="btn btn-default" style="border: none;"
+												(click)="wordDetailPopObj.hide()">
+											Close
+											</button>
+											<a class="btn btn-primary btn_design btn-sm ml-3" target="_blank" [routerLink]="['/worddetail']"
+											[queryParams]="{ lang: 'gurmukhi', value: selectedWordDetail['word'] }">
+											View
+											</a>  
+											<a class="btn btn-primary btn_design btn-sm ml-3" target="_blank"  [routerLink]="['/searchresult/gurmukhi', selectedWordDetail['word']]" (click)="onViewSearch(selectedWordDetail['word'])">
+											Search
+											</a>
+										</div>
+									</ng-template>
+									{{word}}
+									</span>
+								</li>
+								<li class="s-lareevaar gurbani-text" style="font-size: 22px" *ngIf="isLareevaarShow">
+									{{scripture.ScriptureOriginal}}
+								</li>
+								<li class="s-roman" *ngIf="isRomanShow">
+									{{scripture.ScriptureRoman}}
+								</li>
+								<!-- Translations -->
+								<li *ngFor="let author of engAuthors" [ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'english' }">
+								<div class="author_name"><span style="cursor: pointer;user-select: none;" placement="right" tooltipClass="my-tooltip-class" ngbTooltip="{{author.name}}">{{name_avatar(author.name)}}</span></div><div class="author_translation">{{scripture.translation[author.key]}}</div>
+								</li>
+								<li *ngFor="let author of punjabiAuthors"
+								[ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'english' }">
+								<div class="author_name"><span style="cursor: pointer;user-select: none;" placement="right" tooltipClass="my-tooltip-class" ngbTooltip="{{author.name}}">{{name_avatar(author.name)}}</span></div><div class="gur-lan author_translation">{{scripture.translation[author.key]}}</div>
+								</li>
+								<li *ngFor="let author of hindiAuthors"
+								[ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'hindi' }">
+								<div class="author_name"><span style="cursor: pointer;user-select: none;" placement="right" tooltipClass="my-tooltip-class" ngbTooltip="{{author.name}}">{{name_avatar(author.name)}}</span></div><div class="gur-lan author_translation">{{scripture.translation[author.key]}}</div>
+								</li>
+							</ul>
+							<!-- transltaitons -->
+							<ul class="scripture-column-right" [ngClass]="{'highlight': (scripture['is_highlight']
+								&& (highlightedScripture['content'] == 'english-translation'
+								|| highlightedScripture['content'] == 'teeka')) }">
+								<!-- Translations -->
+								<li *ngFor="let author of engAuthors" [ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'english' }">
+								{{scripture.translation[author.key]}}
+								</li>
+								<li class="gur-lan" *ngFor="let author of punjabiAuthors"
+								[ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'english' }">
+								{{scripture.translation[author.key]}}
+								</li>
+								<li class="gur-lan" *ngFor="let author of hindiAuthors"
+								[ngClass]="{'displayNone': !author['isSelected'], 'fontSettings': translationType == 'hindi' }">
+								{{scripture.translation[author.key]}}
+								</li>
+							</ul>
+							<p class="endPhrase scripture-column-left" *ngIf="currentShabadPage == shabadPages[shabadPages.length-1] && i+1 == shabadData['scriptures'].length">
+								For the purpose of discussing the complete Sabad, 
+								all the lines of the Sabad will be shown on the page where it begins
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+<!-- Sabad List End -->
+<!-- Blog And Commentry -->
+<section class="section_wrap pb-0" *ngIf="iscommenteray_available">
+	
+	<div class="container">
+		<div class="blog_list">
+			<div class="row">
+				<div class="col-sm-12"  *ngIf="htmlText" >
+					<div>
+						<h3 class="heading" style="margin-bottom: 16px;">Commentary</h3>
+						<div class="blog_listnew">
+							<div class="content_box" style="height: 21.4em;
+								overflow: hidden;
+								display: flex;
+								flex-direction: column;">
+								<p class="txt" id="tet" [innerHtml]="htmlText">
+								</p>
+								<div class="btn_option">
+									<a href="javascript:void(0);" [routerLink]="['/commentary', pageId, shabadId]" [queryParams]="{'scroll':'commentary'}"
+										style="float: right;" class="btn btn-primary btn-sm btn_design">Read more &nbsp;
+									<i class="fa fa-long-arrow-right"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Blog And Commentry End -->
+<!-- Audio section -->
+<section class="section_wrap shabad-audio pb-5 {{ saudio.length == 0 && kirtan_audio.length == 0 && kaudio.length == 0 && podbean_audio.length == 0 ? 'hide-mobile' : '' }}" *ngIf="shabadData['scriptures']">
+	<div id="audiosection" class="container">
+		<h3 class="heading" *ngIf="add_audio_permission || saudio.length >= 1 || kirtan_audio.length > 0 || kaudio.length > 0 || podbean_audio.length > 0">Audio</h3>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+			</div>
+		</div>
+		<div id="audiocontent" class="row">
+			<div class="mobileWidthAudio" *ngIf="saudio.length >= 1">
+				<div>
+					<h4 class="mt-3 mb-3">Santhiya </h4>
+					<ul class="shabad-audio-list">
+						<li *ngFor="let audio of saudio; let x = index;">
+							<div class="d-flex" *ngIf="audio.status==1 && x>2?showSanthyaBool:audio.duration == 'N/A'?false:true">
+								<div class="icon_bx mr-3 d-flex" [ngClass]="(currentPlaying==audio.id)?'current-selectedicon':''">
+									<i (click)="restratsanthya(x)"
+									[ngClass]="(audio.id == ourtitle) ? 'fas fa-pause selectedicon':'fas fa-play selectedicon'"></i>
+									<a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{audio.id}}"
+										class="ml-2" *ngIf="validateAction('download')">
+									<i class="fas fa-download selectedicon"></i>
+									</a>
+								</div>
+								<div class="title_bx">
+									<span (click)="restratsanthya(x)">{{audio.title | truncate}}  <span style="color:#9a9a9a;font-family: Poppins, sans-serif;">{{ audio.duration }}</span></span>
+									<div class="btn_option" *ngIf="isadmin && audio['media_approve']==1">
+										<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+											(click)="deleteItem(loader,audio.id)">
+										Delete &nbsp; <i class="fa fa-trash"></i>
+										</a>
+									</div>
+									<div class="mt-1" *ngIf="audio['media_approve']==0 && isadmin">
+										<a href="javascript:void(0);" (click)="approve(audio['id'],1,loader)" class="mr-2"
+											style="color:#5cb85c;text-decoration:none;">
+										<i class="fa fa-check mr-1"></i> Approve
+										</a>
+										<a href="javascript:void(0);" *ngIf="audio['media_approve']==0"
+										(click)="deleteItemReject(audio.id,loader)"
+										style="color:#f0ad4e;text-decoration:none;">
+										<i class="fa fa-times mr-1"></i> Reject
+										</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<div class="button-container">
+							<button class="btn btn-primary btn-small btn_design" *ngIf="saudio.length > 3"
+							(click)="showSanthyaBool = !showSanthyaBool" style="background-color: #0b79be;"
+							[innerHtml]="(showSanthyaBool) ? 'Hide All' : 'See All'"></button>
+						</div>
+					</ul>
+				</div>
+			</div>
+			<div class="mobileWidthAudio" *ngIf="kirtan_audio.length > 0">
+				<div>
+					<h4 class="mt-3 mb-3">Kirtan</h4>
+					<ul class="shabad-audio-list">
+						<li *ngFor="let audio of kirtan_audio; let x = index;">
+							<div class="d-flex" *ngIf="audio.status==1  && x>2?showKirtanBool:audio.duration == 'N/A'?false:true">
+								<div class="icon_bx mr-3 d-flex" [ngClass]="(currentPlaying==audio.id)?'current-selectedicon':''">
+									<i (click)="restratkirtan(x)"
+									[ngClass]="(audio.id == ourtitle) ? 'fas fa-pause selectedicon':'fas fa-play selectedicon'"></i>
+									<a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{audio.id}}"
+										class="ml-2" *ngIf="validateAction('download')">
+									<i class="fas fa-download selectedicon"></i>
+									</a>
+								</div>
+								<div class="title_bx">
+									<span (click)="restratkirtan(x)">{{audio.author_name }} <span style="color:#9a9a9a;font-family: Poppins, sans-serif;">{{ audio.duration }}</span></span>
+									<div class="btn_option" *ngIf="isadmin && audio['media_approve']==1">
+										<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+											(click)="deleteItem(loader,audio.id)">
+										Delete &nbsp; <i class="fa fa-trash"></i>
+										</a>
+									</div>
+									<div class="mt-1" *ngIf="audio['media_approve']==0 && isadmin">
+										<a href="javascript:void(0);" (click)="approve(audio['id'],1,loader)" class="mr-2"
+											style="color:#5cb85c;text-decoration:none;">
+										<i class="fa fa-check mr-1"></i> Approve
+										</a>
+										<a href="javascript:void(0);" *ngIf="audio['media_approve']==0"
+										(click)="deleteItemReject(audio.id,loader)"
+										style="color:#f0ad4e;text-decoration:none;">
+										<i class="fa fa-times mr-1"></i> Reject
+										</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<div class="button-container">
+							<button class="btn btn-primary btn-small btn_design" *ngIf="kirtan_audio.length > 3"
+							(click)="showKirtanBool = !showKirtanBool" style="background-color: #0b79be;"
+							[innerHtml]="(showKirtanBool) ? 'Hide All' : 'See All'"></button>
+						</div>
+					</ul>
+				</div>
+			</div>
+			<div class="mobileWidthAudio" *ngIf="kaudio.length > 0">
+				<div>
+					<h4 class="mt-3 mb-3">Katha</h4>
+					<ul class="shabad-audio-list">
+						<li *ngFor="let audio of kaudio; let x = index;">
+							<div class="d-flex" *ngIf="audio.status==1 && x>2?showKathaBool:audio.duration == 'N/A'?false:true">
+								<div class="icon_bx mr-3 d-flex" [ngClass]="(currentPlaying==audio.id)?'current-selectedicon':''">
+									<i (click)="restratkatha(x)"
+									[ngClass]="(audio.id == ourtitle) ? 'fas fa-pause selectedicon':'fas fa-play selectedicon'"></i>
+									<a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{audio.id}}"
+										class="ml-2" *ngIf="validateAction('download')">
+									<i class="fas fa-download selectedicon"></i>
+									</a>
+								</div>
+								<div class="title_bx">
+									<span (click)="restratkatha(x)" style="display:block;">
+									{{audio.title | truncate}} <span style="color:#9a9a9a;font-family: Poppins, sans-serif;">{{ audio.duration }} </span>
+									</span>
+									<div class="btn_option" *ngIf="isadmin && audio['media_approve']==1">
+										<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+											(click)="deleteItem(loader,audio.id)">
+										Delete &nbsp; <i class="fa fa-trash"></i>
+										</a>
+									</div>
+									<div class="mt-1" *ngIf="audio['media_approve']==0 && isadmin">
+										<a href="javascript:void(0);" (click)="approve(audio['id'],1,loader)"
+											class="mr-2" style="color:#5cb85c;text-decoration:none;">
+										<i class="fa fa-check mr-1"></i> Approve
+										</a>
+										<a href="javascript:void(0);" *ngIf="audio['media_approve']==0" 
+										(click)="deleteItemReject(audio.id,loader)" style="color:#f0ad4e;text-decoration:none;">
+										<i class="fa fa-times mr-1"></i> Reject
+										</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<div>
+							<button class="btn btn-primary btn-small btn_design"
+							*ngIf="kaudio.length > 3" style="background-color: #0b79be;"
+							(click)="showKathaBool = !showKathaBool"
+							[innerHtml]="(showKathaBool) ? 'Hide All' : 'See All'"></button>
+						</div>
+					</ul>
+				</div>
+			</div>
+			<div  class="mobileWidthAudio" *ngIf="podbean_audio.length > 0">
+				<div>
+					<h4 class="mt-3 mb-3">Podcast</h4>
+					<ul class="shabad-audio-list">
+						<li *ngFor="let audio of podbean_audio; let x = index;">
+							<div class="d-flex" *ngIf="audio.status==1 && x>2?showPodbeanBool:audio.duration == 'N/A'?false:true">
+								<div class="icon_bx mr-3" [ngClass]="(currentPlaying==audio.id)?'current-selectedicon':''">
+									<i (click)="restratPodbean(x)"
+									[ngClass]="(audio.id == ourtitle) ? 'fas fa-pause selectedicon':'fas fa-play selectedicon'"></i>
+								</div>
+								<a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{audio.id}}"
+									class="icon_bx mr-3" *ngIf="validateAction('download')">
+								<i class="fas fa-download selectedicon"></i>
+								</a>
+								<div class="title_bx">
+									<span (click)="restratPodbean(x)">{{audio.title | truncate}} <span style="color:#9a9a9a;font-family: Poppins, sans-serif;">{{ audio.duration }}</span></span>
+									<div class="btn_option" *ngIf="isadmin">
+										<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+											(click)="deletepodbean(loader,audio.id)">
+										Delete &nbsp; <i class="fa fa-trash"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<div>
+							<button class="btn btn-primary btn-small btn_design"
+							*ngIf="podbean_audio.length > 3" style="background-color: #0b79be;"
+							(click)="showPodbeanBool = !showPodbeanBool"
+							[innerHtml]="(showPodbeanBool) ? 'Hide All' : 'See All'"></button>
+						</div>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="btn_option mt-4 hide-mobile" *ngIf="add_audio_permission">
+			<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design" (click)="add(content,0)"
+			><i class="fa fa-plus"></i> Add Audio</a>
+		</div>
+	</div>
+</section>
+<!-- Audio section End -->
+<!-- Videos Section -->
+<section class="section_wrap pt-0 pb-0 mb-3 {{ dvideo.length == 0  && featuredvideo.length == 0 ? 'hide-mobile' : '' }}" *ngIf="check() || add_video_permission">
+	<div class="container">
+		<h3 class="heading" *ngIf="add_video_permission || dvideo.length > 0 || featuredvideo.length >= 1">Video</h3>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div id="divdvideo" *ngIf="dvideo.length > 0" class="col-lg-6">
+				<div style="display: flex" *ngIf="dvideo.length >= 1">
+					<h4 style="flex: 1;" class="mt-3 mb-3">Discussion Video</h4>
+					<div class="circle2 mr-2" *ngIf="dvideo.length >= 1" style="cursor: pointer" [class.hidearrow]="getprev()" (click)="prev()"><i
+						class="fa fa-chevron-left" style="color:grey; padding-left: 2px;" aria-hidden="true"></i>
+				</div>
+				<div class="circle2" *ngIf="dvideo.length >= 1" style="cursor: pointer" [class.hidearrow]="getnext()" (click)="next()"><i
+					class="fa fa-chevron-right" style="color:grey; padding-left: 2px;" aria-hidden="true"></i>
+			</div>
+		</div>
+		<div class="video-slider-container" *ngIf="dvideo.length >= 1">
+			<swiper [config]="config" #first>
+			<div *ngFor="let dVid of dvideo">
+				<iframe class="youtube-iframe mb-4" [src]="dVid.attachment_name | safeUrl"></iframe>
+				<div class="btn_option mb-4" *ngIf="dVid['media_approve']==0 && isadmin">
+					<a href="javascript:void(0)" (click)="approve(dVid['id'],1,loader)"
+						class="btn btn-primary btn-sm btn_design btn_green mr-2">
+					Approve &nbsp; <i class="fa fa-check"></i>
+					</a>
+					<a href="javascript:void(0)" *ngIf="dVid['media_approve']==0"
+					(click)="deleteItemReject(dVid.id,loader)"
+					class="btn btn-primary btn-sm btn_design btn_orange">
+					Reject &nbsp; <i class="fa fa-times"></i>
+					</a>
+				</div>
+				<div class="btn_option" *ngIf="add_audio_permission && dVid['media_approve']==1">
+					<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+						(click)="deleteItem2(loader,0)">
+					Delete &nbsp; <i class="fa fa-trash"></i>
+					</a>
+				</div>
+			</div>
+			</swiper>
+		</div>
+	</div>
+	<div *ngIf="featuredvideo.length > 0" id="divfeaturedvideo" class="col-lg-6 col-md-12">
+		<div style="display: flex" *ngIf="featuredvideo.length >= 1">
+			<h4 style="flex: 1;" class="mt-3 mb-3">Featured Video</h4>
+			<div class="circle2 mr-2" style="cursor: pointer" [class.hidearrow]="getprev2()" (click)="prev2()">
+			<i class="fa fa-chevron-left" style="color:grey; padding-left: 2px;" aria-hidden="true"></i>
+		</div>
+		<div class="circle2" style="cursor: pointer" [class.hidearrow]="getnext2()" (click)="next2()"><i
+			class="fa fa-chevron-right" style="color:grey;padding-left: 2px;" aria-hidden="true"></i>
+		</div>
+	</div>
+	<div class="video-slider-container" *ngIf="featuredvideo.length >= 1">
+		<swiper [config]="config" #second>
+		<div *ngFor="let dVid of featuredvideo">
+			<iframe class="youtube-iframe mb-4" [src]="dVid.attachment_name | safeUrl"></iframe>
+			<div class="btn_option mb-4" *ngIf="dVid['media_approve']==0 && isadmin">
+				<a href="javascript:void(0)" (click)="approve(dVid['id'],1,loader)"
+					class="btn btn-primary btn-sm btn_design btn_green mr-2">
+				Approve &nbsp; <i class="fa fa-check"></i>
+				</a>
+				<a href="javascript:void(0)" *ngIf="dVid['media_approve']==0"
+				(click)="deleteItemReject(dVid.id,loader)"
+				class="btn btn-primary btn-sm btn_design btn_orange">
+				Reject &nbsp; <i class="fa fa-times"></i>
+				</a>
+			</div>
+			<div class="btn_option" *ngIf="add_audio_permission && dVid['media_approve']==1">
+				<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design btn_red"
+					(click)="deleteItem2(loader,1)">
+				Delete &nbsp; <i class="fa fa-trash"></i>
+				</a>
+			</div>
+		</div>
+		</swiper>
+	</div>
+	</div>
+	<div *ngIf="showIfOne" class="col-lg-3"></div>
+	</div>
+	<div class="btn_option mt-4 hide-mobile" *ngIf="shabadData['scriptures'] && add_video_permission">
+		<a href="javascript:void(0);" class="btn btn-primary btn-sm btn_design" (click)="add(content,2)">
+		<i class="fa fa-plus"></i> Add Video
+		</a>
+	</div>
+	<div class="mb-5"></div>
+</div>
+</section>
+<!-- Videos Section End -->
+<ng-template #addVideoTemplate>
+	<add-video-modal [modalRef]="modalRef" [shabadId]="shabadId" (onAddVideo)="addVideo($event.type, $event.video)">
+	</add-video-modal>
+</ng-template>
+<ng-template #addAudioTemplate>
+	<app-add-audio [modalRef]="modalRef" [shabadId]="shabadId" (onAddAudio)="addAudio($event.type, $event.audio)">
+	</app-add-audio>
+</ng-template>
+<!-- confirmation modal -->
+<ng-template #confirmationModal>
+	<div class="modal-body text-center">
+		<p>Do you want to reject?</p>
+		<button type="button" class="btn btn-default"
+			(click)="confirmRejection(media_type, media_sub_type, media_obj)">Yes</button>
+		<button type="button" class="btn btn-primary" (click)="modalRef.hide()">No</button>
+	</div>
+</ng-template>
+<ng-template #content let-modal>
+	<div id="addmediamodal">
+	<div class="modal-header">
+		<h4 class="modal-title">{{msg}}</h4>
+		<button type="button" class="close" aria-label="Close" (click)="hidemodal()">
+		<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="alert alert-danger" *ngIf="err">{{errmsg}}</div>
+		<div *ngIf="show && (roleid==4 || roleid==3)">
+			<label>Select Source</label>
+			<ng-select [(ngModel)]="selectedType">
+			<ng-option *ngFor="let item of type" [value]="item.id">{{item.name}}</ng-option>
+			</ng-select><br />
+		</div>
+		<div class="custom-file" style="margin-bottom: 1vh" *ngIf="selectedType==1 || selectedType==0">
+			<input type="file" [ngClass]="{'is-invalid': fileinvalid}" (change)="handleFileInput($event.target.files)"
+			class="custom-file-input" id="validatedCustomFile" required>
+			<label class="custom-file-label" for="validatedCustomFile" id="lbl">Choose audio file</label>
+			<div class="invalid-feedback">{{invalidmsg}}</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<span>Duration (sec)</span>
+				<input type="text" class="form-control" [(ngModel)]="duration" placeholder="duration">
+			</div>
+			<div class="col-6">
+				<span>Shabad</span>
+				<ng-select [(ngModel)]="selectedShabad">
+				<ng-option *ngFor="let item of shabadlist" [value]="item.id">{{item.id}}</ng-option>
+				</ng-select>
+				<a (click)="open" href="./search" target="_blank">Find Shabad Id</a>
+			</div>
+		</div>
+		<div class="input-group" *ngIf="selectedType==3">
+			<input type="text" class="form-control" (input)="onSearchChange($event.target.value)"
+			[ngClass]="{'is-invalid': podbeaninvalid}" [(ngModel)]="mytxtpodbean" placeholder="enter podbean url">
+			<div class="invalid-feedback">
+				Enter url
+			</div>
+			<br /><br>
+		</div>
+		<div class="input-group" *ngIf="selectedType==4">
+			<input type="text" class="form-control" (input)="onSearchChange($event.target.value)"
+			[ngClass]="{'is-invalid': exturlinvalid}" [(ngModel)]="mytxturl" placeholder="enter external url">
+			<div class="invalid-feedback">
+				Enter url
+			</div>
+			<br /><br>
+		</div>
+		<div class="input-group" *ngIf="selectedType==2">
+			<input type="text" class="form-control" (input)="onSearchChange($event.target.value)"
+			[ngClass]="{'is-invalid': nameinvalidyoutube}" [(ngModel)]="mytxtyoutube"
+			placeholder="enter youtube url">
+			<div class="invalid-feedback">
+				Enter valid url
+			</div>
+			<br /><br>
+		</div>
+		<label *ngIf="selectedType==2">Select Video Type</label>
+		<ng-select *ngIf="selectedType==2" [(ngModel)]="selectedVideotype">
+		<ng-option *ngFor="let item of videotype" [value]="item.id">{{item.name}}</ng-option>
+		</ng-select><br />
+		<ng-select [(ngModel)]="selectedArtist" [items]="mediaartist" bindLabel="name" bindValue="id" *ngIf="selectedType!=2">
+		</ng-select><br />
+		<span>Title</span>
+		<div class="input-group">
+			<input type="text" class="form-control" [ngClass]="{'is-invalid': titleinvalid}" id="inputtxt"
+			[(ngModel)]="mytitle" placeholder="title"><br />
+			<div class="invalid-feedback">
+				Enter title
+			</div>
+		</div>
+		<br />
+		<label *ngIf="selectedType!=2">Select Type</label>
+		<ng-select *ngIf="selectedType!=2" (change)="onChange($event)" [(ngModel)]="selectedTags">
+		<ng-option *ngFor="let item of taglist" [value]="item.id">{{item.name}}</ng-option>
+		</ng-select><br />
+		<div class="row" *ngIf="selectedType!=2 && (roleid==4 || roleid==3)">
+			<div class="col-6">
+				<label>Select Categories</label>
+				<ng-select [multiple]="true" [(ngModel)]="selectedCategory">
+				<ng-option *ngFor="let item of categorieslist" [value]="item.id">{{item.name}}</ng-option>
+				</ng-select><br />
+			</div>
+			<div class="col-6">
+				<label>Select Sub Categories</label>
+				<ng-select [multiple]="true" [(ngModel)]="selectedSubCategory">
+				<ng-option *ngFor="let item of subcategorylist" [value]="item.id">{{item.name}}</ng-option>
+				</ng-select>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default" style="border: none;" (click)="hidemodal()">Close</button>
+		<button class="btn btn-primary btn_design ml-3" (click)="upload(loader)">{{btntxt}}</button>
+	</div>
+	</div>
+</ng-template>
+<ng-template #loader let-modal>
+	<div class="modal-body">
+		<div class="d-flex justify-content-center">
+			<div class="spinner-border" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+		<div class="d-flex justify-content-center" style="margin-top:1vh">
+			<span>{{uploaddata}}</span>
+		</div>
+	</div>
+</ng-template>
+<ng-template #modal let-modal>
+	<div id="exportmodal">
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">Export</h4>
+			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox11" value="option1"
+					(change)="checkValue($event,'Scripture','Gurmukhi-Pad Ched',1)">
+				<label class="form-check-label" for="inlineCheckbox11">Gurmukhi-Pad Ched</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox"
+					(change)="checkValue($event,'ScriptureOriginal','Gurmukhi-Lareevaar',1)" id="inlineCheckbox2"
+					value="option2">
+				<label class="form-check-label" for="inlineCheckbox2">Gurmukhi-Lareevaar</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+					(change)="checkValue($event,'ScriptureRoman','Roman Script',1)" value="option3">
+				<label class="form-check-label" for="inlineCheckbox3">Roman Script</label>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">English Translation</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of engAuthors">
+					<input class="form-check-input" type="checkbox" value=""
+						(change)="checkValue($event,author.key,author.name,2)" id="defaultCheck{{author.key}}">
+					<label class="form-check-label" for="defaultCheck{{author.key}}">
+					{{ author.name }}
+					</label>
+				</div>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">Teeka</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of punjabiAuthors">
+					<input class="form-check-input" type="checkbox" value=""
+						(change)="checkValue($event,author.key,author.name,3)" id="defaultCheck{{author.key}}">
+					<label class="form-check-label" for="defaultCheck3">
+					{{ author.name }}
+					</label>
+				</div>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">Hindi Translation</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of hindiAuthors">
+					<input class="form-check-input" type="checkbox" value=""
+						(change)="checkValue($event,author.key,author.name,3)" id="defaultCheck{{author.key}}">
+					<label class="form-check-label" for="defaultCheck3">
+					{{ author.name }}
+					</label>
+				</div>
+			</div>
+			<div class="form-group col-md-10" style="margin-top:1em;padding-left:0">
+				<select id="inputState" [(ngModel)]="val" class="form-control">
+				<option [value]="'section'">Section</option>
+				<option [value]="'line'">Line</option>
+				</select>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary btn_design btn-block" (click)="submit()" style="margin-top:0.5em"><fa name="print" fixed='true'></fa> Export</button>
+		</div>
+	</div>
+</ng-template>
+<ng-template #displaymodal let-displaymodal>
+	<div id="displaymodal">
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">Settings</h4>
+			<!-- <button type="button" class="close" aria-label="Close" (click)="displaymodal.dismiss('Cross click')">
+			<span aria-hidden="true">&times;</span>
+			</button> -->
+		</div>
+		<div class="modal-body">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" [checked]="isLareevaarShow"
+					(change)="onSelectLareevaarScriptureOption()" id="_inlineCheckbox2"
+					value="option2">
+				<label class="form-check-label" for="_inlineCheckbox2">Larivaar</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="_inlineCheckbox3" [checked]="isRomanShow"
+					(change)="onSelectRomanScriptureOption()" value="option3">
+				<label class="form-check-label" for="_inlineCheckbox3">Roman Script</label>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">English Translation</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of engAuthors">
+					<input class="form-check-input" type="checkbox" value="" [checked]="author.isSelected===true"
+						(change)="changeTranslationAuthor('english', author)" id="_defaultCheck{{author.key}}">
+					<label class="form-check-label" for="_defaultCheck{{author.key}}">
+					{{ author.name }} ({{ name_avatar(author.name) }})
+					</label>
+				</div>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">Teeka</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of punjabiAuthors">
+					<input class="form-check-input" type="checkbox" value="" [checked]="author.isSelected===true"
+						(change)="changeTranslationAuthor('teeka', author)" id="_defaultCheck{{author.key}}">
+					<label class="form-check-label" for="_defaultCheck{{author.key}}">
+					{{ author.name }} ({{ name_avatar(author.name) }})
+					</label>
+				</div>
+			</div>
+			<div class="h5" style="padding-top:1.5em;">Hindi Translation</div>
+			<div class="author-box">
+				<div class="form-check" *ngFor="let author of hindiAuthors">
+					<input class="form-check-input" type="checkbox" value="" [checked]="author.isSelected===true"
+						(change)="changeTranslationAuthor('hindi', author)" id="_defaultCheck{{author.key}}">
+					<label class="form-check-label" for="_defaultCheck{{author.key}}">
+					{{ author.name }} ({{ name_avatar(author.name) }})
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-default" style="border: none;" (click)="displaymodal.dismiss('Cross click')">Close</button>
+			<button class="btn btn-primary btn_design ml-3" (click)="resetDisplay()">Reset</button>
+			<button class="btn btn-primary btn_design ml-3" (click)="displaymodal.dismiss('Cross click')">Save</button>
+		</div>
+	</div>
+</ng-template>
+</div>
+<button id="playerPauseEvent" (click)="playerPauseEvent()" style="display:none"></button>
+<button id="playerPlayEvent" (click)="playerPlayEvent()" style="display:none"></button>

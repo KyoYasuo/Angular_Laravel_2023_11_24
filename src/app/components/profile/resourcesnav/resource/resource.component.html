@@ -1,0 +1,349 @@
+
+<div class="container-fluid">
+    <div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+    <div class="alert alert-danger" *ngIf="err">Something went wrong</div>
+
+
+
+    <div class="media_box media_filter mt-4 mb-4">
+        <div class="row">
+            
+             <div class="col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="form-group">
+                        <div class="flex-fill search-main-input">
+                                <input type="text" [(ngModel)]="searchKeword" class="form-control form-control-lg"
+                                    placeholder="Gurbani Search..." (focus)="onFocusOfSearchInput()" (keyup.enter)="searchData()">
+                    
+                    
+                    
+                                <div class="search-kb-container" style="position: absolute;
+                                right: 13px;
+                                bottom: 14px;">
+                                    <i  class="fa fa-times search-clear" *ngIf="searchKeword.length > 0" (click)="clearSearchInput()"></i>
+                                    <a class="search-kb-icon" [ngClass]="{'active': isEngKeyboardShow}"
+                                        (click)="showHideKeyboard('eng')"><img style="width: 42px;
+                                        margin-top: -30px;
+                                        margin-right: 1px;
+                                        margin-left: 1px;" src="assets/images/english.png"></a>
+                                    <a class="search-kb-icon" [ngClass]="{'active': isPunKeyboardShow}"
+                                        (click)="showHideKeyboard('pun')"><img style="width: 42px;
+                                        margin-top: -30px;
+                                        margin-right: 1px;
+                                        margin-left: 1px;" src="assets/images/punjabi.png"></a>
+                    
+                                    <div class="kb-container shadow rounded" style="position: absolute;
+                                    top: 100%;
+                                    right: 0;
+                                    z-index: 9;
+                                    background: #f7f7f7;" *ngIf="isEngKeyboardShow">
+                                        <eng-keyboard (onKeyPress)="onEngKeyboardDataEnter($event)"></eng-keyboard>
+                                    </div>
+                    
+                                    <div  style="position: absolute;
+                                    top: 100%;
+                                    right: 0;
+                                    z-index: 9;
+                                    background: #f7f7f7;" class="kb-container shadow rounded" *ngIf="isPunKeyboardShow">
+                                        <pun-keyboard (onKeyPress)="onPunKeyboardDataEnter($event)"></pun-keyboard>
+                                    </div>
+                                </div>
+                            </div>
+       
+                </div>                    
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                <div class="form-group">
+                        <select class="form-control form-control-lg" [(ngModel)]="selectedSearchOption">
+                                <ng-container *ngFor="let option of searchOtions">
+                                    <option *ngIf="option['is_show']" value="{{option['code']}}">
+                                        {{option['name']}}
+                                    </option>
+                                </ng-container>
+                            </select>
+                </div>
+            </div> 
+            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                <div class="form-group d-flex align-items-center">
+                    <label class="m-0 mr-2">Melody(Raag)</label>
+                    <!-- <input type="text" class="form-control" placeholder="Gurubani Search..."> -->
+                            <select class="form-control form-control-sm" [(ngModel)]="advanceSearchOptions['selectedTblMelody']"
+                                [disabled]="advanceSearchOptions['selectedContent'] == 'english-translation'">
+                                <option value="0">All</option>
+                                <ng-container *ngFor="let melody of tblMelodies">
+                                    <option value="{{melody['id']}}">
+                                        {{melody['attributes']['melody']}}
+                                    </option>
+                                </ng-container>
+                            </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                <div class="form-group d-flex align-items-center">
+                    <label class="m-0 mr-2">Singer (Raagi)</label>
+                    <select class="form-control form-control-sm" [(ngModel)]="advanceSearchOptions['selectedRaagiSinger']">
+                            <option value="0">All</option>
+                            <ng-container *ngFor="let singer of singers">
+                                <option value="{{singer['id']}}">
+                                    {{singer['attributes']['name']}}
+                                </option>
+                            </ng-container>
+                        </select>
+                </div>
+            </div>                              
+            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                    
+                <!-- <button class="btn btn-link" (click)="resetSearchAndOptions()">Reset</button> -->
+                <button (click)="searchData()"
+                [disabled]="!searchKeword && advanceSearchOptions['selectedContent'] !== 'audio'"
+                 class="btn btn-primary btn-block filter_btn">Search</button>
+            </div>
+        </div>
+    </div>
+
+<div *ngIf="is_search" style="margin-top:2vh;margin-bottom:4vh">
+        <h4 class="mb-4" style="margin-top:2vh">
+            {{searchedResult['pagination']['total']}} search results
+        </h4>
+        <div *ngIf="searchdata.length != 0">
+                <div class="gurbanilist_table table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="center">#</th>
+                        <th>Title</th>
+                        <th>Singers</th>
+                         <th>Action</th> 
+                        <th>Shabad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of searchdata;let x=index">
+
+                        <td  [ngClass]="(x == previndex) ? 'selected':'select'"
+                            style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                            {{x+1}}
+                        </td>
+                        <td [ngClass]="(x == previndex) ? 'selected':'select'"
+                            style="font-size:1.1em;padding-top: 1em;vertical-align: top;">
+                            {{list.ScriptureRomanEnglish}}
+                        </td>
+                        <td style="vertical-align: top;">
+
+                            <div *ngIf="datalength[x] != 0">
+                                <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex;
+                                align-items: center;">
+
+                                    <!-- <button (click)="restratsearch(item.id,x,i)"
+                                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                        class="ui circular icon button">
+                                        <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                    </button> -->
+                                    <div class="" *ngIf="item.auth_name!=''">
+                                        {{item.auth_name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="vertical-align: top;">
+
+                                <div *ngIf="datalength[x] != 0">
+                                    <div *ngFor="let item of list.data_m;let i=index" class="mb-2" style="min-height: 4vh;display: flex">
+    
+                                        <!-- <button (click)="restratsearch(item.id,x,i)"
+                                            [ngClass]="(item.id == previndex) ? 'selectedicon':'select'"
+                                            class="ui circular icon button">
+                                            <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                        </button> -->
+                                        <button (click)="restratsearch(item.id,x,i)"
+                                        [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button" style="color: #0b79be;">
+                                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                             </button>
+                                               
+                                          <!-- <a href="javascript:void(0);" (click)="restrat2(x)" [ngClass]="(x == previndex) ? 'selectedicon':'select'" class="action_btn mr-2"><i [ngClass]="(index == x) ? 'pause icon':'play icon'"></i></a> -->
+                                          <a href="{{ httpservice.getAPI() }}api/v1/media/download?media_id={{item.id}}" class="action_btn" *ngIf="validateAction('download')" ><i class="fa fa-cloud-download"></i></a>
+
+                                          <a href="javascript:void(0);" class="action_btn" (click)="add(item)"><i class="fa fa-plus"></i></a>
+
+                                    </div>
+                                </div>
+                            </td>
+
+                        <td style="vertical-align: top;">
+
+                            <div>
+
+                                <h4 class="gurbani-fonts">
+                                    <a style="color: #2d8dac;font-weight: 700" class="" *ngIf="list['Page'] && list['ShabadID']"
+                                        [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                                            highlighted_scripture_lang: 'english',
+                                                                            selected_content: 'gurbani'}"
+                                        [innerHtml]="list['Scripture']">
+                                    </a>
+                                </h4>
+
+
+                                <a class="author" *ngIf="list['Page'] && list['ShabadID']"
+                                    [routerLink]="'/shabad/' + list['Page'] +'/'+ list['ShabadID']" [queryParams]="{highlighted_scripture_id: list['id'],
+                                                highlighted_scripture_lang: 'english',
+                                                selected_content: 'gurbani'}"
+                                    [innerHtml]="list['ScriptureRomanEnglish']">
+                                </a>
+                                <div class="search-item-meta">
+                                    
+                                        <span>Page {{list['Page']}} Shabad {{list['ShabadID']}}</span>
+                                        <span *ngIf="list['author']"> - </span>
+                                        <span *ngIf="list['author']">{{list['author']['Author']}}</span>
+                                        <span *ngIf="list['melody']"> - </span>
+                                        <span *ngIf="list['melody']">{{list['melody']['Melody']}}</span>
+
+                                </div>
+                            </div>
+
+                        </td>
+
+                        <!-- <td>
+                                    <div *ngIf="list.data_m.length!=0">
+                                            <ul class="list-inline" style="display: inline-flex">
+                                                <li *ngFor="let item of list.data_m;let i=index">
+                                                            <button (click)="restratsearch(item.id,x,i)" [ngClass]="(item.id == previndex) ? 'selectedicon':'select'" class="ui circular icon button">
+                                                                <i [ngClass]="(index == item.id) ? 'pause icon':'play icon'"></i>
+                                                            </button>
+                                                </li>
+                                            </ul>
+                                    </div>
+                              </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+
+
+
+ 
+            <div class="loadmore-item mt-4" style="width: 100%; float:right"
+				>
+				    <pagination id="p2" style="float: right;" *ngIf="metadata['total'] > 0 && (metadata['total'] / metadata['per_page']) > 1" [boundaryLinks]="true"
+						[totalItems]="metadata['total']" [itemsPerPage]="metadata['per_page']"
+						[(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+						nextText="&rsaquo;" [rotate]="false" [maxSize]="5">
+					</pagination>
+				</div>
+
+
+
+            </div>
+        </div>
+        <div *ngIf="searchdata.length == 0">
+            No Result Found
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+        <div style="margin-top:1vh;">
+                <h3 style="margin-bottom: 2vh">Featured Media</h3>
+                 
+                <tag-input [(ngModel)]="mediaObjects"
+                       [theme]="'dark'"
+                       [dragZone]="'zone1'"
+                       [editable]="true" 
+                       >
+                        <!-- <tag-input-dropdown 
+                                            [displayBy]="'value'"
+                                            [autocompleteItems]="mediaList"
+                                            [appendToBody]="false">
+                            <ng-template let-item="item" let-index="index">
+                                {{ item.value }} "{{item.author}}"
+                            </ng-template>
+                        </tag-input-dropdown> -->
+                </tag-input> 
+                <div class="row"  style="margin-top:1vh;padding-left:0.5vw">
+                    <button (click)="save(content,1)" class="btn btn-primary">Save</button>
+                </div>
+        </div>
+
+
+
+
+
+        <div style="margin-top:2vh;">
+                <h3 style="margin-bottom: 2vh">Featured Artist (Raagi)</h3>
+                <tag-input [(ngModel)]="artistObjects"
+                       [theme]="'dark'"
+                       [dragZone]="'zone1'"
+                       [editable]="true"
+                       >
+                       <!-- [showDropdownIfEmpty]="true"
+                                            [dynamicUpdate]="false"
+                                            [appendToBody]="false"
+                                             -->
+                        <tag-input-dropdown [displayBy]="'value'"
+                                            [autocompleteItems]="artistList"
+                                            [showDropdownIfEmpty]="false"
+                                            [dynamicUpdate]="false"
+                                            [appendToBody]="false"
+                                            >
+                            <ng-template let-item="item" let-index="index">
+                                {{ item.value }}
+                            </ng-template>
+                        </tag-input-dropdown>
+                </tag-input>
+                <div class="row"  style="margin-top:1vh;padding-left:0.5vw">
+                    <button (click)="save(content,2)" class="btn btn-primary">Save</button>
+                </div>
+
+        </div>
+
+
+
+        <div style="margin-top:2vh;">
+                <h3 style="margin-bottom: 2vh">Featured Categories</h3>
+                <tag-input [(ngModel)]="categoriesObjects"
+                       [theme]="'dark'"
+                       [dragZone]="'zone1'"
+                       [editable]="true"
+                       >
+                        <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                            [dynamicUpdate]="false"
+                                            [displayBy]="'value'"
+                                            [autocompleteItems]="categoriesList"
+                                            [appendToBody]="false">
+                            <ng-template let-item="item" let-index="index">
+                                {{ item.value }}
+                            </ng-template>
+                        </tag-input-dropdown>
+                </tag-input>
+                <div class="row" style="margin-top:1vh;padding-left:0.5vw">
+                    <button (click)="save(content,3)"    class="btn btn-primary">Save</button>
+                </div>
+        </div>
+
+
+</div>
+
+
+ 
+
+<ng-template #content let-modal>
+        
+    <div class="modal-body">
+            <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+            </div> 
+    </div>
+</ng-template>
+
+
+

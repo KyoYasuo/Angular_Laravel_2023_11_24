@@ -1,0 +1,66 @@
+<div class="audioplayer-wrapper">
+
+    <button class="btn btn-toggleplay"
+        (click)="togglePlay()">
+        <i class = "fa" aria-hidden="true"
+            [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}">
+        </i>
+    </button>
+    <div class="jump-buttons">
+        <button class="btn"
+            (click)="backward()">
+            <i class="fa fa-fast-backward" aria-hidden="true">
+            </i>
+        </button>
+        <button class="btn"
+            (click)="forward()">
+            <i class="fa fa-fast-forward" aria-hidden="true">
+            </i>
+        </button>
+    </div>
+    <div class="seek-bar-wrapper"
+        (click)="setSeekPosition($event)">
+        <div class="seek-play-bar"
+            [ngStyle]="{'width': (seekPercentage) ? seekPercentage : '0px'}">
+    </div>
+    <p>
+        <span [innerHtml]="seekTime"></span>
+        /
+        <span [innerHtml]="durationTime"></span>
+    </p>
+    <!-- <button class="btn"
+        (click)="previous()">
+        <i class="fa fa-backward" aria-hidden="true">
+        </i>
+    </button> -->
+    <!-- <button class="btn"
+        (click)="repeat()">
+        <i class="fa fa-repeat" aria-hidden="true"></i>
+    </button> -->
+
+
+        <!-- <button class="btn"
+            (click)="stop()">
+            <i class="fa fa-stop" aria-hidden="true">
+            </i>
+        </button> -->
+
+    <!-- <button class="btn"
+        (click)="next()">
+        <i class="fa fa-forward" aria-hidden="true">
+        </i>
+    </button> -->
+
+
+
+</div>
+<!-- <div class="row">
+    <div class="col-sm-12">
+
+        <p>
+            <input type="range" min="1" max="100" value="50">
+        </p>
+        <p>Repeat: {{isRepeat}}</p>
+    </div>
+</div>
+ -->

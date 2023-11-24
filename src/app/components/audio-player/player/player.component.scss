@@ -1,0 +1,102 @@
+@import "../../../../variables.scss";
+$player-width: 335px;
+$half-width: $player-width / 2;
+
+$btn-size: 24px;
+$font-size: 16px;
+
+/* :host {
+  position: absolute;
+  left: calc(50% - 124px);
+  bottom: 80px;
+  z-index: 40;
+} */
+
+// player.audio-player{
+//   padding: 0;
+// }
+
+.audioplayer-wrapper {
+  margin: auto;
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  width: $player-width;
+  background-color: $bg-color;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 30px;
+  p{
+    margin: 0;
+  }
+}
+
+// .btn-group {
+//   color: $primary-color;
+//   border-color: $primary-color;
+
+//   .btn {
+//     color: inherit;
+//     border-color: inherit;
+//     border-radius: 0;
+//     border-right-color: transparent;
+//     border-left-color: transparent;
+
+//     &:first-child {
+//       border-left-color: inherit;
+//     }
+
+//     &:last-child {
+//       border-right-color: inherit;
+//     }
+
+//     &:hover {
+//       border-right-color: inherit;
+//       border-left-color: inherit;
+//     }
+//   }
+// }
+
+.btn {
+  height: $btn-size;
+  width: $btn-size;
+  background-color: transparent;
+  color: $primary-color;
+  padding: 0;
+  border: none;
+  // border-color: $primary-color;
+  // border-radius: $btn-size/2;
+  font-size: $font-size;
+  // transition: border-width cubic-bezier(0.4, 0, 0.2, 1);
+  // transition-delay: 0.2s;
+
+  &:hover {
+    box-shadow:0 0 0 1px $primary-color;
+  }
+
+  &:focus:hover {
+    box-shadow:0 0 0 1px $primary-color;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn-toggleplay{
+  margin-right: 10px;
+}
+
+.seek-bar-wrapper{
+  background: darken($bg-color, 10%);
+  height: 8px;
+  width: 100%;
+  flex: 2;
+  margin: 8px 10px;
+
+  .seek-play-bar {
+    background: $primary-color;
+    height: 8px;
+  }
+}

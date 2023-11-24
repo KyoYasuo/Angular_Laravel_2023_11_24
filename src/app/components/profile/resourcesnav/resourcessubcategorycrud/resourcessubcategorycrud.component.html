@@ -1,0 +1,118 @@
+<div style="margin-top:2vh;margin-bottom:4vh">
+        <button class="positive ui button" (click)="
+        add(content)">Add media sub category</button>
+    </div>
+    
+    
+    <div class="alert alert-info" *ngIf="success">{{successmsg}}</div>
+    
+    <div class="alert alert-danger" *ngIf="err">{{successmsg}}</div>
+    
+    
+    
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Attachment</th>
+            <th>Category name</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list;">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td ><img *ngIf="item.attachment_name.length!=0" src="{{item.attachment_name}}" class="ui tiny image" style="width:60px;height:60px">
+                <p style="width:60px;height:60px" style="verticle-align:center" *ngIf="item.attachment_name.length==0">N/A</p>
+            </td>
+             <td>
+                 {{find(item.category_id)}}
+             </td>
+            <td>
+                        <ui-switch (change)="onChanged($event,item.id,loader)" [checked]="true" *ngIf="item.status==1"></ui-switch>
+    
+                        <ui-switch (change)="onChanged($event,item.id,loader)" [checked]="false" *ngIf="item.status==0"></ui-switch>
+            </td>
+            <td>
+                    <button class="circular positive ui icon button" (click)="edit(content)">
+                            <i class="edit icon"></i>
+                    </button>
+            </td>
+    
+            <td>
+                    <button class="circular negative ui icon button" (click)="delete(loader)">
+                            <i class="trash icon"></i>
+                    </button>
+            </td>
+          </tr>
+          
+        </tbody>
+    </table>
+    
+    
+    
+    <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">{{msg}}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <div id="fileupload" *ngIf="!fileupload">
+                        <div class="input-group">
+                                    <input type="text" class="form-control" [ngClass]="{'is-invalid': nameinvalid}" id="inputtxt" [(ngModel)]="mytxt" placeholder="Media Sub Category name"><br/>
+                                    <div class="invalid-feedback">
+                                            Enter Media subcategory name
+                                    </div>
+                          </div><br/>
+                          <!-- <div class="form-group">
+                                    <select class="custom-select" [(ngModel)]="selectedCategory" id="selectid" [ngClass]="{'is-invalid': selectinvalid}" required>
+                                        <option value="" selected hidden>Please select subcategory</option>
+                                        <option  value="{{item.id}}" *ngFor="let item of categorylist">{{item.name}}</option>
+                                    </select>
+                                    <div class="invalid-feedback">Select subcategory</div>
+                          </div> -->
+                            <ng-select  [(ngModel)]="selectedCategory">
+                                    <ng-option *ngFor="let item of categorylist" [value]="item.id">{{item.name}}</ng-option>
+                                   
+                            </ng-select>
+        
+                        <br/>
+                        <div class="custom-file">
+                            <input type="file" accept="image/*" [ngClass]="{'is-invalid': fileinvalid}" (change)="handleFileInput($event.target.files)" class="custom-file-input" id="validatedCustomFile" required>
+                            <label class="custom-file-label" for="validatedCustomFile" id="lbl">Choose Image</label>
+                            <div class="invalid-feedback">Invalid file</div>
+                        </div><br/>
+                        <div class="row" style="margin-top:2vh;margin-left:0.5vw">
+                           <button class="btn btn-primary" (click)="upload(loader)">{{btntxt}}</button>
+                        </div>
+                </div>
+        </div>
+    </ng-template>
+    
+    
+    
+    
+    
+    <ng-template #loader let-modal>
+        
+        <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                </div>
+
+                <div class="d-flex justify-content-center" style="margin-top:1vh">
+                                <span>{{uploaddata}}</span>
+                </div>
+        </div>
+    
+    </ng-template>
+    
+    

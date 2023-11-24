@@ -1,0 +1,33 @@
+@import "../../../../variables.scss";
+.settings-sidebar {
+	padding-right: 0;
+	li a{
+		color: $font-lighter;
+		padding: 0.5rem 1rem;
+		border-radius: 4px 0 0 4px;
+	}
+	li.active {
+		a {
+			color: $primary-color;
+			background: $bg-color;
+		}
+	}
+	a:hover{
+		color: $primary-color;
+		background: $bg-color;
+	}
+
+	h5{
+		text-transform: uppercase;
+		margin-top: 40px;
+		font-size: 16px;
+		padding: 0.5rem 1rem;
+	}
+}
+
+
+
+.settings-page{
+	padding-top: 30px;
+}
+

@@ -1,0 +1,244 @@
+<mat-card class="d-flex ngx-advanced-audio-player"
+  style="margin: 0px;background: white;padding-top:1vh;padding-bottom:1vh !important;border-radius: none !important">
+   <!-- not in use --> <audio [src]="playlistTrack[1].link" #audioPlayer id="audioPlayer" preload="none"></audio> <!-- not in use -->
+  <audio id="audioPlayerNew" style="display:none"></audio>
+  <button id="playSong" (click)="play()" style="display:none">play</button>
+  <button id="pauseSong" (click)="pause()" style="display:none">pause</button>
+  <span id="srcforsong" style="display:none"></span>
+  <button id="setsrc" (click)="setsrc()" style="display:none">setsrc</button>
+
+
+  <!-- <div class="only-xs" style="text-align: center;padding-left:2%;padding-right:2%;display: flex;
+    justify-content: center;
+    align-items: center;
+    width:16vw;
+    " >
+      <div style="padding:1px 3px; width:16vw;color:#3c677d" id="mq">
+       
+      </div> 
+      <div class="clear"></div>
+    </div>  -->
+
+
+  <div class="hidelg">
+
+
+
+    <div class="d-flex flex-fill row" style="
+        margin: 0 8px;
+        color:black!important">
+      <span id="spanhoverMobile" style="position: absolute;display: none">{{ resstr }}</span>
+      <mat-slider id="playerSliderMobile" class="flex-fill" min="0" max="{{duration}}" value="{{currentTime}}"
+        (change)="currTimePosChanged($event)" (input)="inputMove($event)" (mouseleave)="hidehover()" (click)="clickTime()"></mat-slider>
+    </div>
+    <div class="row" style="display: flex; justify-content: space-between; margin: 0; padding: 0 10px;">
+      <span *ngIf="duration !== 0.01">
+        {{currentTime | secondsToMinutes}}
+      </span>
+      <span *ngIf="duration !== 0.01">
+        -{{duration-currentTime | secondsToMinutes }}
+      </span>
+    </div>
+
+
+    <div class="row d-flex" style="
+        padding-left: 45.5px;">
+
+      <div style="flex:1;display: flex;justify-content: center;">
+        <button mat-button class="p-1 btn" style="color:black; margin-right:40px;" (click)='currTimePosChangedprev();'
+          [disabled]="loaderDisplay">
+          <!-- <fa-icon class="fa fa-lg" [icon]="['fas','undo-alt']" aria-hidden="true"></fa-icon>  -->
+          <div class="imageContainer" style="background-image: url(assets/1p.svg);
+                background-repeat: no-repeat;
+                background-position: center;
+                text-align: center;">15</div>
+        </button>
+        <button mat-button style="color: #3c677d!important; position: relative" class="btn" (click)='playBtnHandler();'
+          [disabled]="loaderDisplay">
+          <fa-icon *ngIf="loaderDisplay" title="loading..." class="fa fa-2x loading-track" [pulse]="true"
+            style="font-size:40px; color:#3c677d!important;margin-left:-6px" [icon]="['fas','spinner']" aria-hidden="true"></fa-icon>
+          <fa-icon *ngIf="!loaderDisplay && !isPlaying" class="fa fa-2x play-track" style="color: #3c677d!important; font-size:40px;"
+            [icon]="['fas','play']" style="font-size:40px;" aria-hidden="true"></fa-icon>
+          <fa-icon *ngIf="!loaderDisplay && isPlaying" class="fa fa-2x pause-track" style="color:#3c677d!important; font-size:40px;margin-left:-3px"
+           [icon]="['fas','pause']" aria-hidden="true"></fa-icon>
+        </button>
+        <!-- <button mat-button class="p-1" style="border-right: 1px solid #ddd;" (click)='nextSong();' [disabled]="loaderDisplay">
+      <fa-icon class="fa fa-lg next-track" [icon]="['fas','step-forward']" aria-hidden="true"></fa-icon>
+    </button> -->
+        <button mat-button style="color:black!important; margin-left:40px;" class="p-1 btn" (click)='currTimePosChangednext();'
+          [disabled]="loaderDisplay">
+          <!-- <fa-icon class="fa fa-lg" [icon]="['fas','forward']" aria-hidden="true"></fa-icon> -->
+          <!-- <div class="container">
+      <img src="assets/2p.svg">
+          <div class="centered">15</div>
+      </div> -->
+
+          <div class="imageContainer" style="background-image: url(assets/2p.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      text-align: center;
+      color:black!important">15</div>
+        </button>
+
+
+      </div>
+
+
+
+      <div style="display:flex;justify-content:center;align-items:center;padding-right: 1em" style="width:50px">
+        <button mat-button style="color: #3c677d!important;" class="p-1 btn mat-button mat-button-base" (click)='stop()'>
+          <fa-icon title="loading..." class="fas fa-times fa-lg" style="font-size: 18px;margin-top: 10px;" aria-hidden="true"></fa-icon>
+
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <div class="showlg">
+
+    <button mat-button class="p-1 btn" style="color:#3c677d" (click)='currTimePosChangedprev();'
+      [disabled]="loaderDisplay">
+      <!-- <fa-icon class="fa fa-lg" [icon]="['fas','undo-alt']" aria-hidden="true"></fa-icon>  -->
+
+      <div class="imageContainer" style="background-image: url(assets/1p.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      text-align: center;">15</div>
+    </button>
+    <button mat-button style="color: #3c677d" class="p-1 btn" (click)='playBtnHandler();' [disabled]="loaderDisplay">
+      <fa-icon *ngIf="loaderDisplay" title="loading..." class="fa fa-2x loading-track" [pulse]="true"
+        [icon]="['fas','spinner']" aria-hidden="true"></fa-icon>
+      <fa-icon *ngIf="!loaderDisplay && !isPlaying" class="fa fa-2x play-track" style="color:#3c677d"
+        [icon]="['fas','play']" aria-hidden="true"></fa-icon>
+      <fa-icon *ngIf="!loaderDisplay && isPlaying" class="fa fa-2x pause-track" style="color:#3c677d"
+        [icon]="['fas','pause']" aria-hidden="true"></fa-icon>
+
+
+    </button>
+    <!-- <button mat-button class="p-1" style="border-right: 1px solid #ddd;" (click)='nextSong();' [disabled]="loaderDisplay">
+      <fa-icon class="fa fa-lg next-track" [icon]="['fas','step-forward']" aria-hidden="true"></fa-icon>
+    </button> -->
+    <button mat-button style="color:#3c677d" class="p-1 btn" (click)='currTimePosChangednext();'
+      [disabled]="loaderDisplay">
+      <!-- <fa-icon class="fa fa-lg" [icon]="['fas','forward']" aria-hidden="true"></fa-icon> -->
+      <!-- <div class="container">
+      <img src="assets/2p.svg">
+          <div class="centered">15</div>
+      </div> -->
+
+      <div class="imageContainer" style="background-image: url(assets/2p.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      text-align: center;">15</div>
+    </button>
+
+    <div class="d-flex flex-fill">
+      <div class="d-none d-sm-block py-3 px-1" style="font-size: 12px;color: #3c677d;min-width: 4em;
+      max-width: 4em;">
+        <span *ngIf="duration !== 0.01">
+          {{currentTime | secondsToMinutes}}
+        </span>
+      </div>
+      <span id="spanhover" style="position: absolute;display: none">{{ resstr }}</span>
+      <mat-slider id="playerSlider" class="flex-fill p-1" min="0" max="{{duration}}" value="{{currentTime}}"
+        (change)="currTimePosChanged($event)" (mousemove)="hover($event)" (mouseleave)="hidehover()" (click)="clickTime()"></mat-slider>
+
+      <div class="py-3 px-1" style="font-size: 12px; text-align: right;color: #3c677d;min-width: 4em;
+      max-width: 4em;">
+        <span *ngIf="duration !== 0.01">
+          -{{duration-currentTime | secondsToMinutes }}
+        </span>
+      </div>
+    </div>
+
+
+    <div style="display:flex;justify-content:center;align-items:center">
+      <!-- <mv-slider [(value)]="value" style="margin-right:5%;margin-left:2%;"  tooltip_position='left' id="GC" [min]="1" [max]="100" (change)="change()"></mv-slider> -->
+      <!-- <button  id="top" *ngIf="displayVolumeControls" mat-button class="p-1" (click)='toggleVolume();' style="color:white">
+                <fa-icon *ngIf="volume === 0" class="fa fa-lg volume-mute" [icon]="['fas','volume-mute']" aria-hidden="true">
+                </fa-icon>
+                <fa-icon *ngIf="volume > 0" class="fa fa-lg volume-up" [icon]="['fas','volume-up']" aria-hidden="true"></fa-icon>
+              </button>   -->
+      <!-- <button class="ui icon button paddinglg"   suiPopup [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
+                <fa-icon *ngIf="volume > 0" class="fa fa-lg volume-up" [icon]="['fas','volume-up']" aria-hidden="true"></fa-icon>
+              </button>
+                <ng-template let-popup #popupTemplate>
+                  <div class="header">Volume</div>
+                  <div class="content">
+                        <mv-slider [(value)]="value" tooltip_position='left' id="GC" [min]="1" [max]="100" (change)="change()"></mv-slider>
+                  </div>
+              </ng-template> -->
+      <button id="closePlayer" mat-button style="color: #3c677d" class="p-1 btn" (click)='stop()'>
+        <fa-icon title="loading..." class="fas fa-times fa-lg" aria-hidden="true"></fa-icon>
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+
+  <div>
+  </div>
+</mat-card>
+<!-- 
+<mat-card class="only-md" style="border: 1px solid #ddd; box-shadow: none;">
+  <div style="display:flex;justify-content:flex-end;align-items:center;width:100%">
+            
+    <mv-slider [(value)]="value" style="margin-right:5%"  tooltip_position='left' id="GC" [min]="1" [max]="100" (change)="change()"></mv-slider>
+    <button id="top" *ngIf="displayVolumeControls" mat-button class="p-1" (click)='toggleVolume();' style="border-left: 1px solid #ddd;">
+      <fa-icon *ngIf="volume === 0" class="fa fa-lg volume-mute" [icon]="['fas','volume-mute']" aria-hidden="true">
+      </fa-icon>
+      <fa-icon *ngIf="volume > 0" class="fa fa-lg volume-up" [icon]="['fas','volume-up']" aria-hidden="true"></fa-icon>
+    </button>
+    
+</div>
+</mat-card> -->
+<mat-card *ngIf="displayTitle" style=" box-shadow: none;">
+  <!-- <div class="p-1" style="text-align: center;">
+    <div style="padding:1px 3px;">
+      <span *ngIf="!isPlaying">{{ playlistTrack[1].title }}</span>
+      <marquee *ngIf="isPlaying" behavior="scroll" direction="left">{{ playlistTrack[1].title }}</marquee>
+    </div>
+    <div class="clear"></div>
+  </div> -->
+</mat-card>
+
+<mat-accordion *ngIf="displayPlaylist">
+  <mat-expansion-panel [expanded]="expanded">
+    <mat-expansion-panel-header>
+      Play List
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z6">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element" (click)="selectTrack(element.index)"> {{element.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="playlistTrack[1].title === element.title">
+            <fa-icon *ngIf="isPlaying" class="fa" [icon]="['fas','play']" [spin]="true" aria-hidden="true"></fa-icon>
+            <fa-icon *ngIf="!isPlaying" class="fa" [icon]="['fas','play']" aria-hidden="true"></fa-icon>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr class="mat-select-content" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
