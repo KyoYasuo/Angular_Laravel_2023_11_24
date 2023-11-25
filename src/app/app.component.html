@@ -1,14 +1,10 @@
-
 <!-- <ngx-loading-bar></ngx-loading-bar> -->
 
 <!-- show alerts -->
- 
+
 <div class="customize-alert">
-	<div  *ngFor="let alert of alerts">
-		<alert
-		[type]="alert.type"
-		[dismissible]="true"
-		[dismissOnTimeout]="alert.timeout">
+	<div *ngFor="let alert of alerts">
+		<alert [type]="alert.type" [dismissible]="true" [dismissOnTimeout]="alert.timeout">
 			<span [innerHtml]="alert.message"></span>
 		</alert>
 	</div>
@@ -16,101 +12,110 @@
 
 <div class="d-flex justify-content-end flex-column" style="position: fixed;height:100%;width:100vw;z-index:9;">
 	<div style="flex:1;overflow: auto" id="main2">
-		<div id="radioPlayer" style="display:none;width: 100%;height:62px;background-color: white;z-index: 999;border-top: 3px solid #607D8B;position:absolute;bottom:0">
+		<div id="radioPlayer"
+			style="display:none;width: 100%;height:62px;background-color: white;z-index: 999;border-top: 3px solid #607D8B;position:absolute;bottom:0">
 			<audio [id]="'vid'" controls name="mediavid" style="display:none">
 				<source id="srcvid" type="audio/mpeg">
-			</audio>  
+			</audio>
 			<button id="setPlayingProp" (click)="radio.isPlayingRadio = true" style="display:none"></button>
 			<div style="display:inline-block;width: 50px;vertical-align: top;"></div>
 			<div style="width:calc(100% - 102px);display: inline-block;">
 				<div style="display: table;margin:auto;padding-top:10px">
 					<button mat-button style="color: #3c677d" class="p-1 btn" (click)='playRadio();'>
 						<fa-icon *ngIf="!radio.isPlayingRadio" class="fa fa-2x play-track" style="color:#3c677d"
-						[icon]="['fas','play']" aria-hidden="true"></fa-icon>
+							[icon]="['fas','play']" aria-hidden="true"></fa-icon>
 						<fa-icon *ngIf="radio.isPlayingRadio" class="fa fa-2x pause-track" style="color:#3c677d"
-						[icon]="['fas','pause']" aria-hidden="true"></fa-icon>
+							[icon]="['fas','pause']" aria-hidden="true"></fa-icon>
 					</button>
-					
+
 					<p id="radioTitle" style="display:inline;margin:0;margin-left:15px"></p>
 				</div>
 			</div>
 			<div style="display:inline-block;width: 50px;vertical-align: top;">
-				
-			  <button id="closePlayerRadio" mat-button style="color: #3c677d;display: table;margin:auto;margin-top:13px" class="p-1 btn" (click)='stopRadio()'>
-				<fa-icon title="loading..." class="fas fa-times fa-lg" aria-hidden="true"></fa-icon>
-			  </button>
-		
+
+				<button id="closePlayerRadio" mat-button
+					style="color: #3c677d;display: table;margin:auto;margin-top:13px" class="p-1 btn"
+					(click)='stopRadio()'>
+					<fa-icon title="loading..." class="fas fa-times fa-lg" aria-hidden="true"></fa-icon>
+				</button>
+
 			</div>
-		
+
 		</div>
-		 <router-outlet></router-outlet>
-		 
+		<router-outlet></router-outlet>
+
 	</div>
-<!-- <div class-="row shadow-lg" style="margin: 0;padding:0;border-top: 3px solid #607D8B;">
+	<!-- <div class-="row shadow-lg" style="margin: 0;padding:0;border-top: 3px solid #607D8B;">
 <div class="col-lg-12 col-sm-12" style="background: #1f5169;margin:0;padding:0">
 					<mat-basic-audio-player style="background: #1f5169;margin:0;padding:0" id="matradioplayer" 
 					[displayTitle]="msbapDisplayTitle" [displayVolumeControls]="msaapDisplayVolumeControls" ></mat-basic-audio-player>
 </div>
 </div> -->
-<div class="row shadow-lg" style="margin: 0;padding:0;border-top: 3px solid #607D8B;">
-	<!-- <i class="fa fa-times" aria-hidden="true"></i>		
+	<div class="row shadow-lg" style="margin: 0;padding:0;border-top: 3px solid #607D8B;">
+		<!-- <i class="fa fa-times" aria-hidden="true"></i>		
 	 -->
-<div class="col-lg-12 col-sm-12" style="background: white;margin:0;padding:0">
-	<div class="step_section" id="player" style="position: relative;">
-		<!-- <span _ngcontent-c9="" (click)="stop()" class="stepsec_close" style="right:0.1vw;z-index:99"><i _ngcontent-c9="" class="fas fa-times" style="color: #f5f2f2 !important"></i></span>
+		<div class="col-lg-12 col-sm-12" style="background: white;margin:0;padding:0">
+			<div class="step_section" id="player" style="position: relative;">
+				<!-- <span _ngcontent-c9="" (click)="stop()" class="stepsec_close" style="right:0.1vw;z-index:99"><i _ngcontent-c9="" class="fas fa-times" style="color: #f5f2f2 !important"></i></span>
 	 -->
-	 	  <p class="singerName-cust"> {{singerName}} {{playerTitle}} </p>
-	 	  
-          <mat-advanced-audio-player  style="background: #1f5169;padding-top:1vh !important;padding-bottom:1vh !important;background: #1f5169;box-shadow: 0 2px 10px 0 rgba(0,0,0,.17);" [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle" [displayPlaylist]="msaapDisplayPlayList" [displayVolumeControls]="msaapDisplayVolumeControls" [expanded]="true"></mat-advanced-audio-player>
-		</div>	 
-		
-</div>
-</div>
-</div>
+				<p class="singerName-cust"> {{singerName}} {{playerTitle}} </p>
 
+				<mat-advanced-audio-player
+					style="background: #1f5169;padding-top:1vh !important;padding-bottom:1vh !important;background: #1f5169;box-shadow: 0 2px 10px 0 rgba(0,0,0,.17);"
+					[playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle"
+					[displayPlaylist]="msaapDisplayPlayList" [displayVolumeControls]="msaapDisplayVolumeControls"
+					[expanded]="true"></mat-advanced-audio-player>
+			</div>
 
-
-<div class="modal fade media-app-modal" id="modal" style="z-index:9999" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="exampleModalLongTitle2">Download KhojGurbani Media App</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true" style="font-size: 26px;">&times;</span>
-		  </button>
 		</div>
-		<div class="modal-body" style="display: flex;justify-content:center">
-			<div class="row">
-				<div class="col-6">
-					<a href="https://apps.apple.com/us/app/khojgurbani-media/id1500259149" target="_blank">
-						<img src="assets/images/app-store.png" style="width: 100%;" />
-					</a>
+	</div>
+</div>
+
+
+
+<div class="modal fade media-app-modal" id="modal" style="z-index:9999" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle2">Download KhojGurbani Media App</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true" style="font-size: 26px;">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" style="display: flex;justify-content:center">
+				<div class="row">
+					<div class="col-6">
+						<a href="https://apps.apple.com/us/app/khojgurbani-media/id1500259149" target="_blank">
+							<img src="assets/images/app-store.png" style="width: 100%;" />
+						</a>
+					</div>
+					<div class="col-6">
+						<a href="https://play.google.com/store/apps/details?id=com.TWE.KhojGurbani" target="_blank">
+							<img src="assets/images/google-play.png" style="width: 100%;" />
+						</a>
+					</div>
 				</div>
-				<div class="col-6">
-					<a href="https://play.google.com/store/apps/details?id=com.TWE.KhojGurbani" target="_blank">
-						<img src="assets/images/google-play.png" style="width: 100%;" />
-					</a>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" style="display: flex;justify-content:center" role="document">
+		<div class="modal-content" style="width: 15% !important">
+			<div class="modal-body">
+				<div class="d-flex justify-content-center">
+					<div class="spinner-border" role="status">
+						<span class="sr-only">Loading...</span>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-	  </div>
 	</div>
-  </div>
-
-<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="display: flex;justify-content:center" role="document">
-          <div class="modal-content" style="width: 15% !important">
-            <div class="modal-body">
-				<div class="d-flex justify-content-center">
-					<div class="spinner-border" role="status">
-					  	<span class="sr-only">Loading...</span>
-					</div>
-				</div>
-            </div>
-          </div>
-        </div>
-      </div>
+</div>
 
 
 
